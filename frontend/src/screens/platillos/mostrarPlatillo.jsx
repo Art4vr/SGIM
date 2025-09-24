@@ -1,0 +1,1 @@
+//pantalla para visualizar detalles de un platillo

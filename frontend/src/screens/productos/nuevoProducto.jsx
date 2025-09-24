@@ -1,0 +1,1 @@
+//pantalla para registrar un nuevo producto (crear)
