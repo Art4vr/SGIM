@@ -1,0 +1,79 @@
+/* Estilos generales del contenedor principal de la página */
+.bodyContainer {
+    font-family: 'Arial'; /* Fuente utilizada en la página */
+    /*background-image: url('/imagenes/FondoMK.PNG'); /* Imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Usa flexbox para centrar elementos */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+/* Contenedor principal de la página de inicio */
+.homeContainer {
+    background: rgba(218, 216, 217, 0.7); /* Color de fondo con transparencia */
+    padding: 30px; /* Espaciado interno */
+    border-radius: 20px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra alrededor del contenedor */
+    width: 100%;
+    max-width: 350px; /* Ancho máximo del contenedor */
+    text-align: center; /* Alineación del texto */
+    color: #000; /* Color del texto */
+    transition: all 0.3s ease; /* Transición suave en los cambios de estilo */
+}
+
+/* Efecto al pasar el mouse sobre el contenedor */
+/**
+.homeContainer:hover {
+    transform: scale(1.25); /* Aumenta el tamaño en un 25% 
+    background: rgba(218, 216, 217, 0.9); /* Aumenta la opacidad del fondo 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada 
+}
+*/
+
+/* Estilos para la imagen del avatar */
+.avatar img {
+    width: 100px; /* Ancho de la imagen */
+    height: 100px; /* Altura de la imagen */
+    border-radius: 50%; /* Hace la imagen circular */
+    border: 3px solid #D9115A; /* Borde con color */
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+/* Estilos para el título principal */
+.title {
+    font-size: 48px; /* Tamaño grande para el título */
+    font-family: 'Brush Script MT', cursive; /* Fuente decorativa */
+    margin: 0;
+}
+
+/* Estilos para el subtítulo */
+.subtitle {
+    font-size: 24px; /* Tamaño del subtítulo */
+    margin: 5px 0 20px; /* Márgenes superior e inferior */
+    font-family: 'Courier New', monospace; /* Fuente monoespaciada */
+    color: #000; /* Color del texto */
+}
+
+/* Estilos para los botones de login y registro */
+.homeContainer .loginBtn,
+.homeContainer .registerBtn {
+    background-color: #D92579; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 18px; /* Tamaño del texto */
+    cursor: pointer; /* Cursor tipo puntero */
+    margin: 10px; /* Márgenes entre botones */
+    transition: background 0.3s; /* Transición suave en el cambio de color */
+}
+
+/* Efecto al pasar el mouse sobre los botones */
+.homeContainer .loginBtn:hover,
+.homeContainer .registerBtn:hover {
+    background-color: #400C24; /* Color más oscuro al hacer hover */
+}
