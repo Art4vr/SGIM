@@ -1,0 +1,100 @@
+/* Estilos generales del contenedor principal */
+.bodyContainer {
+    font-family: 'Arial', sans-serif; /* Define la fuente utilizada en la página */
+    /*background-image: url('../../imagenes/FondoMK.PNG'); /* Imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
+    background-position: center; /* Centra la imagen de fondo */
+    display: flex; /* Usa flexbox para centrar elementos */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0;
+}
+
+/* Estilos del contenedor del formulario de registro */
+.registerContainer {
+    background: rgba(218, 216, 217, 0.7); /* Fondo semi-transparente */
+    padding: 30px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para efecto elevado */
+    width: 100%;
+    max-width: 350px; /* Ancho máximo del contenedor */
+    text-align: center; /* Centra el contenido */
+    color: #000; /* Color del texto */
+}
+
+/* Estilos generales para los inputs y selectores */
+.inputContainer {
+    margin-bottom: 15px; /* Espaciado inferior entre los inputs */
+    text-align: left;
+}
+
+.inputContainer label {
+    display: block; /* Asegura que las etiquetas estén en una nueva línea */
+    font-size: 14px; /* Tamaño del texto de las etiquetas */
+    color: #000;
+    margin-bottom: 5px; /* Espaciado inferior de la etiqueta */
+}
+
+.inputContainer input,
+.inputContainer select {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    padding: 10px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    border: none; /* Elimina bordes */
+    border-radius: 4px; /* Bordes redondeados */
+    outline: none; /* Elimina el contorno predeterminado al seleccionar */
+    background-color: #333; /* Color de fondo del input */
+    color: #fff; /* Color del texto */
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus {
+    border: 2px solid #262523; /* Borde visible al enfocar el input */
+}
+
+.inputContainer select {
+    appearance: none; /* Oculta el estilo nativo del navegador */
+    cursor: pointer; /* Cambia el cursor a puntero */
+    background-color: #444; /* Color de fondo */
+    color: #fff; /* Color del texto */
+    border: 1px solid #262523; /* Borde ligero */
+}
+
+.inputContainer select:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos de los botones de registro e inicio de sesión */
+.registerContainer .registerBtn,
+.registerContainer .loginBtn {
+    width: 100%; /* Botón de ancho completo */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    color: white; /* Color del texto */
+    background-color: #D92579; /* Color de fondo */
+    border: none; /* Elimina el borde */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor en forma de mano */
+    transition: background-color 0.3s ease; /* Efecto de transición */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+.registerContainer .registerBtn:hover,
+.registerContainer .loginBtn:hover {
+    background-color: #400C24; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos del mensaje de error o información */
+.message {
+    margin-top: 20px; /* Espaciado superior */
+    color: #ff6666; /* Color del mensaje */
+    font-size: 16px; /* Tamaño del texto */
+}
+
+/* Estilos del contenedor para mostrar contraseña */
+.showPasswordContainer {
+    display: flex; /* Alinea los elementos en fila */
+    align-items: center; /* Alinea verticalmente */
+    gap: 2px; /* Espaciado entre elementos */
+}

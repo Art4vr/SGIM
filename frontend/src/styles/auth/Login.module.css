@@ -1,0 +1,130 @@
+/* Estilos generales del contenedor principal de la página */
+.bodyContainer {
+    font-family: 'Arial'; /* Fuente utilizada en la página */
+    /*background-image: url('../../imagenes/FondoMK.PNG'); /* Imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    display: flex; /* Usa flexbox para centrar elementos */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    margin: 0; /* Elimina márgenes predeterminados */
+}
+
+/* Contenedor principal del formulario de inicio de sesión */
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Tarjeta de inicio de sesión */
+.loginCard {
+    background: rgba(218, 216, 217, 0.7); /* Fondo semitransparente */
+    padding: 30px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para efecto de elevación */
+    width: 100%;
+    max-width: 350px; /* Ancho máximo */
+    text-align: center; /* Centra el contenido */
+    color: #fff; /* Color del texto */
+}
+
+/* Estilos del avatar dentro del formulario */
+.avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Forma circular */
+    border: 3px solid #D9115A; /* Borde de color */
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+/* Título dentro de la tarjeta de inicio de sesión */
+.loginCard h2 {
+    color: #000; /* Color del título */
+    margin-bottom: 20px; /* Espaciado inferior */
+    font-size: 24px; /* Tamaño de fuente */
+}
+
+/* Contenedor de los campos de entrada */
+.inputContainer {
+    margin-bottom: 15px; /* Espaciado entre campos */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Etiquetas de los campos de entrada */
+.inputContainer label {
+    display: block; /* Hace que la etiqueta ocupe toda la línea */
+    font-size: 14px; /* Tamaño de fuente */
+    color: #000; /* Color del texto */
+    margin-bottom: 5px; /* Espaciado inferior */
+}
+
+/* Campos de entrada */
+.inputContainer input {
+    width: 90%; /* Ancho del campo */
+    padding: 10px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    outline: none; /* Elimina el borde de enfoque predeterminado */
+    background-color: #333; /* Fondo oscuro */
+    color: #fff; /* Color del texto */
+}
+
+/* Efecto cuando un campo de entrada está enfocado */
+.inputContainer input:focus {
+    border: 2px solid #262523; /* Borde resaltado */
+}
+
+/* Contenedor para la opción de mostrar contraseña */
+.showPasswordContainer {
+    display: flex;
+    align-items: center;
+    gap: 2px; /* Espaciado entre elementos */
+}
+
+/* Botón de inicio de sesión */
+.loginBtn {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    color: white; /* Color del texto */
+    background-color: #D92579; /* Color de fondo */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+    transition: background-color 0.3s ease; /* Efecto de transición */
+    margin-bottom: 10px; /* Espaciado inferior */
+}
+
+/* Efecto hover del botón de inicio de sesión */
+.loginBtn:hover {
+    background-color: #400C24; /* Cambio de color al pasar el mouse */
+}
+
+/* Botón de registro */
+.registerBtn {
+    width: 100%; /* Ocupa todo el ancho */
+    padding: 12px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    color: white; /* Color del texto */
+    background-color: #D92579; /* Color de fondo */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+    transition: background-color 0.3s ease; /* Efecto de transición */
+}
+
+/* Efecto hover del botón de registro */
+.registerBtn:hover {
+    background-color: #400C24; /* Cambio de color al pasar el mouse */
+}
+
+/* Mensajes de error o advertencia */
+.message {
+    margin-top: 20px; /* Espaciado superior */
+    color: #ff6666; /* Color del mensaje */
+    font-size: 16px; /* Tamaño de fuente */
+}
