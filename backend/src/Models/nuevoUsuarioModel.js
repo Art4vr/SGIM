@@ -5,10 +5,11 @@
 
 import conexionDB from '../config/db.js';
 
-export const obtenerUsuario = async (username)=>{
-    const query = 'SELECT * FROM usuario WHERE username = ?';
+export const nuevoUsuario = async (nombre,username,password,estado,rol)=>{
+    const query = 'INSERT INTO Usuario (nombre, username, password, estado, Rol_idRol) VALUES(?,?,?,?,?)';
     try{
-        const[resultados] = await conexionDB.execute(query,[username]);
+        const[resultados] = await conexionDB.execute(query,[nombre,username,password,estado,rol]);
+        console.log(resultados);
         return resultados;
     }catch(err){
         console.error('Error con la base de datos: ', err);

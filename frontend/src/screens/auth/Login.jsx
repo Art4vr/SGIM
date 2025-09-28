@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/Login.module.css';
 
 /**
  * Componente de inicio de sesión (simulado).
  * 
- * Este componente permite ingresar un usuario y una comtraseña para iniciar sesion
+ * Este componente permite ingresar un usuario y una contraseña para iniciar sesión
  */
 
 const Login = () => {
@@ -28,16 +28,12 @@ const Login = () => {
             return;
         }
 
-        console.log(username, password);
-
         //llama a la api para verificar las credenciales
         try{
             const response = await axios.post('/api/login',{username,password});
-            console.log(response.data.rol);
-            console.log('CORRECTO LOGIN')
             if (response.status === 200){
-                if (response.data.rol === 'chef'){
-                    navigate('/otra')
+                if (response.data.rol === 1){
+                    navigate('/otra'); // ruta provisional para comprobar que si hace redireccionamiento
                 }
             }
         }catch(err){
@@ -45,23 +41,6 @@ const Login = () => {
             console.log('Error de autenticación:', err);
         }
 
-        // Redirige según "rol" ingresado como username
-        //switch (username.toLowerCase()) {
-        //    case 'chef':
-        //        navigate('/inventory', { replace: true });
-        //        break;
-        //    case 'encargado':
-        //        navigate('/einventario', { replace: true });
-        //        break;
-        //    case 'gerente':
-        //        navigate('/gerentes', { replace: true });
-        //        break;
-        //    case 'adm':
-        //        navigate('/admc', { replace: true });
-        //        break;
-        //    default:
-        //        setErrorMessage('Rol no reconocido');
-        //}
     };
 
     return (
@@ -112,7 +91,7 @@ const Login = () => {
                         <button
                             className={styles.registerBtn}
                             type="button"
-                            onClick={() => navigate('/register')}
+                            onClick={() => navigate('/Registro')}
                         >
                             REGISTRAR
                         </button>
