@@ -6,9 +6,9 @@
 import conexionDB from '../config/db.js';
 
 export const obtenerUsuario = async (username)=>{
-    const consulta = 'SELECT * FROM usuarios WHERE username = ?';
+    const query = 'SELECT * FROM usuarios WHERE username = ?';
     try{
-        const[resultados] = await conexionDB.execute(consulta,[username]);
+        const[resultados] = await conexionDB.execute(query,[username]);
         console.log(resultados);
         return resultados;
     }catch(err){

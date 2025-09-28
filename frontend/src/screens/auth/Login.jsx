@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/Login.module.css';
 
 /**
  * Componente de inicio de sesión (simulado).
  * 
- * Este componente permite ingresar un usuario y "rol" para redirigirlo a
- * páginas específicas sin hacer autenticación real.
+ * Este componente permite ingresar un usuario y una comtraseña para iniciar sesion
  */
+
 const Login = () => {
     const navigate = useNavigate();
 
@@ -16,32 +17,51 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleLogin = (e) => {
-        e.preventDefault();
 
-        // Simulamos la autenticación con roles
+    //Funcion para el manejo del login
+    const handleLogin = async (e) => { // Maneja el evento onSubmit del formulario
+        e.preventDefault(); // Evita que se envie el formulario y recargue la pagina
+
+        // verifica que no queden campos vacios
         if (!username || !password) {
             setErrorMessage('Debes ingresar usuario y contraseña');
             return;
         }
 
-        // Redirige según "rol" ingresado como username
-        switch (username.toLowerCase()) {
-            case 'chef':
-                navigate('/inventory', { replace: true });
-                break;
-            case 'encargado':
-                navigate('/einventario', { replace: true });
-                break;
-            case 'gerente':
-                navigate('/gerentes', { replace: true });
-                break;
-            case 'adm':
-                navigate('/admc', { replace: true });
-                break;
-            default:
-                setErrorMessage('Rol no reconocido');
+        console.log(username, password);
+
+        //llama a la api para verificar las credenciales
+        try{
+            const response = await axios.post('/api/login',{username,password});
+            console.log(response.data.rol);
+            console.log('CORRECTO LOGIN')
+            if (response.status === 200){
+                if (response.data.rol === 'chef'){
+                    navigate('/otra')
+                }
+            }
+        }catch(err){
+            setErrorMessage('Credenciales incorrectas o error en el servidor:',err);
+            console.log('Error de autenticación:', err);
         }
+
+        // Redirige según "rol" ingresado como username
+        //switch (username.toLowerCase()) {
+        //    case 'chef':
+        //        navigate('/inventory', { replace: true });
+        //        break;
+        //    case 'encargado':
+        //        navigate('/einventario', { replace: true });
+        //        break;
+        //    case 'gerente':
+        //        navigate('/gerentes', { replace: true });
+        //        break;
+        //    case 'adm':
+        //        navigate('/admc', { replace: true });
+        //        break;
+        //    default:
+        //        setErrorMessage('Rol no reconocido');
+        //}
     };
 
     return (

@@ -1,6 +1,6 @@
 import {obtenerUsuario} from '../Models/loginModelo.js';
 
-export const login = async (req,res) => {
+export const loginController = async (req,res) => {
     const {username,contrasena} = req.body;
 
     if (!username?.trim() || !contrasena?.trim()) {
