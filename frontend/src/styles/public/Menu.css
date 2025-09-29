@@ -1,0 +1,92 @@
+.menu-background {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  background: url("../../imagenes/FondoMK.PNG") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Panel con un ancho máximo, centrado y adaptable */
+.menu-panel {
+  width: 90%;
+  max-width: 600px;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Lista scrollable */
+.menu-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+}
+
+/* Estilos de cada platillo */
+.menu-item {
+  display: flex;
+  background: rgba(255, 255, 255, 0.20);
+  border-radius: 12px;
+  margin-bottom: 15px;
+  padding: 12px;
+  color: #fff;
+  gap: 12px;
+}
+.menu-img img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.menu-info {
+  flex: 1;
+}
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.menu-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+.menu-price {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #fff;
+}
+.menu-info p {
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+  margin: 0;
+  color: #f0f0f0;
+}
+
+/* ----- Ajustes para pantallas pequeñas ----- */
+@media (max-width: 480px) {
+  .menu-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .menu-img img {
+    width: 90%;
+    height: auto;
+    max-width: 250px;
+  }
+  .menu-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
