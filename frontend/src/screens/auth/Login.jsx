@@ -30,11 +30,12 @@ const Login = () => {
 
         //llama a la api para verificar las credenciales
         try{
-            const response = await axios.post('/api/login',{username,password});
+            const response = await axios.post('/api/Login',{username,password});
             if (response.status === 200){
-                if (response.data.rol === 1){
-                    navigate('/otra'); // ruta provisional para comprobar que si hace redireccionamiento
-                }
+                //if (response.data.rol === 1){
+                //    navigate('/otra'); // ruta provisional para comprobar que si hace redireccionamiento
+                //}
+                navigate('/otra');
             }
         }catch(err){
             setErrorMessage('Credenciales incorrectas o error en el servidor:',err);
@@ -91,7 +92,7 @@ const Login = () => {
                         <button
                             className={styles.registerBtn}
                             type="button"
-                            onClick={() => navigate('/Registro')}
+                            onClick={() => navigate('/NuevoUsuario')}
                         >
                             REGISTRAR
                         </button>

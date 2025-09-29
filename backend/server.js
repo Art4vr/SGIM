@@ -14,7 +14,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-
+//aqui se define el prefijo para las rutas
 app.use('/api',router);
 
 app.listen(PORT,()=>{

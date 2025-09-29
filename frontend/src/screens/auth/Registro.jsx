@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styles from '../../styles/auth/Register.module.css';
 
 /**
@@ -8,28 +9,37 @@ import styles from '../../styles/auth/Register.module.css';
  * Permite ingresar usuario, contraseña y especialidad, y redirige al login
  * sin necesidad de un backend.
  */
-const Register = () => {
+const Registro = () => {
     const navigate = useNavigate();
 
+    const [nombre, setNombre] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [specialty, setSpecialty] = useState('');
+    const [rolId, setRol] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState('');
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
 
-        if (!username || !password || !specialty) {
+        if (!username || !password || !rolId || !nombre) {
             setMessage('Todos los campos son obligatorios.');
             return;
         }
 
-        // Simulamos el registro exitoso
-        setMessage('Usuario registrado con éxito');
+        try{
+            const response = await axios.post('/api/registroUsuario',{
+                nombre,
+                username,
+                password,
+                rolId
+            });
+            setMessage('Usuario Creado con exito');
+            setTimeout(() => navigate('/'), 1000); // Redirige al login despues de un segundo
+        }catch(err){
+            setMessage(err.response?.data?.mensaje|| 'Error al registrar');
+        }
 
-        // Redirigimos al login después de 1.5 segundos
-        setTimeout(() => navigate('/login'), 1500);
     };
 
     return (
@@ -42,6 +52,16 @@ const Register = () => {
                     <h1 className={styles.title}>Registro</h1>
 
                     <form onSubmit={handleRegister}>
+                        <div className={styles.inputContainer}>
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
+                                required
+                            />
+                        </div>
+
                         <div className={styles.inputContainer}>
                             <label>Usuario</label>
                             <input
@@ -71,16 +91,17 @@ const Register = () => {
                         </div>
 
                         <div className={styles.inputContainer}>
-                            <label>Especialidad</label>
+                            <label>Cargo</label>
                             <select
-                                value={specialty}
-                                onChange={(e) => setSpecialty(e.target.value)}
+                                value={rolId}
+                                onChange={(e) => setRol(e.target.value)}
                                 required
                             >
                                 <option value="">Selecciona una opción</option>
-                                <option value="Chef">Chef</option>
-                                <option value="Encargado de Inventario">Encargado de Inventario</option>
-                                <option value="Gerente">Gerente</option>
+                                <option value={3}>Chef</option>
+                                <option value={2}>Encargado de Inventario</option>
+                                <option value={1}>Gerente</option>
+                                <option value={4}>Mesero</option>
                             </select>
                         </div>
 
@@ -90,7 +111,7 @@ const Register = () => {
                         <button
                             className={styles.loginBtn}
                             type="button"
-                            onClick={() => navigate('/login')}
+                            onClick={() => navigate('/Login')}
                         >
                             VOLVER AL LOGIN
                         </button>
@@ -105,4 +126,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Registro;
