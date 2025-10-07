@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
-import Panel from './screens/auth/Panel';
+import PanelChef from './screens/auth/PanelChef';
 
 
 
@@ -22,7 +22,7 @@ function App() {
       setUser(res.data);
     })
     .catch(() => {
-      console.log('No autenticado');
+      console.log('No autenticado:Front App.jsx');
       setUser(null);
     });
   },[]);
@@ -33,7 +33,7 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/Panel" element={<Panel />} />
+          <Route path="/PanelChef" element={<PanelChef />} />
           <Route path="/NuevoUsuario" element={<Registro />} />
           <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
         </Routes>

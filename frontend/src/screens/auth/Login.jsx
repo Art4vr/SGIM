@@ -32,8 +32,8 @@ const Login = () => {
         try{
             const {data} = await api.post('/api/auth/Login',{username,password});
             console.log('Login OK:', data);
-            if (data.rol === 1){
-                navigate('/Panel');
+            if (data.rol === 3){
+                navigate('/PanelChef');
             }else{
                 navigate('/Home');
             }

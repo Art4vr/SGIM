@@ -36,5 +36,5 @@ app.use('/api',router);
 
 app.listen(PORT,()=>{
     console.log('<Servidor escuchando en el puerto', PORT + '>');
-    console.log('URL:', 'http://' + process.env.HOST + ':' + PORT);
+    console.log('URL:', process.env.FRONTEND_URL );
 })
