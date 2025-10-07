@@ -44,25 +44,6 @@ export default function Menu() {
     >
       <div className="menu-panel">
         <div className="menu-list">
-          {/* Mostrar Buffet si es fin de semana */}
-          {esFinDeSemana && (
-            <div className="menu-category">
-              <h2 className="category-title">Buffet Fin de Semana 🎉</h2>
-              <div className="menu-item buffet-item">
-                <div className="menu-img">
-                  <img src="/imagenes/buffet.jpg" alt="Buffet" />
-                </div>
-                <div className="menu-info">
-                  <div className="menu-header">
-                    <h3>Buffet Especial</h3>
-                    <span className="menu-price">$250</span>
-                  </div>
-                  <p>Disfruta de todos los platillos en modalidad buffet.</p>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Recorre las categorías dinámicamente */}
           {Object.keys(platillos).map((categoria) => (
             <div className="menu-category" key={categoria}>
