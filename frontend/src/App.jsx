@@ -6,7 +6,7 @@ import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import NuevoUsuario from './screens/auth/nuevoUsuario';
-import Menu from './screens/public/menu'; // <- Mayúscula
+import Menu from './screens/public/menu';
 
 function App() {
   return (

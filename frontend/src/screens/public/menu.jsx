@@ -10,7 +10,7 @@ export default function Menu() {
   useEffect(() => {
     axios
       // 🔹 Usa la IP de tu PC si vas a acceder desde el móvil
-      .get("http://localhost:5000/api/platillos")
+      .get("http://localhost:3000/api/platillos")
       .then((res) => {
         // Agrupa los platillos por categoría
         const agrupados = res.data.reduce((acc, platillo) => {
