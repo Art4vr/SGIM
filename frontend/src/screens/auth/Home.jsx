@@ -24,8 +24,8 @@ const Home = () => {
                 </div>
                 <h1 className={styles.title}>MAKIMANAGE</h1>
                 <h2 className={styles.subtitle}>BIENVENIDO</h2>
-                <button className={styles.loginBtn} onClick={() => navigate('/login')}>INICIAR</button>
-                <button className={styles.registerBtn} onClick={() => navigate('/register')}>REGISTRAR</button>
+                <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR</button>
+                <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>REGISTRAR</button>
             </div>
         </div>
     );

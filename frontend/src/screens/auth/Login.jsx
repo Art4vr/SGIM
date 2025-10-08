@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axiosConfig';
 import { Link,useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/Login.module.css';
 
@@ -30,15 +30,16 @@ const Login = () => {
 
         //llama a la api para verificar las credenciales
         try{
-            const response = await axios.post('/api/login',{username,password});
-            if (response.status === 200){
-                if (response.data.rol === 1){
-                    navigate('/otra'); // ruta provisional para comprobar que si hace redireccionamiento
-                }
+            const {data} = await api.post('/api/auth/Login',{username,password});
+            console.log('Login OK:', data);
+            if (data.rol === 3){
+                navigate('/PanelChef');
+            }else{
+                navigate('/Home');
             }
         }catch(err){
-            setErrorMessage('Credenciales incorrectas o error en el servidor:',err);
-            console.log('Error de autenticación:', err);
+            const msg = err.response?.data?.mensaje || 'Error en el servidor';
+            setErrorMessage(msg);
         }
 
     };
@@ -91,7 +92,7 @@ const Login = () => {
                         <button
                             className={styles.registerBtn}
                             type="button"
-                            onClick={() => navigate('/Registro')}
+                            onClick={() => navigate('/NuevoUsuario')}
                         >
                             REGISTRAR
                         </button>
