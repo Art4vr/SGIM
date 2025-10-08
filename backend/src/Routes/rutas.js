@@ -1,9 +1,32 @@
+//Configuracion y definicion de rutas para la aplicacion
+// Cada ruta esta asociada a un controlador que maneja la logica de negocio
+// Las rutas definen los endpoints que los clientes pueden utilizar para interactuar con la API
+
+//importacion de la libreria express que sirve para crear las rutas
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 
-import {loginController} from '../Controllers/loginController.js';
+//importacion de las funciones de los controladores
+import {registerController} from '../Controllers/usuarioControlador.js';
+import { loginController, logoutController, meController } from '../Controllers/authController.js';
+import { authMiddleware } from '../Middleware/authMiddleware.js';
 
+
+//crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
-router.post('/login', loginController);
+// limitar intentos de login
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // Ventana de 15 minutos
+    max: 10, // Máximo de 10 intentos por IP
+    message: { mensaje: 'Demasiados intentos de login, intenta más tarde' }
+});
+
+//----------------------- RUTAS DE USUARIO---------------------------
+router.post('/auth/login', authLimiter, loginController);
+router.post('/auth/registroUsuario',registerController);
+router.post('/auth/logout', logoutController);
+
+router.get('/auth/me',authMiddleware,meController)
 
 export default router;
