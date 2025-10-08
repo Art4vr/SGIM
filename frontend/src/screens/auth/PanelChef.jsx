@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/platillos/Platillo.module.css';
 
 
-const Panel = () => {
+const PanelChef = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -47,4 +47,4 @@ const Panel = () => {
     );
 };
 
-export default Panel;
+export default PanelChef;
