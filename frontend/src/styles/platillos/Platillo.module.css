@@ -5,8 +5,11 @@
     box-sizing: border-box;
 }
 
+body{
+    background: linear-gradient( to right,  #664152,  #8c747c);
+}
+
 .container {
-    background: radial-gradient(ellipse, #ede2ed, #d9d8d9);
     display: block;
     height: 100vh; /* Ocupa toda la altura de la pantalla */
     width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
@@ -38,7 +41,7 @@
     object-fit: contain; /* Asegura que la imagen no se deforme */
 }
 .menuBoton img:hover{
-    transform: scale(1.05);
+    transform: scale(1.10);
 }
 
 .logo {
@@ -57,14 +60,14 @@
 }
 
 .tarjetas {
-    color: #be088e;
+    color: #dc057b;
     display: grid;
     align-items: center;
     justify-content: center;
-    background-color: hsl(320, 18%, 80%);
+    background-color: #d5c3cfbd;
     border-radius: 10px;
-    border: 2px solid rgba(159, 138, 154, 0.775);
-    box-shadow: 0 0 15px rgba(95, 24, 69, 0.336);
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
     max-height: 80vh;
     margin: 0.5rem;
     transition: all 0.3s ease;
@@ -72,18 +75,29 @@
 
 .tarjetas:hover {
     transform: scale(1.05);
-    background-color: hsl(321, 89%, 86%);
-    border-color: rgba(153, 22, 122, 0.775);
-    box-shadow: 0 0 15px rgba(255, 0, 162, 0.336);
+    background-color: #e3cadbee ;
+    border-color: #99167ac6;
+    box-shadow: 0 5px 9px #99547b;
     color: #7f727b;
     font-size: larger;
+}
+
+.tarjetas:hover img{
+    transform: scale(1.10);
+    background: radial-gradient( circle at center,  #ac1a8a66 8%,  #fcfcfc00 50%);
 }
 
 .tarjetas:active {
     transform: scale(0.95); /* un pequeño "aplastamiento" al hacer clic */
     box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
-    background-color: hsl(321, 60%, 81%);
+    background-color:  #c17ba1 ;
     transition: transform 0.1s ease;
+    color: #ffcff2;
+}
+
+.tarjetas:active img{
+    transform: scale(1.08);
+    background: radial-gradient( circle at center,  #f57cf585 9%,  #fcfcfc00 50%);
 }
 
 

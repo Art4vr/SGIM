@@ -18,30 +18,30 @@ const Panel = () => {
                 <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
             <div className={styles.contenido}>
-                <div className={styles.tarjetas}>
+                <button className={styles.tarjetas}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/ordenes.png" alt="ordenes" />
                     </div>
                     <div className={styles.nombreMenu}>
                         <h3>Ordenes</h3>
                     </div>
-                </div>
-                <div className={styles.tarjetas}>
+                </button>
+                <button className={styles.tarjetas}>
                     <div >
                         <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="platillos" />
                     </div>
                     <div className={styles.nombreMenu}>
                         <h3>Platillos</h3>
                     </div>
-                </div>
-                <div className={styles.tarjetas}>
+                </button>
+                <button className={styles.tarjetas}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="imprevistos" />
                     </div>
                     <div className={styles.nombreMenu}>
                         <h3>Imprevistos</h3>
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     );
