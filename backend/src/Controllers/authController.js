@@ -84,7 +84,7 @@ export const logoutController = (req,res) => {
 
 // Función que devuelve los datos del usuario actualmente autenticado.
 export const meController = (req, res) => {
-    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado' });
+    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: Back authController' });
     res.json({ 
         id: req.user.id, 
         username: req.user.username, 
