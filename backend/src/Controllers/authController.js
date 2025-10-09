@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 //importar modelo para login, consulta los datos del usuario
-import { obtenerUsuario } from '../Models/usuarioModelo.js';
+import { obtenerUsuario, crearUsuario } from '../Models/usuarioModelo.js';
 
 // Función auxiliar para firmar (crear) un token JWT con un payload personalizado y duración
 const signToken = (payload) => // payload: objeto con datos del usuario (id, username, rol)
@@ -86,7 +86,9 @@ export const logoutController = (req,res) => {
 export const meController = (req, res) => {
     if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: Back authController' });
     res.json({ 
+        message: req.user,
         id: req.user.id, 
         username: req.user.username, 
-        rol: req.user.rol });
+        rol: req.user.role
+    });
 };

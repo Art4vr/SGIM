@@ -43,6 +43,9 @@ const PanelChef = () => {
                     </div>
                 </button>
             </div>
+            <footer>
+                <button onClick={handleLogout}>Log Out</button>
+            </footer>
         </div>
     );
 };

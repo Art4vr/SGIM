@@ -10,6 +10,7 @@ import rateLimit from 'express-rate-limit';
 import {registerController} from '../Controllers/usuarioControlador.js';
 import { loginController, logoutController, meController } from '../Controllers/authController.js';
 import { authMiddleware } from '../Middleware/authMiddleware.js';
+import imprevistoRouter from './imprevistosRutas.js';
 
 
 //crear el router para definir las rutas de la app y sus controladores
@@ -28,5 +29,8 @@ router.post('/auth/registroUsuario',registerController);
 router.post('/auth/logout', logoutController);
 
 router.get('/auth/me',authMiddleware,meController)
+
+//----------------------- RUTAS DE IMPREVISTO---------------------------
+router.use('/imprevistos', imprevistoRouter);
 
 export default router;
