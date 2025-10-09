@@ -11,7 +11,11 @@ import {registerController} from '../Controllers/usuarioControlador.js';
 import { loginController, logoutController, meController } from '../Controllers/authController.js';
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 
-
+//importancion de las funciones de los controladores de productos (con archivo)
+import productoRutas from './productoRutas.js';
+//importancion de controladores de categoria y medida
+import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
+import { listaMedidasController } from '../Controllers/medidaControlador.js';
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
@@ -28,5 +32,16 @@ router.post('/auth/registroUsuario',registerController);
 router.post('/auth/logout', logoutController);
 
 router.get('/auth/me',authMiddleware,meController)
+
+//----------------------- RUTAS DE PRODUCTO---------------------------
+//se usa un archivo donde cada ruta de definen en ./productoRutas.js
+router.use('/productos', productoRutas);
+
+//----------------------- RUTAS DE CATEGORIAS---------------------------
+router.get('/categorias', listaCategoriasController);
+
+//----------------------- RUTAS DE UNIDADES---------------------------
+router.get('/unidades', listaMedidasController);
+
 
 export default router;

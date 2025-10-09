@@ -9,6 +9,8 @@ import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import Panel from './screens/auth/Panel';
 
+//Importacion de mi vista de productos (borrar)
+import VistaProductos from './screens/productos/vistaProducto';
 
 
 function App() {
@@ -35,7 +37,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Panel" element={<Panel />} />
           <Route path="/NuevoUsuario" element={<Registro />} />
+
+          <Route path="/Productos" element={<VistaProductos />} />
           <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
+          
         </Routes>
       </BrowserRouter>
   );
