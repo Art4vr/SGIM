@@ -10,7 +10,7 @@ import conexionDB from '../config/db.js';
 export const agregarProducto = async ({ nombre, idCategoria, idUnidadMedida })=>{ 
     const query = 'INSERT INTO Producto (nombre,Categoria_idCategoria, UnidadMedida_idUnidadMedida) VALUES (?, ?, ?)';
     try{
-        const[resultados] = await conexionDB.execute(query,[nombre, idCategoria, idUnidadMedida]);
+        const[resultado] = await conexionDB.execute(query,[nombre, idCategoria, idUnidadMedida]);
         return resultado.insertId; 
     }catch(err){
         console.error('Error con la base de datos (agregarProducto): ', err); //manejo de errores
@@ -30,3 +30,43 @@ export const eliminarProducto = async (idProducto) => {
         throw err;
     }
 };
+
+//--------------------- ACTUALIZAVION PRODUCTO-----------------------------------------
+// Funcion para actualizar un producto
+export const actualizarProducto = async ({ idProducto, nombre, idCategoria, idUnidadMedida, estado }) => {
+    let query = 'UPDATE Producto SET ';
+    const params = [];
+    const cambios = [];
+
+    if (nombre) {
+        cambios.push('nombre = ?');
+        params.push(nombre);
+    }
+    if (idCategoria) {
+        cambios.push('Categoria_idCategoria = ?');
+        params.push(idCategoria);
+    }
+    if (idUnidadMedida) {
+        cambios.push('UnidadMedida_idUnidadMedida = ?');
+        params.push(idUnidadMedida);
+    }
+    if (estado) {
+        cambios.push('estado = ?');
+        params.push(estado);
+    }
+
+    // Si no hay campos para actualizar
+    if (cambios.length === 0) return 0;
+
+    query += cambios.join(', ') + ' WHERE idProducto = ?';
+    params.push(idProducto);
+
+    try {
+        const [resultado] = await conexionDB.execute(query, params);
+        return resultado.affectedRows; 
+    } catch (err) {
+        console.error('Error al modificar producto:', err);
+        throw err;
+    }
+};
+

@@ -8,10 +8,10 @@
 
 //importacion de modelos a utilizar
 //más
-import { agregarProducto, eliminarProducto } from '../Models/productoModelo.js';
+import { agregarProducto, eliminarProducto, actualizarProducto } from '../Models/productoModelo.js';
 import conexionDB from '../config/db.js';
 
-export const altaProductoController = async (req, res) => {
+export const agregarProductoController = async (req, res) => {
     try {
         const { nombre, idCategoria, idUnidadMedida } = req.body;
 
@@ -26,7 +26,7 @@ export const altaProductoController = async (req, res) => {
         }
 
         // Validación de nombre único
-        const [repetido] = await conexionDB.execute('SELECT idProducto FROM Producto WHERE nombre = ?',[nombre]);
+        const [repetido] = await conexionDB.execute('SELECT idProducto FROM producto WHERE nombre = ?',[nombre]);
         if (repetido.length > 0) {
             return res.status(400).json({ mensaje: 'Ya existe un producto con ese nombre' });
         }
@@ -38,7 +38,7 @@ export const altaProductoController = async (req, res) => {
         }
 
         // Validación de existencia de unidad de medida
-        const [uni] = await conexionDB.execute('SELECT idUnidadMedida FROM UnidadMedida WHERE idUnidadMedida = ?',[idUnidadMedida]);
+        const [uni] = await conexionDB.execute('SELECT idUnidadMedida FROM unidadmedida WHERE idUnidadMedida = ?',[idUnidadMedida]);
         if (uni.length === 0) {
             return res.status(400).json({ mensaje: 'Unidad de medida no válida' });
         }
@@ -62,7 +62,7 @@ export const altaProductoController = async (req, res) => {
 //--------------------- ELIMINAR PRODUCTO -----------------------------------------
 // Controlador para dar de baja un producto.
 
-export const bajaProductoController = async (req, res) => {
+export const eliminarProductoController = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -78,5 +78,73 @@ export const bajaProductoController = async (req, res) => {
         res.status(500).json({
             mensaje: err.message || 'Error en el servidor'
         });
+    }
+};
+
+
+//--------------------- MODIFICAR PRODUCTO -----------------------------------------
+// Controlador para modificar un producto. [no todos los campos son obliatorios]
+export const modificarProductoController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, idCategoria, idUnidadMedida, estado } = req.body;
+
+        // Validación obligatoria: id
+        if (!id) {
+            return res.status(400).json({ mensaje: 'El id del producto es obligatorio' });
+        }
+
+        // Validación de nombre sin números (si se envía)
+        if (nombre && /\d/.test(nombre)) {
+            return res.status(400).json({ mensaje: 'No se permiten números en el nombre' });
+        }
+
+        if (nombre) {
+            const [repetido] = await conexionDB.execute(
+                'SELECT idProducto FROM Producto WHERE nombre = ? AND idProducto != ?',
+                [nombre, id]
+            );
+            if (repetido.length > 0) {
+                return res.status(400).json({ mensaje: 'Ya existe otro producto con ese nombre' });
+            }
+        }
+
+        // Validación de estado (si se envía)
+        if (estado && !['vigente', 'descontinuado', 'suspendido'].includes(estado)) {
+            return res.status(400).json({ mensaje: 'Estado no válido' });
+        }
+
+        // Llamar al modelo para actualizar solo los campos proporcionados
+        const filasAfectadas = await actualizarProducto({ idProducto: id, nombre, idCategoria, idUnidadMedida, estado });
+
+        if (filasAfectadas === 0) {
+            return res.status(404).json({ mensaje: 'No se encontró el producto o no se realizaron cambios' });
+        }
+
+        res.json({ mensaje: 'Producto actualizado correctamente', filasAfectadas });
+
+    } catch (err) {
+        console.error('Error en modificarProductoController:', err);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
+
+//--------------------- OBTENERS TODOS LOS PRODUCTOS -----------------------------------------
+export const obtenerProductosController = async (req, res) => {
+    
+    try {
+        const [productos] = await conexionDB.execute(`
+            SELECT p.idProducto, p.nombre, p.estado,
+                c.nombre AS categoria,
+                u.medida AS unidad
+            FROM Producto p
+            JOIN Categoria c ON p.Categoria_idCategoria = c.idCategoria
+            JOIN UnidadMedida u ON p.UnidadMedida_idUnidadMedida = u.idUnidadMedida
+        `);
+        res.json(productos);
+    } catch (err) {
+        console.error('Error SQL obtenerProductosController:', err);
+        res.status(500).json({ mensaje: 'Error al obtener productos' });
     }
 };
