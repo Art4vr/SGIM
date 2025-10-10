@@ -18,20 +18,20 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                 const [catRes, medRes] = await Promise.all([getCategorias(), getUnidades()]);
                 setCategorias(catRes.data);
                 setMedidas(medRes.data);
+
+                if (producto) {
+                    setNombre(producto.nombre || '');
+                    setIdCategoria(producto.idCategoria?.toString() || '');
+                    setIdUnidadMedida(producto.idUnidadMedida?.toString() || '');
+                    setEstado(producto.estado || 'vigente');
+                } else {
+                    limpiarCampos();
+                }
             } catch {
                 setMensaje('Error al cargar datos');
             }
         };
         cargarDatos();
-
-        if (producto) {
-            setNombre(producto.nombre);
-            setIdCategoria(producto.idCategoria);
-            setIdUnidadMedida(producto.idUnidadMedida);
-            setEstado(producto.estado || 'vigente');
-        } else {
-            limpiarCampos();
-        }
     }, [producto]);
 
     const limpiarCampos = () => {
@@ -72,30 +72,49 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
             <div className={styles.modalCard}>
                 <h2 className={styles.modalTitle}>{producto ? 'Editar Producto' : 'Agregar Producto'}</h2>
                 <form onSubmit={handleSubmit}>
+                    {/* Nombre */}
                     <div className={styles.inputContainer}>
                         <label>Nombre</label>
                         <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} />
                     </div>
+
+                    {/* Categoría */}
                     <div className={styles.inputContainer}>
                         <label>Categoría</label>
                         <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
-                            <option value="">Selecciona</option>
-                            {categorias.map(c => (
-                                <option key={c.idCategoria} value={c.idCategoria.toString()}>{c.nombre}</option>
-                            ))}
+                            {/* Opción actual del producto */}
+                            {producto && <option value={producto.idCategoria}>{producto.categoria}</option>}
+                            {/* Otras opciones disponibles */}
+                            {categorias
+                                .filter(c => c.idCategoria !== producto?.idCategoria) // evitar repetir
+                                .map(c => (
+                                    <option key={c.idCategoria} value={c.idCategoria.toString()}>
+                                        {c.nombre}
+                                    </option>
+                                ))
+                            }
                         </select>
                     </div>
+
+                    {/* Unidad de Medida */}
                     <div className={styles.inputContainer}>
                         <label>Unidad de Medida</label>
                         <select value={idUnidadMedida} onChange={e => setIdUnidadMedida(e.target.value)}>
-                            <option value={producto.idUnidadMedida}> </option>
-                            {medidas.map(m => (
-                                <option key={m.idUnidadMedida} value={m.idUnidadMedida.toString()}>
-                                    {m.medida} ({m.abreviatura})
-                                </option>
-                            ))}
+                            {/* Opción actual del producto */}
+                            {producto && <option value={producto.idUnidadMedida}>{producto.unidad}</option>}
+                            {/* Otras opciones disponibles */}
+                            {medidas
+                                .filter(m => m.idUnidadMedida !== producto?.idUnidadMedida) // evitar repetir
+                                .map(m => (
+                                    <option key={m.idUnidadMedida} value={m.idUnidadMedida.toString()}>
+                                        {m.medida} ({m.abreviatura})
+                                    </option>
+                                ))
+                            }
                         </select>
                     </div>
+
+                    {/* Estado (solo para edición) */}
                     {producto && (
                         <div className={styles.inputContainer}>
                             <label>Estado</label>
@@ -106,10 +125,14 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                             </select>
                         </div>
                     )}
+
+                    {/* Botones */}
                     <div className={styles.modalButtons}>
                         <button type="submit" className={styles.btnGuardar}>Guardar</button>
                         <button type="button" className={styles.btnCancelar} onClick={() => { onClose(); limpiarCampos(); }}>Cancelar</button>
                     </div>
+
+                    {/* Mensaje */}
                     {mensaje && (
                         <p className={`${styles.message} ${guardadoExitoso ? styles.exito : styles.error}`}>{mensaje}</p>
                     )}
