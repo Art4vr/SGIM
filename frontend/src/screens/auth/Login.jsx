@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../api/axiosConfig';
 import { Link,useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/Login.module.css';
@@ -16,7 +16,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
 
     //Funcion para el manejo del login
     const handleLogin = async (e) => { // Maneja el evento onSubmit del formulario
