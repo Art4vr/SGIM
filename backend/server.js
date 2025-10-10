@@ -8,6 +8,7 @@ import 'dotenv/config';
 
 import conexionBD from './src/config/db.js'; //conexión a la base de datos
 import router from './src/Routes/rutas.js';
+import menuRutas from './src/Routes/menuRutas.js';
 
 
 //Crear una instancia de la aplicacion express
@@ -33,8 +34,9 @@ const PORT = process.env.PORT || 5000;
 
 //aqui se define el prefijo para las rutas
 app.use('/api',router);
+app.use('/api/platillos',menuRutas);
 
 app.listen(PORT,()=>{
     console.log('<Servidor escuchando en el puerto', PORT + '>');
-    console.log('URL:', 'http://' + process.env.HOST + ':' + PORT);
+    console.log('URL:', process.env.FRONTEND_URL );
 })

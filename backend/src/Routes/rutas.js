@@ -10,6 +10,7 @@ import rateLimit from 'express-rate-limit';
 import {registerController} from '../Controllers/usuarioControlador.js';
 import { loginController, logoutController, meController } from '../Controllers/authController.js';
 import { authMiddleware } from '../Middleware/authMiddleware.js';
+import imprevistoRouter from './imprevistosRutas.js';
 
 //importancion de las funciones de los controladores de productos (con archivo)
 import productoRutas from './productoRutas.js';
@@ -33,6 +34,7 @@ router.post('/auth/logout', logoutController);
 
 router.get('/auth/me',authMiddleware,meController)
 
+<<<<<<< HEAD
 //----------------------- RUTAS DE PRODUCTO---------------------------
 //se usa un archivo donde cada ruta de definen en ./productoRutas.js
 router.use('/productos', productoRutas);
@@ -43,5 +45,9 @@ router.get('/categorias', listaCategoriasController);
 //----------------------- RUTAS DE UNIDADES---------------------------
 router.get('/unidades', listaMedidasController);
 
+=======
+//----------------------- RUTAS DE IMPREVISTO---------------------------
+router.use('/imprevistos', imprevistoRouter);
+>>>>>>> 193f3043752ece9412a383a189c8f653e7771a6b
 
 export default router;
