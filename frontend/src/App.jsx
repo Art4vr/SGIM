@@ -50,12 +50,11 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-<<<<<<< HEAD
-          <Route path="/Panel" element={<Panel />} />
+          <Route path="/PanelChef" element={<PanelChef />} />
           <Route path="/NuevoUsuario" element={<Registro />} />
 
           <Route path="/Productos" element={<VistaProductos />} />
-=======
+
           <Route 
             path="/RegistroImprevisto" 
             element={
@@ -81,9 +80,7 @@ function App() {
             }
           />
           <Route path="/Menu" element={<Menu />} />
->>>>>>> 193f3043752ece9412a383a189c8f653e7771a6b
-          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
-          
+          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />    
         </Routes>
       </BrowserRouter>
   );

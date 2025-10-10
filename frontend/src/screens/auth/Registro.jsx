@@ -29,10 +29,6 @@ const Registro = () => {
 
         try{
             const response = await axios.post('/api/auth/registroUsuario',{
-<<<<<<< HEAD
-                
-=======
->>>>>>> 193f3043752ece9412a383a189c8f653e7771a6b
                 nombre,
                 username,
                 password,
