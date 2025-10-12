@@ -1,8 +1,11 @@
 // pantalla para agregar un nuevo proveedor mediante un registro
 import React, { useState, useEffect } from 'react';
+import api from '../../api/axiosConfig';
 import styles from '../../styles/productos/producto.module.css';
 
-import { modificarProveedor,crearProveedor } from '../../api/proveedorApi';
+// Funciones API
+export const modificarProveedor = (id, data) => api.put(`/api/proveedores/${id}`, data);
+export const crearProveedor = (data) => api.post('/api/proveedores', data);
 
 const NuevoProveedor = ({ proveedor, onClose, onRefresh }) => {
     const [nombre, setNombre] = useState('');

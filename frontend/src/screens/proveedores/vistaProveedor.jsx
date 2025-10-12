@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../api/axiosConfig';
 import NuevoProveedor from './agregarProveedor';
 import styles from '../../styles/productos/producto.module.css';
 
 // Funciones API
-import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
+export const getProveedores = () => api.get('/api/proveedores');
+export const eliminarProveedor = (id) => api.delete(`/api/proveedores/${id}`);
 
 const VistaProveedores = () => {
     const [proveedores, setProveedores] = useState([]);
