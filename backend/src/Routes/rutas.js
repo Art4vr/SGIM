@@ -17,6 +17,10 @@ import productoRutas from './productoRutas.js';
 //importancion de controladores de categoria y medida
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
 import { listaMedidasController } from '../Controllers/medidaControlador.js';
+
+//importancion de las funciones de los controladores de proveedores 
+import proveedorRutas from './proveedorRutas.js';
+
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
@@ -46,5 +50,8 @@ router.get('/unidades', listaMedidasController);
 
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);
+
+//----------------------- RUTAS DE PROVEEDORES---------------------------
+router.use('/proveedores', proveedorRutas);
 
 export default router;

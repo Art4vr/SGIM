@@ -13,9 +13,11 @@ import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
-//Importacion de mi vista de productos (borrar)
+//Importacion de productos 
 import VistaProductos from './screens/productos/vistaProducto';
 
+//Importacion de proveedores 
+import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 function App() {
   
@@ -54,6 +56,8 @@ function App() {
           <Route path="/NuevoUsuario" element={<Registro />} />
 
           <Route path="/Productos" element={<VistaProductos />} />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route 
             path="/RegistroImprevisto" 
