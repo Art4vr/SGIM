@@ -34,7 +34,7 @@ const Login = () => {
             if (data.rol === 3){
                 navigate('/PanelChef');
             }else{
-                navigate('/Home');
+                navigate('/NuevoUsuario');
             }
         }catch(err){
             const msg = err.response?.data?.mensaje || 'Error en el servidor';
