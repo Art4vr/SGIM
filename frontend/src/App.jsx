@@ -26,10 +26,10 @@ function App() {
     api.get('/api/auth/me')
     .then(res => {
       console.log('Usuario autenticado:',res.data);
-      setUser(res.data);//guarda los datos del usuario autenticado
+      setUser(res.data);//guarda los datos del usuario autenticado (id, username y rol)
     })
     .catch(() => {
-      console.log('No autenticado:Front App.jsx');
+      console.log('No autenticado: desde Front App.jsx');
       setUser(null);
     })
     .finally(() => {
@@ -46,7 +46,7 @@ function App() {
     
       <BrowserRouter>
         <Routes>
-          <Route path="/Login" element={<Login />} />
+          <Route path="/Login" element={<Login setUser={setUser} />} />
           <Route path="/" element={<Home />} />
           <Route 
             path="/RegistroImprevisto" 

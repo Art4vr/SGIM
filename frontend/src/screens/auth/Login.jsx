@@ -9,7 +9,7 @@ import styles from '../../styles/auth/Login.module.css';
  * Este componente permite ingresar un usuario y una contraseña para iniciar sesión
  */
 
-const Login = () => {
+const Login = ({setUser}) => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState('');
@@ -31,12 +31,36 @@ const Login = () => {
         try{
             const {data} = await api.post('/api/auth/Login',{username,password});
             console.log('Login OK:', data);
-            if (data.rol === 3){
-                navigate('/PanelChef');
+            //localStorage.setItem('user', JSON.stringify(data.user));
+
+            if (data && data.user){
+                setUser(data.user);
+                setErrorMessage('');
+
+                switch (data.user.rol){
+                    case 1:
+                        navigate('/NuevoUsuario');
+                        break;
+                    case 2:
+                        navigate('/PanelEncargado');
+                        break;
+                    case 3:
+                        navigate('/PanelChef');
+                        break;
+                    case 4:
+                        navigate('/PanelMesero');
+                        break;
+                    default:
+                        navigate('/');
+                        break;
+                }
             }else{
-                navigate('/NuevoUsuario');
+                console.error('Formato inesperado: ', data);
+                setErrorMessage('Respuesya inesperada del servidor');
             }
+
         }catch(err){
+            console.error('Error Login: ', err.response || err);
             const msg = err.response?.data?.mensaje || 'Error en el servidor';
             setErrorMessage(msg);
         }

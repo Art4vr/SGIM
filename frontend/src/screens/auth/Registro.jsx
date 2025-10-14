@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axiosConfig';
 import styles from '../../styles/auth/Register.module.css';
 
 /**
@@ -28,7 +28,7 @@ const Registro = () => {
         }
 
         try{
-            const response = await axios.post('/api/auth/registroUsuario',{
+            const response = await api.post('/api/auth/registroUsuario',{
                 nombre,
                 username,
                 password,

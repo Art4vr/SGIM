@@ -50,10 +50,13 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
             maxAge: 1000 * 60 * 60 //la duración de la cookie (en milisegundos) - 1 hora
         });
 
-        res.json({ //si todo es correcto devuelve el usuario
+        return res.json({ //si todo es correcto devuelve el usuario
             mensaje:'Inicio de sesión correcto',
-            username: usuario.username,
-            rol: usuario.Rol_idRol
+            user: {
+                id: usuario.idUsuario,
+                username: usuario.username,
+                rol: usuario.Rol_idRol,
+            }
         });
     } catch(err){//manejo de errores
         console.error('Error al iniciar sesion:',err);
@@ -84,9 +87,8 @@ export const logoutController = (req,res) => {
 
 // Función que devuelve los datos del usuario actualmente autenticado.
 export const meController = (req, res) => {
-    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: Back authController' });
-    res.json({ 
-        message: req.user,
+    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: desde Back authController' });
+    res.json({
         id: req.user.id, 
         username: req.user.username, 
         rol: req.user.role
