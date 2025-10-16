@@ -45,8 +45,8 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
         // Establece el token en una cookie segura y HTTP-only (no accesible desde JavaScript del navegador)
         res.cookie('token',token,{
             httpOnly: true, //No es accesible desde JavaScript en el navegador
-            secure: process.env.NODE_ENV === 'production', //solo si estás en producción y usas HTTPS.
-            sameSite: 'strict',//Evita que se envíe la cookie en solicitudes de otros sitios (previene CSRF).
+            secure: process.env.NODE_ENV === 'production' ? true : false, //solo si estás en producción y usas HTTPS.
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',//Evita que se envíe la cookie en solicitudes de otros sitios (previene CSRF).  // 'none' para producción con HTTPS, 'lax' localmente
             maxAge: 1000 * 60 * 60 //la duración de la cookie (en milisegundos) - 1 hora
         });
 

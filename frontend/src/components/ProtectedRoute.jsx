@@ -1,5 +1,6 @@
 // Importa el componente Navigate para redireccionar a otra ruta desde el código
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 // Recibe tres props:
@@ -7,7 +8,16 @@ import { Navigate } from "react-router-dom";
 // - allowedRoles: array de roles permitidos para acceder a esta ruta (opcional)
 // - children: el contenido (componente) que se debe mostrar si el acceso es válido
 const ProtectedRoute = ({user,allowedRoles,children}) => {
-    console.log('Datos ProtectedRoute',allowedRoles, user)
+    //console.log('Datos ProtectedRoute ALOWED ROLES:',allowedRoles);
+    //console.log('Datos ProtectedRoute USER:',user);
+    //console.log('ROLES protected route: ', allowedRoles.includes(user.rol));
+
+    const { loading } = useAuth();
+
+    // 🔹 Mientras se verifica la sesión, muestra pantalla de carga
+    if (loading) {
+        return <div style={{ textAlign: 'center', marginTop: '50px' }}>Verificando sesión...</div>;
+    }
     
     if(!user){// Si no hay usuario autenticado, lo redirige al login
         return <Navigate to="/Login" replace />;

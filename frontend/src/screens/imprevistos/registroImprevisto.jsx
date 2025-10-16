@@ -7,12 +7,16 @@ import styles from '../../styles/auth/Register.module.css'; // Asegúrate que es
 const RegistroImprevisto = () => {
     const navigate = useNavigate();
 
-    const {user} = useAuth();
+    const {user,loading} = useAuth();
     const [idInventarioProducto, setIdInventarioProducto] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [cantidad, setCantidad] = useState('');
     const [idUnidadMedida, setIdUnidadMedida] = useState('');
     const [message, setMessage] = useState('');
+
+    if(loading){
+        return <div>Cargando usuario...</div>; // Evita renderizar hasta que user esté disponible
+    }
 
     const handleRegister = async (e) => {
         e.preventDefault();

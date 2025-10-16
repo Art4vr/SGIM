@@ -1,8 +1,7 @@
 // src/App.jsx
 import React, {useEffect, useState} from 'react'
-import api from './api/axiosConfig';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Importa tus componentes de auth
@@ -17,36 +16,17 @@ import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 function App() {
   
-  const [user,setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // NUEVO
+  const {user,loading} = useAuth();
 
   console.log('USER APP.JSX', user);
-
-  useEffect(() =>{
-    api.get('/api/auth/me')
-    .then(res => {
-      console.log('Usuario autenticado:',res.data);
-      setUser(res.data);//guarda los datos del usuario autenticado (id, username y rol)
-    })
-    .catch(() => {
-      console.log('No autenticado: desde Front App.jsx');
-      setUser(null);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
-  },[]);
-
-    // 🔄 Mientras carga, muestra algo o simplemente nada
-  if (loading) {
-    return <div>Cargando usuario...</div>;
-  }
+  if (loading) return <div>Cargando sesión...</div>;
+  
 
   return (
     
       <BrowserRouter>
         <Routes>
-          <Route path="/Login" element={<Login setUser={setUser} />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route 
             path="/RegistroImprevisto" 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../api/axiosConfig';
 import { Link,useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Login.module.css';
 
 /**
@@ -11,6 +11,7 @@ import styles from '../../styles/auth/Login.module.css';
 
 const Login = ({setUser}) => {
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,15 +30,15 @@ const Login = ({setUser}) => {
 
         //llama a la api para verificar las credenciales
         try{
-            const {data} = await api.post('/api/auth/Login',{username,password});
-            console.log('Login OK:', data);
+            const data = await login(username,password);
+            console.log('Login OK:', data.user);
             //localStorage.setItem('user', JSON.stringify(data.user));
 
-            if (data && data.user){
-                setUser(data.user);
+            if (data){
+                
                 setErrorMessage('');
-
-                switch (data.user.rol){
+                console.log('SWITCH:', data.rol);
+                switch (data.rol){
                     case 1:
                         navigate('/NuevoUsuario');
                         break;
@@ -56,7 +57,7 @@ const Login = ({setUser}) => {
                 }
             }else{
                 console.error('Formato inesperado: ', data);
-                setErrorMessage('Respuesya inesperada del servidor');
+                setErrorMessage('Respuesta inesperada del servidor');
             }
 
         }catch(err){
