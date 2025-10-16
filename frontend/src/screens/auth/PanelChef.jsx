@@ -34,7 +34,7 @@ const PanelChef = () => {
                         <h3>Platillos</h3>
                     </div>
                 </button>
-                <button className={styles.tarjetas}>
+                <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevisto')}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="imprevistos" />
                     </div>

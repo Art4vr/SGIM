@@ -25,6 +25,7 @@
 
 /* Estilos generales para los inputs y selectores */
 .inputContainer {
+    margin-top: 15px;
     margin-bottom: 15px; /* Espaciado inferior entre los inputs */
     text-align: left;
 }
