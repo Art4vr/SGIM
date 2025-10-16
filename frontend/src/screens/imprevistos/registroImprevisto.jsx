@@ -32,7 +32,7 @@ const RegistroImprevisto = () => {
             });
 
             setMessage('Imprevisto registrado con éxito');
-            setTimeout(() => navigate('/'), 1500); // Redirige al inicio
+            setTimeout(() => navigate('/PanelChef'), 1500); // Redirige al inicio
         } catch (err) {
             setMessage(err.response?.data?.mensaje || 'Error al registrar imprevisto');
         }
