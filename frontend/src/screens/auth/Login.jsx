@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../api/axiosConfig';
 import { Link,useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Login.module.css';
 
 /**
@@ -9,8 +9,9 @@ import styles from '../../styles/auth/Login.module.css';
  * Este componente permite ingresar un usuario y una contraseña para iniciar sesión
  */
 
-const Login = () => {
+const Login = ({setUser}) => {
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,14 +30,38 @@ const Login = () => {
 
         //llama a la api para verificar las credenciales
         try{
-            const {data} = await api.post('/api/auth/Login',{username,password});
-            console.log('Login OK:', data);
-            if (data.rol === 3){
-                navigate('/PanelChef');
+            const data = await login(username,password);
+            console.log('Login OK:', data.user);
+            //localStorage.setItem('user', JSON.stringify(data.user));
+
+            if (data){
+                
+                setErrorMessage('');
+                console.log('SWITCH:', data.rol);
+                switch (data.rol){
+                    case 1:
+                        navigate('/NuevoUsuario');
+                        break;
+                    case 2:
+                        navigate('/PanelEncargado');
+                        break;
+                    case 3:
+                        navigate('/PanelChef');
+                        break;
+                    case 4:
+                        navigate('/PanelMesero');
+                        break;
+                    default:
+                        navigate('/');
+                        break;
+                }
             }else{
-                navigate('/Home');
+                console.error('Formato inesperado: ', data);
+                setErrorMessage('Respuesta inesperada del servidor');
             }
+
         }catch(err){
+            console.error('Error Login: ', err.response || err);
             const msg = err.response?.data?.mensaje || 'Error en el servidor';
             setErrorMessage(msg);
         }
