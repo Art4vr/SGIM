@@ -12,8 +12,11 @@ import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
-//Importacion de mi vista de productos (borrar)
+//Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
+
+//Importacion de proveedores 
+import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 function App() {
   
@@ -22,7 +25,7 @@ function App() {
   console.log('USER APP.JSX', user);
   if (loading) return <div>Cargando sesión...</div>;
   
-//revisar ruta de productos (permisos o roles correspondientes)
+//revisar ruta de productos y proveedores (permisos o roles correspondientes)
   return (
     
       <BrowserRouter>
@@ -31,6 +34,8 @@ function App() {
           <Route path="/" element={<Home />} />
           
           <Route path="/Productos" element={<VistaProductos />} />
+          <Route path="/Proveedores" element={<VistaProveedores />} />
+
           <Route 
             path="/RegistroImprevisto" 
             element={
