@@ -12,6 +12,14 @@ import { loginController, logoutController, meController } from '../Controllers/
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 import imprevistoRouter from './imprevistosRutas.js';
 
+//importancion de las funciones de los controladores de productos (con archivo)
+import productoRutas from './productoRutas.js';
+//importancion de controladores de categoria y medida
+import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
+import { listaMedidasController } from '../Controllers/medidaControlador.js';
+
+//importancion de las funciones de los controladores de proveedores 
+import proveedorRutas from './proveedorRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
@@ -28,9 +36,22 @@ router.post('/auth/login', authLimiter, loginController);
 router.post('/auth/registroUsuario',registerController);
 router.post('/auth/logout', logoutController);
 
-router.get('/auth/me',authMiddleware,meController)
+router.get('/auth/me',authMiddleware,meController);
+
+//----------------------- RUTAS DE PRODUCTO---------------------------
+//se usa un archivo donde cada ruta de definen en ./productoRutas.js
+router.use('/productos', productoRutas);
+
+//----------------------- RUTAS DE CATEGORIAS---------------------------
+router.get('/categorias', listaCategoriasController);
+
+//----------------------- RUTAS DE UNIDADES---------------------------
+router.get('/unidades', listaMedidasController);
 
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);
+
+//----------------------- RUTAS DE PROVEEDORES---------------------------
+router.use('/proveedores', proveedorRutas);
 
 export default router;

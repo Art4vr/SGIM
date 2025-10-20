@@ -12,7 +12,11 @@ import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
+//Importacion de productos 
+import VistaProductos from './screens/productos/vistaProducto';
 
+//Importacion de proveedores 
+import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 function App() {
   
@@ -28,6 +32,13 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/PanelChef" element={<PanelChef />} />
+          <Route path="/NuevoUsuario" element={<Registro />} />
+
+          <Route path="/Productos" element={<VistaProductos />} />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
+
           <Route 
             path="/RegistroImprevisto" 
             element={
@@ -53,7 +64,7 @@ function App() {
             }
           />
           <Route path="/Menu" element={<Menu />} />
-          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
+          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />    
         </Routes>
       </BrowserRouter>
   );
