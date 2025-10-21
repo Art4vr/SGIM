@@ -18,6 +18,8 @@ import VistaProductos from './screens/productos/vistaProducto';
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+
 function App() {
   
   const {user,loading} = useAuth();
