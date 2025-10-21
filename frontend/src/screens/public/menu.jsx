@@ -10,7 +10,7 @@ export default function Menu() {
   useEffect(() => {
     axios
       // 🔹 Usa la IP de tu PC si vas a acceder desde el móvil
-      .get("http://localhost:3000/api/platillos")
+      .get("http://172.20.2.64:3000/api/platillos")
       .then((res) => {
         // Agrupa los platillos por categoría
         const agrupados = res.data.reduce((acc, platillo) => {
@@ -25,10 +25,6 @@ export default function Menu() {
       })
       .catch((err) => console.error("Error cargando platillos:", err));
   }, []);
-
-  // Día actual (para el buffet)
-  const today = new Date().getDay();
-  const esFinDeSemana = today === 0 || today === 6;
 
   if (loading) return <p className="loading">Cargando menú...</p>;
 

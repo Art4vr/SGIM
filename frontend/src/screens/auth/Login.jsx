@@ -34,6 +34,8 @@ const Login = () => {
             console.log('Login OK:', data);
             if (data.rol === 3){
                 navigate('/PanelChef');
+            }else if (data.rol === 4){
+                navigate('/mesero');
             }else{
                 navigate('/Home');
             }
