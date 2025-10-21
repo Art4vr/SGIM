@@ -2,6 +2,8 @@
 import React, {useEffect, useState} from 'react'
 import api from './api/axiosConfig';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Importa tus componentes de auth
 import Home from './screens/auth/Home';
@@ -10,24 +12,20 @@ import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 
+//Importacion de vista productos
+import VistaProductos from './screens/productos/vistaProducto';
 
+//Importacion de proveedores 
+import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 function App() {
+  
+  const {user,loading} = useAuth();
 
-  const [user,setUser] = useState(null);
-
-  useEffect(() =>{
-    api.get('/api/auth/me')
-    .then(res => {
-      console.log('Usuario autenticado:',res.data);
-      setUser(res.data);
-    })
-    .catch(() => {
-      console.log('No autenticado:Front App.jsx');
-      setUser(null);
-    });
-  },[]);
-
+  console.log('USER APP.JSX', user);
+  if (loading) return <div>Cargando sesión...</div>;
+  
+//revisar ruta de productos y proveedores (permisos o roles correspondientes)
   return (
     
       <BrowserRouter>
@@ -35,8 +33,35 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/PanelChef" element={<PanelChef />} />
-          <Route path="/NuevoUsuario" element={<Registro />} />
+          
+          <Route path="/Productos" element={<VistaProductos />} />
+          <Route path="/Proveedores" element={<VistaProveedores />} />
+
+          <Route 
+            path="/RegistroImprevisto" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <RegistroImprevisto />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/PanelChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <PanelChef />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/NuevoUsuario" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <Registro />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/Menu" element={<Menu />} />
           <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
 
         {/* Rutas publicas*/}

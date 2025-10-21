@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Home.module.css';
+import api from '../../api/axiosConfig';
 
 /**
  * Componente de pagina de inicio de la aplicación
@@ -11,7 +13,16 @@ import styles from '../../styles/auth/Home.module.css';
  * @returns {JSX.Element} Pagina de inicio de la aplicación
  */
 const Home = () => {
+    const { logout } = useAuth();
     const navigate = useNavigate();
+    const handleLogout = async () => {
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
 
     return (
         <div
@@ -26,6 +37,10 @@ const Home = () => {
                 <h2 className={styles.subtitle}>BIENVENIDO</h2>
                 <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR</button>
                 <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>REGISTRAR</button>
+                <footer>
+                    
+                    <button onClick={handleLogout}>Log Out</button>
+                </footer>
             </div>
         </div>
     );

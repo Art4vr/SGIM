@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 //importar modelo para login, consulta los datos del usuario
-import { obtenerUsuario } from '../Models/usuarioModelo.js';
+import { obtenerUsuario, crearUsuario } from '../Models/usuarioModelo.js';
 
 // Función auxiliar para firmar (crear) un token JWT con un payload personalizado y duración
 const signToken = (payload) => // payload: objeto con datos del usuario (id, username, rol)
@@ -45,15 +45,18 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
         // Establece el token en una cookie segura y HTTP-only (no accesible desde JavaScript del navegador)
         res.cookie('token',token,{
             httpOnly: true, //No es accesible desde JavaScript en el navegador
-            secure: process.env.NODE_ENV === 'production', //solo si estás en producción y usas HTTPS.
-            sameSite: 'strict',//Evita que se envíe la cookie en solicitudes de otros sitios (previene CSRF).
+            secure: process.env.NODE_ENV === 'production' ? true : false, //solo si estás en producción y usas HTTPS.
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',//Evita que se envíe la cookie en solicitudes de otros sitios (previene CSRF).  // 'none' para producción con HTTPS, 'lax' localmente
             maxAge: 1000 * 60 * 60 //la duración de la cookie (en milisegundos) - 1 hora
         });
 
-        res.json({ //si todo es correcto devuelve el usuario
+        return res.json({ //si todo es correcto devuelve el usuario
             mensaje:'Inicio de sesión correcto',
-            username: usuario.username,
-            rol: usuario.Rol_idRol
+            user: {
+                id: usuario.idUsuario,
+                username: usuario.username,
+                rol: usuario.Rol_idRol,
+            }
         });
     } catch(err){//manejo de errores
         console.error('Error al iniciar sesion:',err);
@@ -84,8 +87,8 @@ export const logoutController = (req,res) => {
 
 // Función que devuelve los datos del usuario actualmente autenticado.
 export const meController = (req, res) => {
-    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: Back authController' });
-    res.json({ 
+    if (!req.user) return res.status(401).json({ mensaje: 'No autenticado: desde Back authController' });
+    res.json({
         id: req.user.id, 
         username: req.user.username, 
         rol: req.user.rol });
