@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Home.module.css';
 import api from '../../api/axiosConfig';
 
@@ -12,10 +13,15 @@ import api from '../../api/axiosConfig';
  * @returns {JSX.Element} Pagina de inicio de la aplicación
  */
 const Home = () => {
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     return (
