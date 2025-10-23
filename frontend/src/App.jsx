@@ -1,6 +1,5 @@
 // src/App.jsx
 import React, {useEffect, useState} from 'react'
-import api from './api/axiosConfig';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -11,6 +10,7 @@ import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -18,17 +18,14 @@ import VistaProductos from './screens/productos/vistaProducto';
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
-//Importación de Imprevistos
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+//Importacion de platillos
+import VistaPlatillos from './screens/platillos/platillos';
 
 //Importación de ordenes de chef
 import OrdenChef from './screens/ordenes/ordenChef';
 
 //Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
-
-//Importacion de platillos
-import VistaPlatillos from './screens/platillos/platillos';
 
 function App() {
   
@@ -41,19 +38,11 @@ function App() {
   return (
     
       <BrowserRouter>
-      {/* Rutas de autenticación*/}
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
           
           <Route path="/Productos" element={<VistaProductos />} />
-          <Route path="/Proveedores" element={<VistaProveedores />} />
-
-          <Route path="/PanelChef" element={<PanelChef />} />
-          <Route path="/NuevoUsuario" element={<Registro />} />
-
-          <Route path="/Productos" element={<VistaProductos />} />
-
           <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/Platillos" element={<VistaPlatillos />} />
@@ -99,7 +88,7 @@ function App() {
             }
           />
           <Route path="/Menu" element={<Menu />} />
-          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />    
+          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
         </Routes>
       </BrowserRouter>
   );

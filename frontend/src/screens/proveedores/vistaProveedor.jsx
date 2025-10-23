@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import NuevoProveedor from './agregarProveedor';
-import styles from '../../styles/proveedores/proveedor.module.css';
-import { useNavigate } from 'react-router-dom';
-import api from '../../api/axiosConfig';
+import styles from '../../styles/productos/producto.module.css';
 
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 
 const VistaProveedores = () => {
-    const navigate = useNavigate();
     const [proveedores, setProveedores] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [proveedorEditando, setProveedorEditando] = useState(null);
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
-    const [menuAbierto, setMenuAbierto] = useState(false);
 
     const cargarProveedores = async () => {
         setCargando(true);
@@ -60,38 +56,14 @@ const VistaProveedores = () => {
         }
     };
 
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-        };
-
-    const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
-    };
-
     return (
         <div className={styles.bodyContainer}>
-            {/* Encabezado */}
-            <div className={styles.header}>
-                <button className={styles.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                    <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-            </div>
-            
-            {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
-                <ul>
-                    
-                    <li onClick={handleLogout}>Log Out</li>
-                </ul>
-            </div>
             <div className={styles.registerContainer}>
                 <div className={styles.registerCard}>
                     <h1 className={styles.title}>Gestión de Proveedores</h1>
 
                     <button className={styles.registerBtn} onClick={() => abrirModal()}>
-                        Agregar Proveedor
+                        ➕ Agregar Proveedor
                     </button>
 
                     {mensaje && <p className={styles.message}>{mensaje}</p>}
@@ -140,14 +112,6 @@ const VistaProveedores = () => {
                                     )}
                                 </tbody>
                             </table>
-                            
-                            <button
-                                className={`${styles.registerBtn} ${styles.backBtn}`}
-                                type="button"
-                                onClick={() => navigate('/PanelGerente')}
-                                >
-                                VOLVER AL INICIO
-                            </button>
                         </div>
                     )}
 
