@@ -18,6 +18,10 @@ import productoRutas from './productoRutas.js';
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
 import { listaMedidasController } from '../Controllers/medidaControlador.js';
 
+//importancion de controlador de mesa
+import { listaMesasController } from '../Controllers/mesaControlador.js';
+
+
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
 
@@ -50,6 +54,9 @@ router.get('/categorias', listaCategoriasController);
 
 //----------------------- RUTAS DE UNIDADES---------------------------
 router.get('/unidades', listaMedidasController);
+
+//----------------------- RUTAS DE MESAS---------------------------
+router.get('/mesas', listaMesasController);
 
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);
