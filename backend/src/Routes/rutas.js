@@ -12,10 +12,15 @@ import { loginController, logoutController, meController } from '../Controllers/
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 import imprevistoRouter from './imprevistosRutas.js';
 
+//importancion de controlador de mesa
+import { listaMesasController } from '../Controllers/mesaControlador.js';
+
+
 //Controladores categorias, medidas, producto
 //importancion de las funciones de los controladores de productos (con archivo)
 import productoRutas from './productoRutas.js';
 
+//importancion de las funciones de los controladores de Platillos
 import platilloRutas from './platilloRutas.js';
 
 //importancion de controladores de categoria y medida
@@ -60,5 +65,9 @@ router.use('/proveedores', proveedorRutas);
 
 //----------------------- RUTAS DE PLATILLOS---------------------------
 router.use('/platillos', platilloRutas);
+
+//----------------------- RUTAS DE MESAS---------------------------
+router.get('/mesas', listaMesasController);
+
 
 export default router;
