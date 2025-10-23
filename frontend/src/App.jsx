@@ -26,11 +26,6 @@ import OrdenChef from './screens/ordenes/ordenChef';
 
 //Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
-//Importacion de productos 
-import VistaProductos from './screens/productos/vistaProducto';
-
-//Importacion de proveedores 
-import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
