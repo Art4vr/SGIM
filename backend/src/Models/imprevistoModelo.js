@@ -5,7 +5,7 @@
 
 import conexionDB from '../config/db.js';
 
-//--------------------- LOGIN -----------------------------------------
+//--------------------- MOSTRAR -----------------------------------------
 // Funcion para obetener los imprevistos de acuerdo a busqueda o todos 
 export const listarImprevisto = async (filtro,busqueda)=>{ //recibe el filtro y el criterio de busqueda como parametro
     const query = 'SELECT * FROM imprevisto WHERE ? = ?';//consulta sql
@@ -19,7 +19,7 @@ export const listarImprevisto = async (filtro,busqueda)=>{ //recibe el filtro y 
 };
 
 
-//--------------------- REGISTRO -----------------------------------------
+//--------------------- CREAR -----------------------------------------
 // Funcion para registrar un nuevo imprevisto 
 export const crearImprevisto = async ({idUsuarioReporta,idInventarioProducto,descripcion,cantidad,idUnidadMedida})=>{ //recibe objeto con los datos del nuevo usuario
     const query = 'INSERT INTO imprevisto (Usuario_idUsuarioReporta, InventarioProducto_idInventarioProducto, descripcion, fecha, cantidad, UnidadMedida_idUnidadMedida, estado, Usuario_idUsuarioAutoriza) VALUES (?, ?, ?, NOW(), ?, ?, ?, NULL)';//consulta sql
