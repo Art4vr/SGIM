@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
+import styles from '../../styles/auth/Register.module.css';
 import api from '../../api/axiosConfig';
 
 const RegistroImprevisto = () => {
@@ -128,7 +128,7 @@ const RegistroImprevisto = () => {
                         <button
                             className={styles.loginBtn}
                             type="button"
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate('/PanelChef')}
                         >
                             VOLVER AL INICIO
                         </button>
