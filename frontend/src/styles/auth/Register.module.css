@@ -2,8 +2,7 @@
 .bodyContainer {
     font-family: 'Arial', sans-serif; /* Define la fuente utilizada en la página */
     /*background-image: url('../../imagenes/FondoMK.PNG'); /* Imagen de fondo */
-    background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
-    background-position: center; /* Centra la imagen de fondo */
+    background: linear-gradient( to right,  #664152,  #8c747c);
     display: flex; /* Usa flexbox para centrar elementos */
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
@@ -99,3 +98,152 @@
     align-items: center; /* Alinea verticalmente */
     gap: 2px; /* Espaciado entre elementos */
 }
+
+/* ===== Menú lateral (versión mejorada) ===== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px; /* Oculto inicialmente */
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(180deg, #4e2d45 0%, #301c33 100%);
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 5rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-y: auto;
+    border-right: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebarAbierto {
+    left: 0; /* Se muestra al abrir */
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: rgba(255, 192, 230, 0.15);
+    color: #fff;
+    padding-left: 2.3rem;
+}
+
+.sidebar li:active {
+    background-color: rgba(255, 192, 230, 0.3);
+    color: #fff;
+}
+
+.sidebar li::before {
+    content: "•";
+    color: #ff9edb;
+    font-size: 1.3rem;
+    transition: transform 0.2s ease;
+}
+
+.sidebar li:hover::before {
+    transform: scale(1.4);
+}
+
+/* Barra superior coherente */
+.header {
+    height: 12vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Ícono del menú */
+.menuBoton img {
+    cursor: pointer;
+    margin: 1rem;
+    aspect-ratio: 1 / 1;
+    width: 2.5rem;
+    transition: transform 0.2s ease;
+}
+
+.menuBoton img:hover {
+    transform: scale(1.15);
+}
+
+/* Logo del encabezado */
+.logo {
+    max-width: 30%;
+    object-fit: contain;
+}
+
+/* ===== Menú lateral ===== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Oculto inicialmente */
+    width: 250px;
+    height: 100vh;
+    background-color: #3d2d3aef;
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 4rem;
+    transition: left 0.3s ease;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.sidebarAbierto {
+    left: 0; /* Se muestra al abrir */
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: #b44a82;
+    color: #fff;
+}
+
+/* Para evitar que el contenido se mueva al abrir el menú */
+.container {
+    overflow-x: hidden;
+}
+
