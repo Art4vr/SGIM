@@ -116,3 +116,52 @@ body{
     font-size: large;
     margin-bottom: 1rem;
 }
+
+/* ===== Menú lateral ===== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Oculto inicialmente */
+    width: 250px;
+    height: 100vh;
+    background-color: #3d2d3aef;
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 4rem;
+    transition: left 0.3s ease;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.sidebarAbierto {
+    left: 0; /* Se muestra al abrir */
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: #b44a82;
+    color: #fff;
+}
+
+/* Para evitar que el contenido se mueva al abrir el menú */
+.container {
+    overflow-x: hidden;
+}
+
