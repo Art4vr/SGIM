@@ -21,6 +21,12 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
 
+//Importación de ordenes de chef
+import OrdenChef from './screens/ordenes/ordenChef';
+
+//Importación de los platillos de chef
+import PlatillosChef from './screens/platillos/platillosChef';
+
 function App() {
   
   const {user,loading} = useAuth();
@@ -54,6 +60,22 @@ function App() {
             element={
               <ProtectedRoute user={user} allowedRoles={[3]}>
                 <PanelChef />
+              </ProtectedRoute>
+            }
+          />
+            <Route 
+            path="/ordenChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <OrdenChef />
+              </ProtectedRoute>
+            }
+          />
+            <Route 
+            path="/platillosChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <PlatillosChef />
               </ProtectedRoute>
             }
           />
