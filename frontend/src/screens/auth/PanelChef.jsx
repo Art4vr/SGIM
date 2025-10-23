@@ -32,8 +32,8 @@ const PanelChef = () => {
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                    <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
+                    <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
@@ -41,7 +41,7 @@ const PanelChef = () => {
 
             {/* Contenido principal */}
             <div className={styles.contenido}>
-                <button className={styles.tarjetas} onClick={() => navigate('/Ordenes')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/ordenChef')}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/ordenes.png" alt="ordenes" />
                     </div>
@@ -50,7 +50,7 @@ const PanelChef = () => {
                     </div>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/Platillos')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/platillosChef')}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="platillos" />
                     </div>
