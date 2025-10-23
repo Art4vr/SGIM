@@ -18,6 +18,9 @@ import VistaProductos from './screens/productos/vistaProducto';
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
+//Importacion de platillos
+import VistaPlatillos from './screens/platillos/platillos';
+
 function App() {
   
   const {user,loading} = useAuth();
@@ -38,6 +41,8 @@ function App() {
           <Route path="/Productos" element={<VistaProductos />} />
 
           <Route path="/Proveedores" element={<VistaProveedores />} />
+
+          <Route path="/Platillos" element={<VistaPlatillos />} />
 
           <Route 
             path="/RegistroImprevisto" 

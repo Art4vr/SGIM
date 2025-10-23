@@ -21,6 +21,9 @@ import { listaMedidasController } from '../Controllers/medidaControlador.js';
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
 
+//importancion de las funciones de los controladores de platills
+import platilloRutas from './platilloRutas.js';
+
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
@@ -53,5 +56,8 @@ router.use('/imprevistos', imprevistoRouter);
 
 //----------------------- RUTAS DE PROVEEDORES---------------------------
 router.use('/proveedores', proveedorRutas);
+
+//----------------------- RUTAS DE PLATILLOS---------------------------
+router.use('/platillos', platilloRutas);
 
 export default router;
