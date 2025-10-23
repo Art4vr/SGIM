@@ -26,6 +26,14 @@ import OrdenChef from './screens/ordenes/ordenChef';
 
 //Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
+//Importacion de productos 
+import VistaProductos from './screens/productos/vistaProducto';
+
+//Importacion de proveedores 
+import VistaProveedores from './screens/proveedores/vistaProveedor';
+
+//Importacion de platillos
+import VistaPlatillos from './screens/platillos/platillos';
 
 function App() {
   
@@ -45,6 +53,15 @@ function App() {
           
           <Route path="/Productos" element={<VistaProductos />} />
           <Route path="/Proveedores" element={<VistaProveedores />} />
+
+          <Route path="/PanelChef" element={<PanelChef />} />
+          <Route path="/NuevoUsuario" element={<Registro />} />
+
+          <Route path="/Productos" element={<VistaProductos />} />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
+
+          <Route path="/Platillos" element={<VistaPlatillos />} />
 
           <Route 
             path="/RegistroImprevisto" 
@@ -87,10 +104,7 @@ function App() {
             }
           />
           <Route path="/Menu" element={<Menu />} />
-          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
-
-        {/* Rutas publicas*/}
-          <Route path="/menu" element={<Menu />} />
+          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />    
         </Routes>
       </BrowserRouter>
   );

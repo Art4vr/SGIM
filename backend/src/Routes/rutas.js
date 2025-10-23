@@ -12,16 +12,21 @@ import { loginController, logoutController, meController } from '../Controllers/
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 import imprevistoRouter from './imprevistosRutas.js';
 
-//Controladores categorias, medidas, producto
 //importancion de las funciones de los controladores de productos (con archivo)
 import productoRutas from './productoRutas.js';
-
 //importancion de controladores de categoria y medida
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
 import { listaMedidasController } from '../Controllers/medidaControlador.js';
 
+//importancion de controlador de mesa
+import { listaMesasController } from '../Controllers/mesaControlador.js';
+
+
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
+
+//importancion de las funciones de los controladores de platills
+import platilloRutas from './platilloRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
@@ -41,6 +46,20 @@ router.get('/auth/me',authMiddleware,meController);
 
 //----------------------- RUTA DE CLIENTE ---------------------------
 
+router.get('/auth/me',authMiddleware,meController);
+
+//----------------------- RUTAS DE PRODUCTO---------------------------
+//se usa un archivo donde cada ruta de definen en ./productoRutas.js
+router.use('/productos', productoRutas);
+
+//----------------------- RUTAS DE CATEGORIAS---------------------------
+router.get('/categorias', listaCategoriasController);
+
+//----------------------- RUTAS DE UNIDADES---------------------------
+router.get('/unidades', listaMedidasController);
+
+//----------------------- RUTAS DE MESAS---------------------------
+router.get('/mesas', listaMesasController);
 
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);
@@ -57,5 +76,8 @@ router.get('/unidades', listaMedidasController);
 
 //----------------------- RUTAS DE PROVEEDORES---------------------------
 router.use('/proveedores', proveedorRutas);
+
+//----------------------- RUTAS DE PLATILLOS---------------------------
+router.use('/platillos', platilloRutas);
 
 export default router;
