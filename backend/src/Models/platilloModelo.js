@@ -7,20 +7,15 @@ import conexionDB from '../config/db.js';
 
 //--------------------- ALTA PLATILLO-----------------------------------------
 // Funcion para dar de alta un platillo
-export const agregarPlatillo = async ({ nombre, descripcion, precio })=>{ 
+export const agregarPlatillo = async ({ nombre, descripcion = null, categoria, imagen = null, precio })=>{ 
     try{
-        let query;
-        let params;
 
-        // Si se proporciona descripcion
-        if (descripcion) {
-            query = 'INSERT INTO Platillo (nombre, descripcion, precio) VALUES (?, ?, ?)';
-            params = [nombre, descripcion, precio];
-        } else {
-            // Si no se proporciona descripcion
-            query = 'INSERT INTO Platillo (nombre, precio) VALUES (?, ?)';
-            params = [nombre, precio];
-        }
+        //Descripcion e imagen es opcional
+        const query = `
+            INSERT INTO Platillo (nombre, descripcion, categoria, imagen, precio)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+        const params = [nombre, descripcion, categoria, imagen, precio];
         const [resultado] = await conexionDB.execute(query, params);
         return resultado.affectedRows; 
 
@@ -45,7 +40,7 @@ export const eliminarPlatillo = async (idPlatillo) => {
 
 //--------------------- ACTUALIZACION PLATILLO -----------------------------------------
 // Funcion para actualizar un platillo
-export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, precio, estado }) => {
+export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, categoria, imagen, precio, estado }) => {
     let query = 'UPDATE Platillo SET ';
     const params = [];
     const cambios = [];
@@ -57,6 +52,14 @@ export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, prec
     if (descripcion) {
         cambios.push('descripcion = ?');
         params.push(descripcion);
+    }
+    if (categoria) {
+        cambios.push('categoria = ?');
+        params.push(categoria);
+    }
+    if (imagen) {
+        cambios.push('imagen = ?');
+        params.push(imagen);
     }
     if (precio) {
         cambios.push('precio = ?');
