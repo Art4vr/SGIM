@@ -14,6 +14,17 @@ import imprevistoRouter from './imprevistosRutas.js';
 
 //importancion de las funciones de los controladores de productos (con archivo)
 import productoRutas from './productoRutas.js';
+//importancion de controlador de mesa
+import { listaMesasController } from '../Controllers/mesaControlador.js';
+
+
+//Controladores categorias, medidas, producto
+//importancion de las funciones de los controladores de productos (con archivo)
+import productoRutas from './productoRutas.js';
+
+//importancion de las funciones de los controladores de Platillos
+import platilloRutas from './platilloRutas.js';
+
 //importancion de controladores de categoria y medida
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
 import { listaMedidasController } from '../Controllers/medidaControlador.js';
@@ -79,5 +90,9 @@ router.use('/proveedores', proveedorRutas);
 
 //----------------------- RUTAS DE PLATILLOS---------------------------
 router.use('/platillos', platilloRutas);
+
+//----------------------- RUTAS DE MESAS---------------------------
+router.get('/mesas', listaMesasController);
+
 
 export default router;
