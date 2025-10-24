@@ -12,7 +12,8 @@ import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
-//Importacion de productos 
+
+//Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
 
 //Importacion de proveedores 
@@ -21,6 +22,12 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
 
+//Importación de ordenes de chef
+import OrdenChef from './screens/ordenes/ordenChef';
+
+//Importación de los platillos de chef
+import PlatillosChef from './screens/platillos/platillosChef';
+
 function App() {
   
   const {user,loading} = useAuth();
@@ -28,7 +35,7 @@ function App() {
   console.log('USER APP.JSX', user);
   if (loading) return <div>Cargando sesión...</div>;
   
-
+//revisar ruta de productos y proveedores (permisos o roles correspondientes)
   return (
     
       <BrowserRouter>
@@ -37,9 +44,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/PanelChef" element={<PanelChef />} />
           <Route path="/NuevoUsuario" element={<Registro />} />
-
+     
           <Route path="/Productos" element={<VistaProductos />} />
-
           <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/Platillos" element={<VistaPlatillos />} />
@@ -57,6 +63,22 @@ function App() {
             element={
               <ProtectedRoute user={user} allowedRoles={[3]}>
                 <PanelChef />
+              </ProtectedRoute>
+            }
+          />
+            <Route 
+            path="/ordenChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <OrdenChef />
+              </ProtectedRoute>
+            }
+          />
+            <Route 
+            path="/platillosChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <PlatillosChef />
               </ProtectedRoute>
             }
           />

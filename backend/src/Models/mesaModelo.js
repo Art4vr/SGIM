@@ -9,6 +9,7 @@ export const obtenerMesa = async () => {
   const query = 'SELECT idMesa,estado, numeroMesa FROM Mesa';
   const [mesa] = await conexionDB.execute(query);
   return mesa;
+<<<<<<< HEAD
 };
 
 
@@ -36,4 +37,6 @@ export const actualizarMesa = async ({ idMesa, estado }) => {
         console.error('Error al modificar mesa:', err);
         throw err;
     }
+=======
+>>>>>>> main
 };
