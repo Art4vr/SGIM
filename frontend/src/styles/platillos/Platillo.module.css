@@ -1,22 +1,3 @@
-/* ======== REGLAS GENERALES ======== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(to right, #664152, #8c747c);
-}
-
-/* ===== Header ===== */
-
-.header {
-    height: 10vh;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
 
 /* ======== GESTIÓN DE PLATILLOS ======== */
 
@@ -199,33 +180,7 @@ body {
     margin-top: 1rem;
 }
 
-/* ===== Botón del menú ===== */
-.menuBoton{
-    all: unset;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-}
 
-.menuBoton img{
-    cursor: pointer;
-    margin:1rem;
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 10%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
-}
-.menuBoton img:hover{
-    transform: scale(1.10);
-}
-
-.logo {
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 30%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
-}
 
 .contenido {
     height: 85%;
@@ -290,73 +245,6 @@ body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-size: large;
     margin-bottom: 1rem;
-}
-
-/* ===== Menú lateral ===== */
-
-/* ======== SIDEBAR ======== */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%); /* 👈 usa % en lugar de px */
-    width: 250px;
-    height: 100vh;
-    background-color: #3d2d3aef;
-    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
-    padding-top: 4rem;
-    transition: transform 0.3s ease;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    pointer-events: none; /* desactiva clics cuando está cerrado */
-}
-
-.sidebarAbierto {
-    transform: translateX(0);
-    pointer-events: all;
-}
-
-.sidebar ul {
-    list-style: none;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar li {
-    width: 100%;
-    color: #f6c9e0;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.sidebar li:hover {
-    background-color: #b44a82;
-    color: #fff;
-}
-
-/* ======== BOTÓN DE VOLVER ======== */
-.backBtn {
-    background-color: #b44a82;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.8rem 1.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-    margin-top: 2rem;
-}
-
-.backBtn:hover {
-    background-color: #d15b98;
-    transform: scale(1.05);
 }
 
 /* ======== Input de descripción ======== */

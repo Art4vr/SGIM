@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Register.module.css';
 import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
 import api from '../../api/axiosConfig';
+import stylesCommon from '../../styles/common/common.module.css';
 
 const RegistroImprevisto = () => {
     const navigate = useNavigate();
@@ -21,7 +22,8 @@ const RegistroImprevisto = () => {
     const [message, setMessage] = useState('');
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [unidadMedidaProducto, setUnidadMedidaProducto] = useState('');
-
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -41,6 +43,25 @@ const RegistroImprevisto = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+
+    useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
 
     const handleProductoChange = (e) => {
         const idProductoSeleccionado = e.target.value;
@@ -100,19 +121,20 @@ const RegistroImprevisto = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={styles.header}>
-                <button className={styles.menuBoton} onClick={toggleMenu}>
+            <div className={stylesCommon.header}>
+                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
+            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
+                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
@@ -169,7 +191,7 @@ const RegistroImprevisto = () => {
                         </button>
 
                         <button
-                            className={styles.loginBtn}
+                            className={stylesCommon.backBtn}
                             type="button"
                             onClick={() => navigate('/PanelChef')}
                         >

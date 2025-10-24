@@ -1,0 +1,122 @@
+/* ======== REGLAS GENERALES ======== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(to right, #664152, #8c747c);
+}
+
+/* ===== Header ===== */
+
+.header {
+    height: 20vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ===== Botón del menú ===== */
+.menuBoton{
+    all: unset;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer; 
+
+    /* === AJUSTES === */
+    margin: 1rem; 
+    width: 45px; 
+    height: 45px;
+    align-self: flex-start;
+    transition: transform 0.2s ease; 
+}
+
+.menuBoton:hover{
+    transform: scale(1.10);
+}
+
+.menuBoton img{
+    aspect-ratio: 1 / 1;
+    
+    /* === AJUSTES === */
+    width: 100%; 
+    height: 100%;
+    object-fit: contain;
+    display: block; 
+}
+
+.menuBoton img:hover{
+    transform: none; /* Quita el hover individual de la imagen */
+}
+
+/* ===== Menú lateral ===== */
+
+/* ======== SIDEBAR ======== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); /* 👈 usa % en lugar de px */
+    width: 250px;
+    height: 100vh;
+    background-color: #3d2d3aef;
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 4rem;
+    transition: transform 0.3s ease;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    pointer-events: none; /* desactiva clics cuando está cerrado */
+}
+
+.sidebarAbierto {
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: #b44a82;
+    color: #fff;
+}
+
+/* ======== BOTÓN DE VOLVER ======== */
+.backBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #D92579;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.backBtn:hover {
+    background-color: #400C24;
+    transform: scale(1.05);
+}
