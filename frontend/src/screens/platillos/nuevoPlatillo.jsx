@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { crearPlatillo, modificarPlatillo } from '../../api/platilloApi';
 
 //Cambiar estilos
-import styles from '../../styles/productos/producto.module.css';
+import styles from '../../styles/platillos/nuevoPlatillo.module.css';
 
 const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     const [nombre, setNombre] = useState('');

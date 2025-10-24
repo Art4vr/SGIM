@@ -23,7 +23,7 @@ const VistaProveedores = () => {
             const res = await getProveedores();
             setProveedores(res.data);
         } catch (err) {
-            setMensaje('❌ Error al cargar proveedores');
+            setMensaje('Error al cargar proveedores');
         } finally {
             setCargando(false);
         }
@@ -54,7 +54,7 @@ const VistaProveedores = () => {
             setMensaje('✅ Proveedor eliminado correctamente');
             await cargarProveedores();
         } catch (err) {
-            setMensaje('❌ Error al eliminar proveedor');
+            setMensaje('Error al eliminar proveedor');
         } finally {
             setEliminandoId(null);
         }
@@ -70,94 +70,96 @@ const VistaProveedores = () => {
     };
 
     return (
-        <div className={styles.bodyContainer}>
+        <div className={styles.container}>
             {/* Encabezado */}
             <div className={styles.header}>
                 <button className={styles.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                    <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
-            
+
             {/* Menú lateral */}
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
-                    
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
-            <div className={styles.registerContainer}>
-                <div className={styles.registerCard}>
-                    <h1 className={styles.title}>Gestión de Proveedores</h1>
 
-                    <button className={styles.registerBtn} onClick={() => abrirModal()}>
-                        Agregar Proveedor
-                    </button>
+            <div className={styles.bodyContainer}>
+                <div className={styles.registerContainer}>
+                    <div className={styles.registerCard}>
+                        <h1 className={styles.title}>Gestión de Proveedores</h1>
 
-                    {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
+                            Agregar Proveedor
+                        </button>
 
-                    {cargando ? (
-                        <p className={styles.loadingText}>🔄 Cargando proveedores...</p>
-                    ) : (
-                        <div className={styles.tableWrapper}>
-                            <table className={styles.productTable}>
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Teléfono</th>
-                                        <th>Dirección</th>
-                                        <th>Correo</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {proveedores.length > 0 ? (
-                                        proveedores.map((p) => (
-                                            <tr key={p.idProveedor}>
-                                                <td>{p.nombre}</td>
-                                                <td>{p.telefono}</td>
-                                                <td>{p.direccion}</td>
-                                                <td>{p.correo}</td>
-                                                <td>{p.estado}</td>
-                                                <td className={styles.acciones}>
-                                                    <button onClick={() => abrirModal(p)}>✏️</button>
-                                                    <button
-                                                        onClick={() => eliminar(p.idProveedor)}
-                                                        disabled={eliminandoId === p.idProveedor}
-                                                    >
-                                                        {eliminandoId === p.idProveedor ? '🗑️...' : '🗑️'}
-                                                    </button>
+                        {mensaje && <p className={styles.message}>{mensaje}</p>}
+
+                        {cargando ? (
+                            <p className={styles.loadingText}>🔄 Cargando proveedores...</p>
+                        ) : (
+                            <div className={styles.tableWrapper}>
+                                <table className={styles.productTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Teléfono</th>
+                                            <th>Dirección</th>
+                                            <th>Correo</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {proveedores.length > 0 ? (
+                                            proveedores.map((p) => (
+                                                <tr key={p.idProveedor}>
+                                                    <td>{p.nombre}</td>
+                                                    <td>{p.telefono}</td>
+                                                    <td>{p.direccion}</td>
+                                                    <td>{p.correo}</td>
+                                                    <td>{p.estado}</td>
+                                                    <td className={styles.acciones}>
+                                                        <button onClick={() => abrirModal(p)}>✏️</button>
+                                                        <button
+                                                            onClick={() => eliminar(p.idProveedor)}
+                                                            disabled={eliminandoId === p.idProveedor}
+                                                        >
+                                                            {eliminandoId === p.idProveedor ? '🗑️...' : '🗑️'}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="6" className={styles.noData}>
+                                                    No hay proveedores registrados.
                                                 </td>
                                             </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="6" className={styles.noData}>
-                                                No hay proveedores registrados.
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                            
-                            <button
-                                className={`${styles.registerBtn} ${styles.backBtn}`}
-                                type="button"
-                                onClick={() => navigate('/PanelGerente')}
-                                >
-                                VOLVER AL INICIO
-                            </button>
-                        </div>
-                    )}
+                                        )}
+                                    </tbody>
+                                </table>
+                                
+                                <button
+                                    className={`${styles.registerBtn} ${styles.backBtn}`}
+                                    type="button"
+                                    onClick={() => navigate('/PanelGerente')}
+                                    >
+                                    VOLVER AL INICIO
+                                </button>
+                            </div>
+                        )}
 
-                    {modalVisible && (
-                        <NuevoProveedor
-                            proveedor={proveedorEditando}
-                            onClose={cerrarModal}
-                            onRefresh={cargarProveedores}
-                        />
-                    )}
+                        {modalVisible && (
+                            <NuevoProveedor
+                                proveedor={proveedorEditando}
+                                onClose={cerrarModal}
+                                onRefresh={cargarProveedores}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

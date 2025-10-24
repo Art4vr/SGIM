@@ -1,28 +1,205 @@
-/* Estilos definidos para la sección correspondiente a platillos */
+/* ======== REGLAS GENERALES ======== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
-    background: linear-gradient( to right,  #664152,  #8c747c);
+body {
+    background: linear-gradient(to right, #664152, #8c747c);
 }
 
-.container {
-    display: block;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
-    min-height: 100vh;
-}
+/* ===== Header ===== */
 
 .header {
-    height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
+    height: 10vh; /* Asegura que el header ocupe el 20% de la altura */
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
+/* ======== GESTIÓN DE PLATILLOS ======== */
+
+/* ===== Body ===== */
+.bodyContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 0rem;
+}
+
+/* Contenedor principal */
+.registerContainer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem; /* o el valor que se vea mejor */
+}
+
+.registerCard {
+    background-color: #d5c3cfbd;
+    border-radius: 12px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
+    padding: 2rem;
+    width: 85%;
+    max-width: 1000px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ===== Contenedor general ===== */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
+    min-height: 100vh;
+}
+
+
+/* Tarjeta central */
+.registerCard {
+    background-color: #d5c3cfbd;
+    border-radius: 15px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 10px #b90464b6;
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px;
+    transition: all 0.3s ease;
+}
+
+/* ======== TÍTULOS ======== */
+.title {
+    color: #000000ef;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+/* Botón principal */
+.registerBtn {
+    display: block;
+    margin: 0 auto 1.5rem auto;
+    background-color: #b44a82;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.registerBtn:hover {
+    background-color: #dc057b;
+    transform: scale(1.05);
+}
+
+
+.registerBtn:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
+}
+
+/* Mensajes */
+.message {
+    color: #fff;
+    background-color: rgba(180, 74, 130, 0.8);
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+}
+
+.loadingText {
+    text-align: center;
+    color: #fff;
+}
+
+/* ======== TABLA DE PLATILLOS ======== */
+
+/* Estandariza el alto de filas y centra verticalmente */
+.platilloTable td,
+.platilloTable th {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.8rem;
+    border-bottom: 1px solid #ccc;
+}
+.tableWrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.platilloTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.platilloTable th {
+    background-color: #b44a82;
+    color: white;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+.platilloTable td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+/* ===== Botones de acciones ===== */
+.acciones button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+
+}
+
+.acciones button:hover {
+    transform: scale(1.2);
+}
+
+/* Botón editar */
+.acciones button:first-child {
+    background-color: #b44a82;
+}
+
+.acciones button:first-child:hover {
+    background-color: #dc057b;
+    transform: scale(1.1);
+}
+
+/* Botón eliminar */
+.acciones button:last-child {
+    background-color: #992f53;
+}
+
+.acciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
+}
+
+/* ======== TEXTO DE CARGA ======== */
+.loadingText {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+/* ===== Botón del menú ===== */
 .menuBoton{
     all: unset;
     background: none;
@@ -100,8 +277,6 @@ body{
     background: radial-gradient( circle at center,  #f57cf585 9%,  #fcfcfc00 50%);
 }
 
-
-
 .imagenMenu{
     aspect-ratio: 1 / 1; /* Relación cuadrada */
     max-width: 100%;
@@ -119,30 +294,35 @@ body{
 
 /* ===== Menú lateral ===== */
 
+/* ======== SIDEBAR ======== */
 .sidebar {
     position: fixed;
     top: 0;
-    left: -250px; /* Oculto inicialmente */
+    left: 0;
+    transform: translateX(-100%); /* 👈 usa % en lugar de px */
     width: 250px;
     height: 100vh;
     background-color: #3d2d3aef;
     box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
     padding-top: 4rem;
-    transition: left 0.3s ease;
+    transition: transform 0.3s ease;
     z-index: 999;
     display: flex;
     flex-direction: column;
     align-items: start;
+    pointer-events: none; /* desactiva clics cuando está cerrado */
 }
 
 .sidebarAbierto {
-    left: 0; /* Se muestra al abrir */
+    transform: translateX(0);
+    pointer-events: all;
 }
 
 .sidebar ul {
     list-style: none;
     width: 100%;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar li {
@@ -160,8 +340,65 @@ body{
     color: #fff;
 }
 
-/* Para evitar que el contenido se mueva al abrir el menú */
-.container {
-    overflow-x: hidden;
+/* ======== BOTÓN DE VOLVER ======== */
+.backBtn {
+    background-color: #b44a82;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
 }
 
+.backBtn:hover {
+    background-color: #d15b98;
+    transform: scale(1.05);
+}
+
+/* ======== Input de descripción ======== */
+.inputContainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.inputContainer label {
+    display: block;
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.inputContainer input,
+.inputContainer select,
+.inputContainer textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus,
+.inputContainer textarea:focus {
+    border: 2px solid #262523;
+}
+
+.inputContainer select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #444;
+    border: 1px solid #262523;
+}
+
+.inputContainer select:hover {
+    background-color: #555;
+}

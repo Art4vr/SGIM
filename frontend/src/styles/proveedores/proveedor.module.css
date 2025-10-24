@@ -7,17 +7,14 @@
 
 body {
     background: linear-gradient(to right, #664152, #8c747c);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* ======== HEADER ======== */
+/* Botón de menú */
 .header {
-    height: 10vh; /* Más delgado que antes */
+    height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
 }
 
 /* ======== CONTENEDOR PRINCIPAL ======== */
@@ -25,35 +22,36 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
-/* ======== BOTÓN DEL MENÚ ======== */
-.menuBoton {
+.menuBoton{
     all: unset;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+
+.menuBoton img{
     cursor: pointer;
+    margin:1rem;
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 10%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+.menuBoton img:hover{
+    transform: scale(1.10);
 }
 
-.menuBoton img {
-    margin: 1rem;
-    aspect-ratio: 1 / 1;
-    max-width: 8%;
-    object-fit: contain;
-    transition: transform 0.2s ease;
-}
-
-.menuBoton img:hover {
-    transform: scale(1.1);
-}
-
-/* ======== LOGO ======== */
 .logo {
-    aspect-ratio: 1 / 1;
-    max-width: 25%;
-    object-fit: contain;
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 30%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
 }
 
 /* ======== SIDEBAR ======== */
@@ -234,6 +232,7 @@ body {
     font-size: 1rem;
     margin-bottom: 1rem;
     transition: all 0.3s ease;
+    margin-top: 2rem;
 }
 
 .backBtn:hover {
