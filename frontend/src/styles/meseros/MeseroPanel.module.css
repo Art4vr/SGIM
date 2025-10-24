@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: linear-gradient( to right,  #664152,  #8c747c);
+}
+
+.container {
+    display: block;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
+    min-height: 100vh;
+}
+
+.header {
+    height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menuBoton{
+    all: unset;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+
+.menuBoton img{
+    cursor: pointer;
+    margin:1rem;
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 10%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+.menuBoton img:hover{
+    transform: scale(1.10);
+}
+
+.logo {
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 30%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
+.contenido {
+    height: 85%;
+    flex-grow: 1; /* Asegura que el contenido ocupe el espacio restante */
+    padding: 2rem; /* Agregar algo de relleno al contenido */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.tarjetas {
+    color: #dc057b;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    background-color: #d5c3cfbd;
+    border-radius: 10px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
+    max-height: 80vh;
+    margin: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.tarjetas:hover {
+    transform: scale(1.05);
+    background-color: #e3cadbee ;
+    border-color: #99167ac6;
+    box-shadow: 0 5px 9px #99547b;
+    color: #7f727b;
+    font-size: larger;
+}
+
+.tarjetas:hover img{
+    transform: scale(1.10);
+    background: radial-gradient( circle at center,  #ac1a8a66 8%,  #fcfcfc00 50%);
+}
+
+.tarjetas:active {
+    transform: scale(0.95); /* un pequeño "aplastamiento" al hacer clic */
+    box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
+    background-color:  #c17ba1 ;
+    transition: transform 0.1s ease;
+    color: #ffcff2;
+}
+
+.tarjetas:active img{
+    transform: scale(1.08);
+    background: radial-gradient( circle at center,  #f57cf585 9%,  #fcfcfc00 50%);
+}
+
+
+
+.imagenMenu{
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 100%;
+    object-fit: contain;
+    height: 50vh;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
+.nombreMenu{
+    text-align: center;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: large;
+    margin-bottom: 1rem;
+}
+
+/* ===== Menú lateral ===== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Oculto inicialmente */
+    width: 250px;
+    height: 100vh;
+    background-color: #3d2d3aef;
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 4rem;
+    transition: left 0.3s ease;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.sidebarAbierto {
+    left: 0; /* Se muestra al abrir */
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: #b44a82;
+    color: #fff;
+}
+
+/* Para evitar que el contenido se mueva al abrir el menú */
+.container {
+    overflow-x: hidden;
+}
