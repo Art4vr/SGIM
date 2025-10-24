@@ -42,10 +42,21 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
           
-          <Route path="/Productos" element={<VistaProductos />} />
-          <Route path="/Proveedores" element={<VistaProveedores />} />
+          <Route path="/Productos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProductos />
+            </ProtectedRoute>
+            } 
+          />
 
-          <Route path="/Platillos" element={<VistaPlatillos />} />
+          <Route path="/Platillos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
+              <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route 
             path="/RegistroImprevisto" 
