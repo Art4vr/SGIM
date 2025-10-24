@@ -12,11 +12,6 @@ import { loginController, logoutController, meController } from '../Controllers/
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 import imprevistoRouter from './imprevistosRutas.js';
 
-//importancion de las funciones de los controladores de productos (con archivo)
-import productoRutas from './productoRutas.js';
-//importancion de controlador de mesa
-import { listaMesasController } from '../Controllers/mesaControlador.js';
-
 
 //Controladores categorias, medidas, producto
 //importancion de las funciones de los controladores de productos (con archivo)
@@ -35,9 +30,6 @@ import { listaMesasController } from '../Controllers/mesaControlador.js';
 
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
-
-//importancion de las funciones de los controladores de platills
-import platilloRutas from './platilloRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
