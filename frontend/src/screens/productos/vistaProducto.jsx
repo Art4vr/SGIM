@@ -61,7 +61,7 @@ const VistaProductos = () => {
                     <h1 className={styles.title}>Gestión de Productos</h1>
 
                     <button className={styles.registerBtn} onClick={() => abrirModal()}>
-                        ➕ Agregar Producto
+                        Agregar Producto
                     </button>
 
                     {mensaje && <p className={styles.message}>{mensaje}</p>}

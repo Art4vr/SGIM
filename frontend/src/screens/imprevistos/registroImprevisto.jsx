@@ -111,9 +111,8 @@ const RegistroImprevisto = () => {
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                    <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
+                    <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
+                    <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>

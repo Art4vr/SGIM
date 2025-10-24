@@ -27,6 +27,7 @@ body {
     justify-content: space-between;
 }
 
+/* ===== Botón del menú ===== */
 .menuBoton{
     all: unset;
     background: none;
@@ -53,6 +54,7 @@ body {
     max-width: 30%;
     object-fit: contain; /* Asegura que la imagen no se deforme */
 }
+
 
 /* ======== SIDEBAR ======== */
 .sidebar {

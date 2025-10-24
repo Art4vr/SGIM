@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getPlatillos, eliminarPlatillo } from '../../api/platilloApi';
+import { getPlatillos, eliminarPlatillo} from '../../api/platilloApi';
+import {  getCategorias } from '../../api/productoApi';
 import NuevoPlatillo from './nuevoPlatillo';
 import styles from './../../styles/platillos/Platillo.module.css'
 import api from '../../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
-//Cambiar despues
-//import styles from '../../styles/productos/producto.module.css';
 
 const VistaPlatillos = () => {
     const [platillos, setPlatillos] = useState([]);
@@ -16,12 +15,14 @@ const VistaPlatillos = () => {
     const [eliminandoId, setEliminandoId] = useState(null);
     const [menuAbierto, setMenuAbierto] = useState(false);
     const navigate = useNavigate();
+    const [categorias, setCategorias] = useState([]);
 
     const cargarPlatillos = async () => {
         setCargando(true);
         try {
-            const res = await getPlatillos();
+            const [res, cat] = await Promise.all([getPlatillos(),getCategorias()]);
             setPlatillos(res.data);
+            setCategorias(cat.data);
         } catch (err) {
             setMensaje('Error al cargar platillos');
         } finally {
@@ -95,6 +96,47 @@ const VistaPlatillos = () => {
                             Agregar Platillo
                         </button>
 
+                        {mensaje && <p className={styles.message}>{mensaje}</p>}
+
+                        {cargando ? (
+                            <p className={styles.loadingText}>Cargando platillos...</p>
+                        ) : (
+                        <div className={styles.tableWrapper}>
+                            <table className={styles.platilloTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Precio</th>
+                                            <th>Categoria</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                {platillos.map((p) => (
+                                    <tr key={p.idPlatillo}>
+                                        <td>{p.nombre}</td>
+                                        <td>{p.descripcion}</td>
+                                        <td>{p.precio}</td>
+                                        <td>{p.categorias}</td>
+                                        <td>{p.estado}</td>
+                                        <td className={styles.acciones}>
+                                            <button onClick={() => abrirModal(p)}>✏️</button>
+                                            <button
+                                            onClick={() => eliminar(p.idPlatillo)}
+                                            disabled={eliminandoId === p.idPlatillo}
+                                            >
+                                            {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        )}
+
                         <button
                             className={`${styles.registerBtn} ${styles.backBtn}`}
                             type="button"
@@ -102,45 +144,6 @@ const VistaPlatillos = () => {
                             >
                                 VOLVER AL INICIO
                         </button>
-
-                        {mensaje && <p className={styles.message}>{mensaje}</p>}
-
-                        {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando platillos...</p>
-                        ) : (
-                            <div className={styles.tableWrapper}>
-                                <table className={styles.platilloTable}>
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Descripcion</th>
-                                            <th>Precio</th>
-                                            <th>Estado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {platillos.map((p) => (
-                                            <tr key={p.idPlatillo}>
-                                                <td>{p.nombre}</td>
-                                                <td>{p.descripcion}</td>
-                                                <td>{p.precio}</td>
-                                                <td>{p.estado}</td>
-                                                <td className={styles.acciones}>
-                                                    <button onClick={() => abrirModal(p)}>✏️</button>
-                                                    <button
-                                                        onClick={() => eliminar(p.idPlatillo)}
-                                                        disabled={eliminandoId === p.idPlatillo}
-                                                    >
-                                                        {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
 
                         {modalVisible && (
                             <NuevoPlatillo

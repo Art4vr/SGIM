@@ -19,7 +19,7 @@ body {
     min-height: 100vh;
 }
 
-/* Botón de menú */
+/* ========= Header ========== */
 .header {
     height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
     width: 100%;
@@ -27,6 +27,7 @@ body {
     justify-content: space-between;
 }
 
+/* ===== Botón del menú ===== */
 .menuBoton{
     all: unset;
     background: none;
@@ -53,6 +54,7 @@ body {
     max-width: 30%;
     object-fit: contain; /* Asegura que la imagen no se deforme */
 }
+
 
 /* ======== SIDEBAR ======== */
 .sidebar {
