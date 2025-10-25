@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { crearPlatillo, modificarPlatillo } from '../../api/platilloApi';
+import { crearPlatillo, modificarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 
 import styles from '../../styles/platillos/nuevoPlatillo.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
 
 const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     const [nombre, setNombre] = useState('');

@@ -30,7 +30,9 @@ import proveedorRutas from './proveedorRutas.js';
 import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlatilloControlador.js';
 
 //importancion de controlador de ordenMesero
-import ordenMeseroRutas from './ordenMeseroRutas.js';
+//import ordenMeseroRutas from './ordenMeseroRutas.js';
+
+import productoRutas from './productoRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
@@ -91,7 +93,7 @@ router.get('/categoriasPlatillo', listaCategoriasPlatilloController);
 router.get('/mesas', listaMesasController);
 
 //----------------------- RUTAS DE ORDENES MESERO---------------------------
-router.use('/ordenes', ordenMeseroRutas)
+//router.use('/ordenes', ordenMeseroRutas)
 
 
 export default router;
