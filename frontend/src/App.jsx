@@ -12,6 +12,7 @@ import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 
+
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
 
@@ -44,7 +45,7 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          
+     
           <Route path="/Productos" element={<VistaProductos />} />
           <Route path="/Proveedores" element={<VistaProveedores />} />
 

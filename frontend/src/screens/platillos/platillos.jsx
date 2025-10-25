@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getPlatillos, eliminarPlatillo} from '../../api/platilloApi';
-import {  getCategorias } from '../../api/productoApi';
+import { getPlatillos, eliminarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 import NuevoPlatillo from './nuevoPlatillo';
 import styles from './../../styles/platillos/Platillo.module.css'
 import api from '../../api/axiosConfig';
@@ -103,14 +102,35 @@ const VistaPlatillos = () => {
                         ) : (
                         <div className={styles.tableWrapper}>
                             <table className={styles.platilloTable}>
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Descripción</th>
-                                            <th>Precio</th>
-                                            <th>Categoria</th>
-                                            <th>Estado</th>
-                                            <th>Acciones</th>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripcion</th>
+                                        <th>Categoria</th>
+                                        <th>Imagen</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {platillos.map((p) => (
+                                        <tr key={p.idPlatillo}>
+                                            <td>{p.nombre}</td>
+                                            <td>{p.descripcion}</td>
+                                            <td>{p.categoria}</td>
+                                            <td>{p.imagen}</td>
+                                            <td>{p.precio}</td>
+                                            <td>{p.estado}</td>
+                                            <td className={styles.acciones}>
+                                                <button onClick={() => abrirModal(p)}>✏️</button>
+                                                <button
+                                                    onClick={() => eliminar(p.idPlatillo)}
+                                                    disabled={eliminandoId === p.idPlatillo}
+                                                >
+                                                    {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
+                                                </button>
+                                            </td>
                                         </tr>
                                     </thead>
                                 <tbody>
