@@ -6,10 +6,9 @@
 import conexionDB from '../config/db.js';
 
 export const obtenerMesa = async () => {
-  const query = 'SELECT idMesa,estado, numeroMesa FROM Mesa';
-  const [mesa] = await conexionDB.execute(query);
-  return mesa;
-<<<<<<< HEAD
+    const query = 'SELECT idMesa,estado, numeroMesa FROM Mesa';
+    const [mesa] = await conexionDB.execute(query);
+    return mesa;
 };
 
 
@@ -37,6 +36,5 @@ export const actualizarMesa = async ({ idMesa, estado }) => {
         console.error('Error al modificar mesa:', err);
         throw err;
     }
-=======
->>>>>>> main
+
 };

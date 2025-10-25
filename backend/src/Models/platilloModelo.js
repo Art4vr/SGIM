@@ -80,7 +80,7 @@ export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, cate
         const [resultado] = await conexionDB.execute(query, params);
         return resultado.affectedRows; 
     } catch (err) {
-        console.error('Error al modificar producto:', err);
+        console.error('Error al modificar platillo:', err);
         throw err;
     }
 };

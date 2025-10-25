@@ -9,16 +9,16 @@ import {
 
 const router = express.Router();
 
-// Obtener todos los productos
+// Obtener todos los platillos
 router.get('/',obtenerPlatillosController);
 
-// Agregar producto
+// Agregar platillos
 router.post('/', agregarPlatilloController);
 
-// Modificar producto
+// Modificar platillos
 router.put('/:id', modificarPlatilloController);
 
-// Eliminar producto
+// Eliminar platillos
 router.delete('/:id', eliminarPlatilloController);
 
 export default router;

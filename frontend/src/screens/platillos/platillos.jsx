@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getPlatillos, eliminarPlatillo } from '../../api/platilloApi';
+import { getPlatillos, eliminarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 import NuevoPlatillo from './nuevoPlatillo';
 
 //Cambiar despues
@@ -77,6 +77,8 @@ const VistaPlatillos = () => {
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Descripcion</th>
+                                        <th>Categoria</th>
+                                        <th>Imagen</th>
                                         <th>Precio</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
@@ -87,6 +89,8 @@ const VistaPlatillos = () => {
                                         <tr key={p.idPlatillo}>
                                             <td>{p.nombre}</td>
                                             <td>{p.descripcion}</td>
+                                            <td>{p.categoria}</td>
+                                            <td>{p.imagen}</td>
                                             <td>{p.precio}</td>
                                             <td>{p.estado}</td>
                                             <td className={styles.acciones}>

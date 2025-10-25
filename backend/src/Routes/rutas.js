@@ -18,8 +18,6 @@ import { listaMesasController } from '../Controllers/mesaControlador.js';
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
 
-//importancion de las funciones de los controladores de platills
-import platilloRutas from './platilloRutas.js';
 //Controladores categorias, medidas, producto
 //importancion de las funciones de los controladores de productos (con archivo)
 import productoRutas from './productoRutas.js';
@@ -30,6 +28,12 @@ import platilloRutas from './platilloRutas.js';
 //importancion de controladores de categoria y medida
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
 import { listaMedidasController } from '../Controllers/medidaControlador.js';
+
+//importancion de controladores de categoria de platillos
+import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlatilloControlador.js';
+
+//importancion de controlador de ordenMesero
+import ordenMeseroRutas from './ordenMeseroRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
@@ -80,9 +84,14 @@ router.use('/proveedores', proveedorRutas);
 //----------------------- RUTAS DE PLATILLOS---------------------------
 router.use('/platillos', platilloRutas);
 
+//----------------------- RUTAS DE CATEGORIAS DE PLATILLO---------------------------
+router.get('/categoriasPlatillo', listaCategoriasPlatilloController);
 
 //----------------------- RUTAS DE MESAS---------------------------
 router.get('/mesas', listaMesasController);
+
+//----------------------- RUTAS DE ORDENES MESERO---------------------------
+router.use('/ordenes', ordenMeseroRutas)
 
 
 export default router;

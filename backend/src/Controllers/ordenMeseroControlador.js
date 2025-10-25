@@ -61,8 +61,9 @@ export const agregarOrdenController = async (req, res) => {
 
 
 //--------------------- MODIFICAR ORDEN-----------------------------------------
-// Controlador para modificar una orden (dar como finalizada la orden)
+// Controlador para modificar una orden (dar como finalizada la orden y cambio de estado de Mesa)
 export const modificarOrdenController = async (req, res) => {
+    const conn = await conexionDB.getConnection();
     try {
         const { id } = req.params;
         const { idOrden, estado, total } = req.body;
@@ -72,42 +73,59 @@ export const modificarOrdenController = async (req, res) => {
             return res.status(400).json({ mensaje: 'El id de la orden es obligatorio' });
         }
 
-        // Validación de estado (si se envía)
-        if (estado && !['cerrada', 'abierta'].includes(estado)) {
-            return res.status(400).json({ mensaje: 'Estado no válido' });
-        }
+        // Iniciar transacción
+        await conn.beginTransaction();
 
-        // Llamar al modelo para actualizar solo los campos proporcionados
+        // Obtener la orden para saber a qué mesa pertenece
+        const [ordenRows] = await conn.execute(
+            'SELECT Mesa_idMesa, estado FROM Orden WHERE idOrden = ?',
+            [id]
+        );
+
+        const idMesa = ordenRows[0].idMesa;
+
+        // Actualizar la orden (solo campos enviados)
         const filasAfectadas = await actualizarOrden({ idOrden: id, estado, total });
 
         if (filasAfectadas === 0) {
-            return res.status(404).json({ mensaje: 'No se encontró el producto o no se realizaron cambios' });
+            await conn.rollback();
+            return res.status(404).json({ mensaje: 'No se realizaron cambios en la orden' });
         }
 
-        res.json({ mensaje: 'Producto actualizado correctamente', filasAfectadas });
+        // Si el estado cambia a "cerrada", liberar la mesa
+        if (estado && ['cerrada'].includes(estado)) {
+            await actualizarMesa(conn, { idMesa, estado: 'disponible' });
+        }
+
+        await conn.commit();
+
+        res.json({
+            mensaje: 'Orden y mesa actualizadas correctamente',
+            filasAfectadas
+        });
 
     } catch (err) {
-        console.error('Error en modificarProductoController:', err);
+        console.error('Error en modificarOrdenController:', err);
         res.status(500).json({ mensaje: 'Error interno del servidor' });
     }
 };
 
 
-//--------------------- OBTENERS TODOS LOS PRODUCTOS -----------------------------------------
-export const obtenerProductosController = async (req, res) => {
+//--------------------- OBTENER TODAS LAS ORDENES-----------------------------------------
+export const obtenerOrdenesController = async (req, res) => {
     
     try {
-        const [productos] = await conexionDB.execute(`
-            SELECT p.idProducto, p.nombre, p.estado,
-                c.nombre AS categoria,
-                u.medida AS unidad
-            FROM Producto p
-            JOIN Categoria c ON p.Categoria_idCategoria = c.idCategoria
-            JOIN UnidadMedida u ON p.UnidadMedida_idUnidadMedida = u.idUnidadMedida
+        const [ordenes] = await conexionDB.execute(`
+            SELECT o.idOrden, o.total, o.estado,
+                c.usuario AS usuario,
+                u.mesa AS mesa
+            FROM Orden o
+            JOIN Usuario c ON o.Usuario_idUsuario = c.idUsuario
+            JOIN Mesa u ON o.Mesa_idMesa = u.idMesa
         `);
-        res.json(productos);
+        res.json(ordenes);
     } catch (err) {
-        console.error('Error SQL obtenerProductosController:', err);
-        res.status(500).json({ mensaje: 'Error al obtener productos' });
+        console.error('Error SQL obtenerOrdenesController:', err);
+        res.status(500).json({ mensaje: 'Error al obtener Ordenes' });
     }
 };
