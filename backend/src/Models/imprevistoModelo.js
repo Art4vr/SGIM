@@ -8,12 +8,34 @@ import conexionDB from '../config/db.js';
 //--------------------- MOSTRAR -----------------------------------------
 // Funcion para obetener los imprevistos de acuerdo a busqueda o todos 
 export const listarImprevisto = async (filtro,busqueda)=>{ //recibe el filtro y el criterio de busqueda como parametro
-    const query = 'SELECT * FROM imprevisto WHERE ? = ?';//consulta sql
+    const columnasPermitidas = ['idImprevisto', 
+                                'Usuario_idUsuarioReporta', 
+                                'InventarioProducto_idInventarioProducto',
+                                'descripcion',
+                                'fecha',
+                                'cantidad',
+                                'UnidadMedida_idUnidadMedida',
+                                'estado', 
+                                'Usuario_idUsuarioAutoriza']
+    // Validar filtro para evitar inyección
+    if (filtro && !columnasPermitidas.includes(filtro)){
+        throw new Error('Filtro no válido');
+    }
+    //Base de la consulta
+    let query = 'SELECT * FROM imprevisto WHERE 1=1';
+    let params = [];
+
+    // Agregar condición solo si hay búsqueda
+    if (filtro && busqueda) {
+        query += ` AND ${filtro} LIKE ?`;
+        params.push(`%${busqueda}%`);
+    }
     try{
-        const[resultados] = await conexionDB.execute(query,[filtro,busqueda]);//ejecuta la consulta
+        const[resultados] = await conexionDB.execute(query,params);//ejecuta la consulta
+        //console.log("Resultados imprevistos: -modelo: ", resultados);
         return resultados; //devuelve los resultados de la consulta
     }catch(err){
-        console.error('Error con la base de datos (listarImprevisto): ', err); //manejo de errores
+        console.error('Error al ejecutar la consulta (listarImprevisto): ', err); //manejo de errores
         throw err;
     }
 };

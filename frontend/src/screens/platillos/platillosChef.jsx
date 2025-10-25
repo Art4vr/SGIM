@@ -1,16 +1,22 @@
 import api from '../../api/axiosConfig';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/platillos/PlatillosChef.module.css';
 
 const PlatillosChef = () => {
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const [menuAbierto, setMenuAbierto] = useState(false);
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     const toggleMenu = () => {

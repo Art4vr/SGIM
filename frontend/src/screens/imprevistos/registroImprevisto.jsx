@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
+import { getProductos } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
+//import { getInventarioProducto } from '../../api/inventario'; // Aquí llamas al API de inventarioProducto
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 import api from '../../api/axiosConfig';
 
 const RegistroImprevisto = () => {
+    const { logout } = useAuth();
     const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [inventarios, setInventarios] = useState([]);
@@ -43,7 +45,7 @@ const RegistroImprevisto = () => {
     }, []);
 
     const handleProductoChange = (e) => {
-        const idProductoSeleccionado = e.target.value;
+        const idProductoSeleccionado = Number(e.target.value);
         setIdInventarioProducto(idProductoSeleccionado);
 
         // Buscar el producto seleccionado
@@ -68,20 +70,25 @@ const RegistroImprevisto = () => {
             return;
         }
 
-        try {
-            const response = await axios.post('/api/imprevistos/crear', {
-                idUsuarioReporta: user.id,
-                idInventarioProducto,
-                descripcion,
-                cantidad,
-                idUnidadMedida,
-            });
-
-            setMessage('Imprevisto registrado con éxito');
-            setTimeout(() => navigate('/PanelChef'), 1500);
-        } catch (err) {
-            setMessage(err.response?.data?.mensaje || 'Error al registrar imprevisto');
-        }
+        setCargando(true);
+        setTimeout(async () => {
+            try {
+                const response = await api.post('/api/imprevistos/crear', {
+                    idUsuarioReporta: user.id,
+                    idInventarioProducto,
+                    descripcion,
+                    cantidad,
+                    idUnidadMedida,
+                });
+            
+                setMessage('Imprevisto registrado con éxito');
+                setTimeout(() => navigate('/PanelChef'), 1500);
+            } catch (err) {
+                setMessage(err.response?.data?.mensaje || err.message || 'Error al registrar imprevisto');
+            } finally {
+                setCargando(false);  // Restaura el botón después de la solicitud
+            }
+        }, 300);  // Retraso de 2 segundos
     };
 
 
@@ -93,8 +100,12 @@ const RegistroImprevisto = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     return (
@@ -165,8 +176,8 @@ const RegistroImprevisto = () => {
                             <h4>Unidad de Medida: {unidadMedidaProducto}</h4>
                         </div>
 
-                        <button className={styles.registerBtn} type="submit">
-                            REGISTRAR IMPREVISTO
+                        <button className={styles.registerBtn} type="submit" disabled={cargando}>
+                            {cargando ? <ClipLoader size={20} color="#fff" /> : 'REGISTRAR IMPREVISTO'}
                         </button>
 
                         <button

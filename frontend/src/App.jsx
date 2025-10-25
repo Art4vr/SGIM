@@ -11,6 +11,7 @@ import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -52,6 +53,13 @@ function App() {
           <Route path="/Platillos" element={
             <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
               <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Imprevistos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <MostrarImprevistos />
             </ProtectedRoute>
             } 
           />

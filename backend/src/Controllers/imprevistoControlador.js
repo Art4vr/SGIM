@@ -29,15 +29,16 @@ export const nuevoImprevistoController = async (req,res)=>{//crea la funcion asi
 //--------------------- CONSULTA DE IMPREVISTO -----------------------------------------
 // Controlador para la busqueda o consulta de imprevistos. 
 export const consultaImprevistoController = async (req,res) => { //crea la funcion asincrona que maneja la solicitud y la respuesta
-    const {idUsuarioReporta, idInventarioProducto, descripcion, fecha, cantidad, idUnidadMedida, estado, idUsuarioAutoriza} = req.body; //extrae los datos del cuerpo de la solicitud
+    const {filtro = null, busqueda = null} = req.query; //extrae los datos del cuerpo de la solicitud
 
     try{ // ejecuta el bloque de codigo y captura errores
         const resultados = await listarImprevisto(filtro,busqueda); //llama a la funcion del modelo para obtener el imprevisto solicitado
+        //console.log("Resultados imprevistos: -controlador: ", resultados);
         if (resultados.length === 0) { //si no se encuentra hay error
-            return res.status(401).json({ mensaje: 'Datos incorrectos' });
+            return res.status(404).json({ mensaje: 'No se encontraron imprevistos.' });
         }
 
-        res.status(201).json({mensaje:'Imprevistos disponibles',resultados});
+        res.status(200).json({mensaje:'Imprevistos disponibles',resultados});
     } catch(err){//manejo de errores
         console.error('Error al consultar imprevistos:',err);
         res.status(500).json({//error del servidor
