@@ -163,3 +163,46 @@ body{
 .container {
     overflow-x: hidden;
 }
+
+/* Título del programa */
+.programaTitulo {
+    flex: 1;
+    text-align: center;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+/* Título grande del panel */
+.panelTitulo {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+/* Botón regresar al inicio */
+.footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.botonInicio {
+    background-color: #d32f2f;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.botonInicio:hover {
+    background-color: #b71c1c;
+}

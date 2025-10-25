@@ -68,8 +68,15 @@ const MeseroPanel = () => {
                 <button className={styles.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
+
+                {/* 🔹 Nombre del programa */}
+                <h1 className={styles.programaTitulo}>Sistema de Gestión de Inventarios y Menús</h1>
+
                 <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
+
+            {/* 🔹 Título del panel */}
+            <h2 className={styles.panelTitulo}>Panel del Mesero</h2>
 
             {/* Sidebar */}
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
@@ -101,6 +108,13 @@ const MeseroPanel = () => {
                     <div className={styles.nombreMenu}>
                         <h3>Ver Menú</h3>
                     </div>
+                </button>
+            </div>
+
+            {/* 🔹 Botón de regresar al inicio de sesión */}
+            <div className={styles.footer}>
+                <button className={styles.botonInicio} onClick={() => navigate('/')}>
+                    Regresar al inicio de sesión
                 </button>
             </div>
         </div>
