@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -28,6 +28,8 @@ const RegistroImprevisto = () => {
     const [idInventario, setIdInventario] = useState('');
 
     const [menuAbierto, setMenuAbierto] = useState(false);
+        const menuRef = useRef(null);
+        const botonRef = useRef(null);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -53,6 +55,25 @@ const RegistroImprevisto = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+
+    useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
 
     const handleProductoChange = (e) => {
         const idProductoSeleccionado = Number(e.target.value);
@@ -161,6 +182,7 @@ const RegistroImprevisto = () => {
         }
     };
 
+
     return (
         <div className={styles.container}>
             {/* Encabezado */}
@@ -168,11 +190,12 @@ const RegistroImprevisto = () => {
                 <button className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
                 <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
-            <div className={`${stylesCommon.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
+            <div className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
