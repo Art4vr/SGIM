@@ -3,7 +3,7 @@ use makibase;
 ALTER TABLE Platillo
 modify COLUMN nombre varchar(255),
 modify column descripcion varchar(1000),
-modify AUTO_INCREMENT = 1;
+AUTO_INCREMENT = 1;
 
 INSERT INTO Platillo (nombre, descripcion, precio, estado) VALUES
 ("Brocheta Empanizada de Pollo", "", 45.00, "disponible"),
