@@ -49,7 +49,7 @@ export const listarInventario = async (filtro,busqueda)=>{ //recibe el filtro y 
 
 //--------------------- CREAR -----------------------------------------
 // Funcion para registrar entrada de algun producto al inventario
-export const ingresarInventario = async ({idUsuarioReporta,idInventarioProducto,descripcion,cantidad,idUnidadMedida})=>{ //recibe objeto con los datos del nuevo registro de inventario
+export const ingresarInventario = async ({Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida})=>{ //recibe objeto con los datos del nuevo registro de inventario
     const query = 'INSERT INTO inventarioproducto (Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, fechaIngreso, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)';//consulta sql
     try{
         const [resultado] = await conexionDB.execute(query,[Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida]);//ejecuta la consulta, los ? se remplazan por los valores del array (parametros)
@@ -57,6 +57,66 @@ export const ingresarInventario = async ({idUsuarioReporta,idInventarioProducto,
         return resultado.insertId; // Devuelve el ID del nuevo imprevisto
     }catch(err){
         console.error('Error con la base de datos (ingresarInventario): ', err);//manejo de errores
+        throw err;
+    }
+};
+
+//--------------------- ELIMINAR -----------------------------------------
+// Funcion para dar de baja el inventario (lote) de un producto
+export const eliminarInventario = async (idInventarioProducto) => {
+    const query = 'DELETE FROM inventarioproducto WHERE idInventarioProducto = ?';
+    try {
+        const [resultado] = await conexionDB.execute(query, [idInventarioProducto]);
+        return resultado.affectedRows; // Devuelve cuántas filas fueron afectadas (1 si se eliminó, 0 si no existía)
+    } catch (err) {
+        console.error('Error al eliminar lote del producto-inventarioModelo:', err);
+        throw err;
+    }
+};
+
+//--------------------- MODIFICAR O ACTUALIZAR -----------------------------------------
+// Funcion para modificar o actualizar algun producto del inventario, ya sea actualizar cantidades, o correcciones
+export const actualizarInventario = async ({ idInventarioProducto, Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida }) => {
+    let query = 'UPDATE inventarioproducto SET ';
+    const params = [];
+    const cambios = [];
+    if (Producto_idProducto) {
+        cambios.push('Producto_idProducto = ?');
+        params.push(Producto_idProducto);
+    }
+    if (cantidadMaxima) {
+        cambios.push('cantidadMaxima = ?');
+        params.push(cantidadMaxima);
+    }   
+    if (cantidadMinima) {
+        cambios.push('cantidadMinima = ?');
+        params.push(cantidadMinima);
+    }
+    if (cantidadActual) {
+        cambios.push('cantidadActual = ?');
+        params.push(cantidadActual);
+    }
+    if (fechaCaducidad) {
+        cambios.push('fechaCaducidad = ?');
+        params.push(fechaCaducidad);
+    }
+    if (Proveedor_idProveedor) {
+        cambios.push('Proveedor_idProveedor = ?');
+        params.push(Proveedor_idProveedor);
+    }
+    if (UnidadMedida_idUnidadMedida) {
+        cambios.push('UnidadMedida_idUnidadMedida = ?');
+        params.push(UnidadMedida_idUnidadMedida);
+    }
+    // Si no hay campos para actualizar
+    if (cambios.length === 0) return 0;
+    query += cambios.join(', ') + ' WHERE idInventarioProducto = ?';
+    params.push(idInventarioProducto);
+    try {
+        const [resultado] = await conexionDB.execute(query, params);
+        return resultado.affectedRows; 
+    } catch (err) {
+        console.error('Error al modificar inventario-inventarioModelo:', err);
         throw err;
     }
 };

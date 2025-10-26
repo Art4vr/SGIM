@@ -7,14 +7,20 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 
 //importacion de las funciones de los controladores
-import {registerController} from '../Controllers/usuarioControlador.js';
-import { loginController, logoutController, meController } from '../Controllers/authController.js';
 import { authMiddleware } from '../Middleware/authMiddleware.js';
-import imprevistoRouter from './imprevistosRutas.js';
 
 //importancion de controlador de mesa
 import { listaMesasController } from '../Controllers/mesaControlador.js';
 
+//importacion de las funciones de los controladores de imprevistos
+import imprevistoRouter from './imprevistosRutas.js';
+
+//importacion de las funciones de los controladores de usuario
+import {registerController} from '../Controllers/usuarioControlador.js';
+import { loginController, logoutController, meController } from '../Controllers/authController.js';
+
+//importacion de las funciones de los controladores de inventario
+import inventarioRutas from './inventarioRutas.js';
 
 //Controladores categorias, medidas, producto
 //importancion de las funciones de los controladores de productos (con archivo)
@@ -62,6 +68,9 @@ router.get('/unidades', listaMedidasController);
 
 //----------------------- RUTAS DE PROVEEDORES---------------------------
 router.use('/proveedores', proveedorRutas);
+
+//----------------------- RUTAS DE INVENTARIO---------------------------
+router.use('/inventario', inventarioRutas);
 
 //----------------------- RUTAS DE PLATILLOS---------------------------
 router.use('/platillos', platilloRutas);
