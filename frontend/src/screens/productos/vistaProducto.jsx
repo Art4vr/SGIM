@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getProductos, eliminarProducto } from '../../api/productoApi';
 import NuevoProducto from './nuevoProducto';
 import styles from '../../styles/productos/producto.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/axiosConfig';
 
 const VistaProductos = () => {
+    const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [productoEditando, setProductoEditando] = useState(null);
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
+    const [menuAbierto, setMenuAbierto] = useState(false);
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
 
     const cargarProductos = async () => {
         setCargando(true);
@@ -54,62 +61,113 @@ const VistaProductos = () => {
         }
     };
 
+    const toggleMenu = () => {
+        setMenuAbierto(!menuAbierto);
+        };
+
+    const handleLogout = async () => {
+        await api.post('/api/auth/logout');
+        navigate('/');
+    };
+
+    useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
+
     return (
-        <div className={styles.bodyContainer}>
-            <div className={styles.registerContainer}>
-                <div className={styles.registerCard}>
-                    <h1 className={styles.title}>Gestión de Productos</h1>
+        <div className={styles.container}>
+                    {/* Encabezado */}
+                    <div className={stylesCommon.header}>
+                        <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                            <img src="/imagenes/menu_btn.png" alt="Menú" />
+                        </button>
+                        <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                        <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                    </div>
+        
+                    {/* Menú lateral */}
+                    <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+                        <ul>
+                            <li onClick={handleLogout}>Log Out</li>
+                        </ul>
+                    </div>
+            <div className={styles.bodyContainer}>
+                <div className={styles.registerContainer}>
+                    <div className={styles.registerCard}>
+                        <h1 className={styles.title}>Gestión de Productos</h1>
 
-                    <button className={styles.registerBtn} onClick={() => abrirModal()}>
-                        Agregar Producto
-                    </button>
+                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
+                            Agregar Producto
+                        </button>
 
-                    {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        {mensaje && <p className={styles.message}>{mensaje}</p>}
 
-                    {cargando ? (
-                        <p className={styles.loadingText}>🔄 Cargando productos...</p>
-                    ) : (
-                        <div className={styles.tableWrapper}>
-                            <table className={styles.productTable}>
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Categoría</th>
-                                        <th>Unidad</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {productos.map((p) => (
-                                        <tr key={p.idProducto}>
-                                            <td>{p.nombre}</td>
-                                            <td>{p.categoria}</td>
-                                            <td>{p.unidad}</td>
-                                            <td>{p.estado}</td>
-                                            <td className={styles.acciones}>
-                                                <button onClick={() => abrirModal(p)}>✏️</button>
-                                                <button
-                                                    onClick={() => eliminar(p.idProducto)}
-                                                    disabled={eliminandoId === p.idProducto}
-                                                >
-                                                    {eliminandoId === p.idProducto ? '🗑️...' : '🗑️'}
-                                                </button>
-                                            </td>
+                        {cargando ? (
+                            <p className={styles.loadingText}>🔄 Cargando productos...</p>
+                        ) : (
+                            <div className={stylesCommon.tableWrapper}>
+                                <table className={styles.productTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Categoría</th>
+                                            <th>Unidad</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-
-                    {modalVisible && (
-                        <NuevoProducto
-                            producto={productoEditando}
-                            onClose={cerrarModal}
-                            onRefresh={cargarProductos}
-                        />
-                    )}
+                                    </thead>
+                                    <tbody>
+                                        {productos.map((p) => (
+                                            <tr key={p.idProducto}>
+                                                <td>{p.nombre}</td>
+                                                <td>{p.categoria}</td>
+                                                <td>{p.unidad}</td>
+                                                <td>{p.estado}</td>
+                                                <td className={styles.acciones}>
+                                                    <button onClick={() => abrirModal(p)}>✏️</button>
+                                                    <button
+                                                        onClick={() => eliminar(p.idProducto)}
+                                                        disabled={eliminandoId === p.idProducto}
+                                                    >
+                                                        {eliminandoId === p.idProducto ? '🗑️...' : '🗑️'}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                        <button
+                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            type="button"
+                            onClick={() => navigate('/PanelGerente')}
+                            >
+                            VOLVER AL INICIO
+                        </button>
+                        {modalVisible && (
+                            <NuevoProducto
+                                producto={productoEditando}
+                                onClose={cerrarModal}
+                                onRefresh={cargarProductos}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

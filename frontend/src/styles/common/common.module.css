@@ -12,32 +12,46 @@ body {
 /* ===== Header ===== */
 
 .header {
-    height: 20vh;
+    height: 10vh;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    background: linear-gradient(90deg, #5e2a45 0%, #b44a82 60%, #e17aa9 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #00000044;
+}
+
+/* ===== Título dentro del header ===== */
+.header h1 {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    letter-spacing: 1px;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 3rem; /* separa del logo o del botón */
+    margin-top: 20px;
 }
 
 /* ===== Botón del menú ===== */
 .menuBoton{
     all: unset;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    color: inherit;
+    background: #f8f8f8e1;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 6px;
     cursor: pointer; 
-
-    /* === AJUSTES === */
     margin: 1rem; 
     width: 45px; 
     height: 45px;
     align-self: flex-start;
-    transition: transform 0.2s ease; 
+    transition: all 0.2s ease; 
 }
 
 .menuBoton:hover{
     transform: scale(1.10);
+    background-color: #ffe1ef;
 }
 
 .menuBoton img{
@@ -50,8 +64,11 @@ body {
     display: block; 
 }
 
-.menuBoton img:hover{
-    transform: none; /* Quita el hover individual de la imagen */
+/* ========== Maki-Logo ======== */
+.logo {
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 30%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
 }
 
 /* ===== Menú lateral ===== */
@@ -113,10 +130,68 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .backBtn:hover {
     background-color: #400C24;
     transform: scale(1.05);
+}
+
+/* ======= Botón de registrar ========*/
+.registerBtn {
+    display: inline-block;       /* Evita que se expanda al 100% */
+    width: auto;                 /* Solo ocupa lo que necesita */
+    padding: 8px 16px;           /* Ajusta el tamaño del botón */
+    font-size: 15px;
+    color: white;
+    background-color: #D92579;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px auto;           /* Centra el botón horizontalmente */
+    text-align: center;
+}
+
+.registerBtn:hover {
+    background-color: #400C24;
+    transform: scale(1.05);
+}
+
+/* ===== Scrollbar Personalizado ===== */
+
+.tableWrapper {
+    max-height: 400px;          /* Ajusta según el tamaño del panel */
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar {
+    width: 10px;               /* ancho del scroll vertical */
+    height: 10px;              /* alto del scroll horizontal */
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+    background: #e8d9e2;        /* color del fondo del track */
+    border-radius: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #b44a82, #8b3a65);
+    border-radius: 10px;
+    border: 2px solid #e8d9e2;  /* hace que se vea con relieve */
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #dc057b, #a04270);
+    cursor: pointer;
+}
+
+/* Firefox */
+.tableWrapper {
+    scrollbar-width: thin;             /* grosor */
+    scrollbar-color: #b44a82 #e8d9e2;  /* color del thumb y del track */
 }

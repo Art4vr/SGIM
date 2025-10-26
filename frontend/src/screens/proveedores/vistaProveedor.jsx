@@ -98,6 +98,7 @@ const VistaProveedores = () => {
                 <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
                 <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
@@ -113,7 +114,7 @@ const VistaProveedores = () => {
                     <div className={styles.registerCard}>
                         <h1 className={styles.title}>Gestión de Proveedores</h1>
 
-                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
+                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
                             Agregar Proveedor
                         </button>
 
@@ -122,7 +123,7 @@ const VistaProveedores = () => {
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando proveedores...</p>
                         ) : (
-                            <div className={styles.tableWrapper}>
+                            <div className={stylesCommon.tableWrapper}>
                                 <table className={styles.productTable}>
                                     <thead>
                                         <tr>
@@ -165,7 +166,7 @@ const VistaProveedores = () => {
                                 </table>
                                 
                                 <button
-                                    className={`${styles.registerBtn} ${styles.backBtn}`}
+                                    className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
                                     type="button"
                                     onClick={() => navigate('/PanelGerente')}
                                     >

@@ -47,7 +47,8 @@ const OrdenChef = () => {
                 <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
