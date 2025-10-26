@@ -1,54 +1,186 @@
-/* Estilos definidos para la sección correspondiente a platillos */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+/* ======== GESTIÓN DE PLATILLOS ======== */
+
+/* ===== Body ===== */
+.bodyContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 0rem;
 }
 
-body{
-    background: linear-gradient( to right,  #664152,  #8c747c);
+/* Contenedor principal */
+.registerContainer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem; /* o el valor que se vea mejor */
 }
 
+.registerCard {
+    background-color: #d5c3cfbd;
+    border-radius: 12px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
+    padding: 2rem;
+    width: 85%;
+    max-width: 1000px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ===== Contenedor general ===== */
 .container {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100vh; /* Ocupa toda la altura de la pantalla */
     width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
     min-height: 100vh;
 }
 
-.header {
-    height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
+
+/* Tarjeta central */
+.registerCard {
+    background-color: #d5c3cfbd;
+    border-radius: 15px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 10px #b90464b6;
+    padding: 2rem;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    max-width: 900px;
+    transition: all 0.3s ease;
 }
 
-.menuBoton{
-    all: unset;
+/* ======== TÍTULOS ======== */
+.title {
+    color: #000000ef;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+
+/* Botón principal */
+.registerBtn {
+    display: block;
+    margin: 0 auto 1.5rem auto;
+    background-color: #b44a82;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.registerBtn:hover {
+    background-color: #dc057b;
+    transform: scale(1.05);
+}
+
+
+.registerBtn:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
+}
+
+/* Mensajes */
+.message {
+    color: #fff;
+    background-color: rgba(180, 74, 130, 0.8);
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+}
+
+.loadingText {
+    text-align: center;
+    color: #fff;
+}
+
+/* ======== TABLA DE PLATILLOS ======== */
+
+/* Estandariza el alto de filas y centra verticalmente */
+.platilloTable td,
+.platilloTable th {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.8rem;
+    border-bottom: 1px solid #ccc;
+}
+.tableWrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.platilloTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.platilloTable th {
+    background-color: #b44a82;
+    color: white;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+.platilloTable td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+/* ===== Botones de acciones ===== */
+.acciones button {
     background: none;
     border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-}
-
-.menuBoton img{
     cursor: pointer;
-    margin:1rem;
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 10%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
-}
-.menuBoton img:hover{
-    transform: scale(1.10);
+    font-size: 1.2rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+
 }
 
-.logo {
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 30%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
+.acciones button:hover {
+    transform: scale(1.2);
 }
+
+/* Botón editar */
+.acciones button:first-child {
+    background-color: #b44a82;
+}
+
+.acciones button:first-child:hover {
+    background-color: #dc057b;
+    transform: scale(1.1);
+}
+
+/* Botón eliminar */
+.acciones button:last-child {
+    background-color: #992f53;
+}
+
+.acciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
+}
+
+/* ======== TEXTO DE CARGA ======== */
+.loadingText {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+
 
 .contenido {
     height: 85%;
@@ -100,8 +232,6 @@ body{
     background: radial-gradient( circle at center,  #f57cf585 9%,  #fcfcfc00 50%);
 }
 
-
-
 .imagenMenu{
     aspect-ratio: 1 / 1; /* Relación cuadrada */
     max-width: 100%;
@@ -117,51 +247,94 @@ body{
     margin-bottom: 1rem;
 }
 
-/* ===== Menú lateral ===== */
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px; /* Oculto inicialmente */
-    width: 250px;
-    height: 100vh;
-    background-color: #3d2d3aef;
-    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
-    padding-top: 4rem;
-    transition: left 0.3s ease;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+/* ======== Input de descripción ======== */
+.inputContainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
 }
 
-.sidebarAbierto {
-    left: 0; /* Se muestra al abrir */
+.inputContainer label {
+    display: block;
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
 }
 
-.sidebar ul {
-    list-style: none;
+.inputContainer input,
+.inputContainer select,
+.inputContainer textarea {
     width: 100%;
-    padding: 0;
-}
-
-.sidebar li {
-    width: 100%;
-    color: #f6c9e0;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.sidebar li:hover {
-    background-color: #b44a82;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #333;
     color: #fff;
 }
 
-/* Para evitar que el contenido se mueva al abrir el menú */
-.container {
-    overflow-x: hidden;
+.inputContainer input:focus,
+.inputContainer select:focus,
+.inputContainer textarea:focus {
+    border: 2px solid #262523;
 }
 
+.inputContainer select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #444;
+    border: 1px solid #262523;
+}
+
+.inputContainer select:hover {
+    background-color: #555;
+}
+
+/* ======== SCROLL PARA LA TABLA ======== */
+.tableWrapper {
+    max-height: 400px;          /* Altura visible del área de la tabla */
+    overflow-y: auto;           /* Activa scroll vertical */
+    overflow-x: auto;           /* Por si la tabla crece horizontalmente */
+    border-radius: 10px;
+    background: #f7eef4d8;      /* Un fondo suave */
+    scrollbar-width: thin;      /* Scroll fino para Firefox */
+    scrollbar-color: #b44a82 #e3cadb; /* Colores para Firefox */
+}
+
+/* ===== Scrollbar personalizado (Chrome, Edge, Safari) ===== */
+.tableWrapper::-webkit-scrollbar {
+    width: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background-color: #b44a82;
+    border-radius: 10px;
+    border: 2px solid #e3cadb;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #d15b98;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+    background-color: #e3cadb;
+    border-radius: 10px;
+}
+
+/* ===== Ajustes extra de la tabla dentro del scroll ===== */
+.platilloTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.platilloTable thead th {
+    position: sticky;  /* 🔹 Encabezado fijo al hacer scroll */
+    top: 0;
+    background-color: #b44a82;
+    color: white;
+    z-index: 2;
+}

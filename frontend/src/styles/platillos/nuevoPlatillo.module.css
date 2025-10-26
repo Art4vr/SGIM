@@ -1,0 +1,127 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Tarjeta del modal */
+.modalCard {
+    background: rgba(218,216,217,0.9);
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Título del modal */
+.modalTitle {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-family: 'Brush Script MT', cursive;
+}
+
+/* Botones del modal */
+.modalButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btnGuardar {
+    background-color: #D92579;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btnGuardar:hover {
+    background-color: #400C24;
+}
+
+.btnCancelar {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btnCancelar:hover {
+    background-color: #d32f2f;
+}
+
+/* Mensajes */
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.exito {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+/* Inputs y selects */
+/* ======== Input de descripción ======== */
+.inputContainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.inputContainer label {
+    display: block;
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.inputContainer input,
+.inputContainer select,
+.inputContainer textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus,
+.inputContainer textarea:focus {
+    border: 2px solid #262523;
+}
+
+.inputContainer select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #444;
+    border: 1px solid #262523;
+}
+
+.inputContainer select:hover {
+    background-color: #555;
+}

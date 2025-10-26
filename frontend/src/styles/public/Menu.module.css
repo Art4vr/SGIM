@@ -1,0 +1,337 @@
+/* ===== Contenedor principal ===== */
+.menuContainer {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to right, #664152, #8c747c);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Header ===== */
+.menuHeader {
+  height: 10vh;
+  width: 100%;
+  background: linear-gradient(90deg, #5e2a45 0%, #b44a82 60%, #e17aa9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid #00000044;
+}
+
+.menuHeader h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+.menuBoton {
+  position: absolute;
+  left: 20px;
+  background-color: #f8f8f8e1;
+  border: 2px solid black;
+  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.menuBoton:hover {
+  transform: scale(1.1);
+  background-color: #ffe1ef;
+}
+
+.menuBoton img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  filter: drop-shadow(1px 1px 1px #00000070);
+}
+
+/* ===== Panel principal ===== */
+.menuPanel {
+  width: 90%;
+  max-width: 900px;
+  background-color: #d5c3cfbd;
+  border-radius: 12px;
+  border: 2px solid #9f8a9ac6;
+  box-shadow: 0px 4px 8px #b90464b6;
+  padding: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+/* ===== Filtros ===== */
+.menuFiltros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.menuBusqueda,
+.menuSelect {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #9f8a9ac6;
+  background-color: #3d2d3aef;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.menuBusqueda::placeholder {
+  color: #ccc;
+}
+
+.menuBusqueda:focus,
+.menuSelect:focus {
+  border-color: #b44a82;
+  background-color: #4a3247ef;
+}
+
+/* ===== Lista de platillos ===== */
+.menuList {
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Scroll personalizado */
+.menuList::-webkit-scrollbar {
+  width: 10px;
+}
+.menuList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.menuList::-webkit-scrollbar-thumb {
+  background-color: #b44a82;
+  border-radius: 10px;
+  border: 2px solid #e6d0dc;
+}
+.menuList::-webkit-scrollbar-thumb:hover {
+  background-color: #dc057b;
+}
+
+/* ===== Cada categoría ===== */
+.categoryTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #b44a82;
+  margin: 25px 0 10px 0;
+}
+
+/* ===== Tarjetas ===== */
+.menuItem {
+  display: flex;
+  align-items: center;
+  background-color: #e5d2d9d5;
+  border: 2px solid #9f8a9ac6;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  padding: 1rem;
+  color: #000;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.menuItem:hover {
+  background-color: #e3cadbee;
+  transform: scale(1.02);
+}
+
+/* Imagen del platillo */
+.menuImg img {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Información */
+.menuInfo {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.menuHeaderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menuPrice {
+  font-weight: bold;
+  color: #b44a82;
+}
+
+.noResult {
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  margin-top: 2rem;
+}
+
+/* ======== RESPONSIVE DESIGN (MÓVILES) ======== */
+
+/* Para tablets en vertical y móviles (breakpoint 768px) */
+@media (max-width: 768px) {
+
+  /* --- Ajustes del Panel --- */
+  .menuPanel {
+    width: 95%; /* Ocupa un poco más de la pantalla */
+    padding: 1rem; /* Reduce el padding interno */
+    margin-top: 1rem; /* Reduce la separación con el header */
+  }
+
+  /* --- Header --- */
+  .menuHeader h1 {
+    font-size: 1.5rem; /* Título de header más pequeño */
+  }
+  .menuBoton {
+    left: 15px; /* Botón un poco más cerca del borde */
+  }
+
+  /* --- Filtros (Esto incluye tu corrección) --- */
+  .menuFiltros {
+    flex-direction: column; /* Apila los filtros */
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .menuBusqueda,
+  .menuSelect {
+    width: 100%; /* Ancho completo */
+    font-size: 0.95rem;
+  }
+  
+  /* --- Títulos de Categoría --- */
+  .categoryTitle {
+    font-size: 1.3rem; /* Título de categoría más pequeño */
+  }
+
+  /* --- Tarjetas de Platillos --- */
+  .menuItem {
+    padding: 0.8rem; /* Padding más pequeño en la tarjeta */
+  }
+
+  .menuImg img {
+    width: 80px; /* Imagen del platillo más pequeña */
+    height: 80px;
+  }
+
+  .menuInfo {
+    margin-left: 10px; /* Menos separación entre imagen y texto */
+  }
+
+  /* Reducir todos los textos dentro de la tarjeta */
+  .menuInfo h3 { /* Asumiendo que el nombre del platillo es h3 */
+    font-size: 1rem;
+  }
+  .menuInfo p { /* Asumiendo que la descripción es p */
+    font-size: 0.85rem;
+  }
+  .menuPrice {
+    font-size: 0.95rem;
+  }
+}
+
+
+/* Para móviles más pequeños (breakpoint 480px) */
+@media (max-width: 480px) {
+  
+  .menuHeader h1 {
+    font-size: 1.3rem; /* Título aún más pequeño */
+  }
+  .menuBoton {
+    width: 40px; /* Botón más pequeño */
+    height: 40px;
+    left: 10px;
+  }
+
+  .menuPanel {
+    width: 98%; /* Casi todo el ancho */
+    padding: 0.5rem;
+  }
+
+  .menuItem {
+    padding: 0.5rem;
+  }
+
+  .menuImg img {
+    width: 70px; /* Imagen aún más pequeña */
+    height: 70px;
+  }
+
+  .menuInfo h3 {
+    font-size: 0.9rem;
+  }
+  .menuInfo p {
+    font-size: 0.8rem;
+  }
+  .menuPrice {
+    font-size: 0.9rem;
+  }
+}
+
+/* ======== RESPONSIVE: MÓVIL HORIZONTAL (LANDSCAPE) ======== */
+
+/* * Se aplica cuando el dispositivo está en horizontal Y
+ * la altura de la pantalla es menor a 500px (típico de un teléfono).
+*/
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* 1. Header: Damos una altura fija para que sea usable */
+  .menuHeader {
+    height: 60px; /* Fija la altura (ya no es 10vh) */
+  }
+  .menuHeader h1 {
+    font-size: 1.4rem; /* Un poco más pequeño */
+  }
+  .menuBoton {
+    left: 15px;
+  }
+
+  /* 2. Panel: Reducimos márgenes para dar más espacio vertical */
+  .menuPanel {
+    margin-top: 1rem;
+    margin-bottom: 1rem; /* Asegura espacio al final */
+  }
+
+  /* * 3. Lista: El cambio más importante. 
+   * Le damos una altura máxima fija en píxeles. 
+  */
+  .menuList {
+    /* Anulamos el 65vh que sería muy pequeño */
+    max-height: 350px; /* Ajusta esta altura fija como veas mejor */
+  }
+
+  /* * 4. Filtros: Aprovechamos el ancho horizontal 
+   * para volver a ponerlos en fila.
+  */
+  .menuFiltros {
+    flex-direction: row; /* Vuelven a estar en horizontal */
+    flex-wrap: wrap;   /* Si no caben, bajan a la siguiente línea */
+    align-items: center;
+  }
+  .menuBusqueda,
+  .menuSelect {
+    flex: 1; /* Hacemos que compartan el espacio */
+    min-width: 200px; /* Evita que se encojan demasiado */
+  }
+}
