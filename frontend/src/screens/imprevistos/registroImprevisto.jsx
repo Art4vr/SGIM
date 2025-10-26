@@ -3,7 +3,8 @@ import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getProductos } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
-import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
+import styles from '../../styles/auth/Register.module.css';
+import stylesCommon from './../../styles/common/common.module.css';
 import api from '../../api/axiosConfig';
 
 const RegistroImprevisto = () => {
@@ -163,15 +164,15 @@ const RegistroImprevisto = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={styles.header}>
-                <button className={styles.menuBoton} onClick={toggleMenu}>
+            <div className={stylesCommon.header}>
+                <button className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
+            <div className={`${stylesCommon.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
