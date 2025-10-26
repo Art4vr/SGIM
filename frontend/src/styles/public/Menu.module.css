@@ -289,15 +289,49 @@
   }
 }
 
-/* Tu query para landscape (horizontal) con nombres corregidos */
+/* ======== RESPONSIVE: MÓVIL HORIZONTAL (LANDSCAPE) ======== */
+
+/* * Se aplica cuando el dispositivo está en horizontal Y
+ * la altura de la pantalla es menor a 500px (típico de un teléfono).
+*/
 @media (orientation: landscape) and (max-height: 500px) {
-  .menuPanel { /* Corregido */
-    height: 95%;
-    flex-direction: row;
-    overflow-y: auto;
+
+  /* 1. Header: Damos una altura fija para que sea usable */
+  .menuHeader {
+    height: 60px; /* Fija la altura (ya no es 10vh) */
+  }
+  .menuHeader h1 {
+    font-size: 1.4rem; /* Un poco más pequeño */
+  }
+  .menuBoton {
+    left: 15px;
   }
 
-  .menuList { /* Corregido */
-    height: auto;
+  /* 2. Panel: Reducimos márgenes para dar más espacio vertical */
+  .menuPanel {
+    margin-top: 1rem;
+    margin-bottom: 1rem; /* Asegura espacio al final */
+  }
+
+  /* * 3. Lista: El cambio más importante. 
+   * Le damos una altura máxima fija en píxeles. 
+  */
+  .menuList {
+    /* Anulamos el 65vh que sería muy pequeño */
+    max-height: 350px; /* Ajusta esta altura fija como veas mejor */
+  }
+
+  /* * 4. Filtros: Aprovechamos el ancho horizontal 
+   * para volver a ponerlos en fila.
+  */
+  .menuFiltros {
+    flex-direction: row; /* Vuelven a estar en horizontal */
+    flex-wrap: wrap;   /* Si no caben, bajan a la siguiente línea */
+    align-items: center;
+  }
+  .menuBusqueda,
+  .menuSelect {
+    flex: 1; /* Hacemos que compartan el espacio */
+    min-width: 200px; /* Evita que se encojan demasiado */
   }
 }
