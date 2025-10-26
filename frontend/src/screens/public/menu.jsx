@@ -12,7 +12,7 @@ export default function Menu() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:3000/api/platillos")
+      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.83"}:3000/api/platillos`) //Modificar el segundo campo dependiendo de la red
       .then((res) => {
         const agrupados = res.data.reduce((acc, platillo) => {
           if (!acc[platillo.categoria]) acc[platillo.categoria] = [];

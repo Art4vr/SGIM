@@ -186,3 +186,118 @@
   font-weight: 500;
   margin-top: 2rem;
 }
+
+/* ======== RESPONSIVE DESIGN (MÓVILES) ======== */
+
+/* Para tablets en vertical y móviles (breakpoint 768px) */
+@media (max-width: 768px) {
+
+  /* --- Ajustes del Panel --- */
+  .menuPanel {
+    width: 95%; /* Ocupa un poco más de la pantalla */
+    padding: 1rem; /* Reduce el padding interno */
+    margin-top: 1rem; /* Reduce la separación con el header */
+  }
+
+  /* --- Header --- */
+  .menuHeader h1 {
+    font-size: 1.5rem; /* Título de header más pequeño */
+  }
+  .menuBoton {
+    left: 15px; /* Botón un poco más cerca del borde */
+  }
+
+  /* --- Filtros (Esto incluye tu corrección) --- */
+  .menuFiltros {
+    flex-direction: column; /* Apila los filtros */
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .menuBusqueda,
+  .menuSelect {
+    width: 100%; /* Ancho completo */
+    font-size: 0.95rem;
+  }
+  
+  /* --- Títulos de Categoría --- */
+  .categoryTitle {
+    font-size: 1.3rem; /* Título de categoría más pequeño */
+  }
+
+  /* --- Tarjetas de Platillos --- */
+  .menuItem {
+    padding: 0.8rem; /* Padding más pequeño en la tarjeta */
+  }
+
+  .menuImg img {
+    width: 80px; /* Imagen del platillo más pequeña */
+    height: 80px;
+  }
+
+  .menuInfo {
+    margin-left: 10px; /* Menos separación entre imagen y texto */
+  }
+
+  /* Reducir todos los textos dentro de la tarjeta */
+  .menuInfo h3 { /* Asumiendo que el nombre del platillo es h3 */
+    font-size: 1rem;
+  }
+  .menuInfo p { /* Asumiendo que la descripción es p */
+    font-size: 0.85rem;
+  }
+  .menuPrice {
+    font-size: 0.95rem;
+  }
+}
+
+
+/* Para móviles más pequeños (breakpoint 480px) */
+@media (max-width: 480px) {
+  
+  .menuHeader h1 {
+    font-size: 1.3rem; /* Título aún más pequeño */
+  }
+  .menuBoton {
+    width: 40px; /* Botón más pequeño */
+    height: 40px;
+    left: 10px;
+  }
+
+  .menuPanel {
+    width: 98%; /* Casi todo el ancho */
+    padding: 0.5rem;
+  }
+
+  .menuItem {
+    padding: 0.5rem;
+  }
+
+  .menuImg img {
+    width: 70px; /* Imagen aún más pequeña */
+    height: 70px;
+  }
+
+  .menuInfo h3 {
+    font-size: 0.9rem;
+  }
+  .menuInfo p {
+    font-size: 0.8rem;
+  }
+  .menuPrice {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tu query para landscape (horizontal) con nombres corregidos */
+@media (orientation: landscape) and (max-height: 500px) {
+  .menuPanel { /* Corregido */
+    height: 95%;
+    flex-direction: row;
+    overflow-y: auto;
+  }
+
+  .menuList { /* Corregido */
+    height: auto;
+  }
+}
