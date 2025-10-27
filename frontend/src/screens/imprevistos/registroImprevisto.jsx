@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
+import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
 import api from '../../api/axiosConfig';
@@ -8,33 +8,45 @@ import stylesCommon from '../../styles/common/common.module.css';
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 
 const RegistroImprevisto = () => {
-    const navigate = useNavigate();
-    const [productos, setProductos] = useState([]);
-    const [inventarios, setInventarios] = useState([]);
+    const { logout, user, loading } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
+    const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({});
+    const [inventarioDisponible, setInventarioDisponible] = useState(null);
+
+    const [productos, setProductos] = useState([]);
+    const [inventarios, setInventarios] = useState([]);
     const [medidas, setMedidas] = useState([]);
-    const { user, loading } = useAuth();
     const [idInventarioProducto, setIdInventarioProducto] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [cantidad, setCantidad] = useState('');
+    const [medidaProducto, setMedidaProducto] = useState('');
     const [idUnidadMedida, setIdUnidadMedida] = useState('');
     const [message, setMessage] = useState('');
+    const [idInventario, setIdInventario] = useState('');
+
     const [menuAbierto, setMenuAbierto] = useState(false);
-    const [unidadMedidaProducto, setUnidadMedidaProducto] = useState('');
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
+        const menuRef = useRef(null);
+        const botonRef = useRef(null);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
         setCargando(true);
         try {
-            const productosRes = await getProductos(); // Obtén los productos
-            setProductos(productosRes.data);
-            const inventariosRes = await getInventarioProducto(); // Obtén el inventario
-            setInventarios(inventariosRes.data);
+             // Obteniendo los productos (tabla Producto)
+            const productosRes = await getProductos();
+            setProductos(productosRes.data || []);
+             // Obteniendo los lotes de productos en inventario (tabla InventarioProducto)
+            const inventariosRes = await api.get('/api/inventario');
+            setInventarios(inventariosRes.data.resultados || []);
+
+            //Obteniendo las unidades de medida disponibles (tabla UnidadMedida)
+            const medidasRes = await api.get('/api/unidades'); // Llamada a la ruta de medidas
+            setMedidas(medidasRes.data);
         } catch (err) {
-            setMensaje('Error al cargar datos');
+            setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
         } finally {
             setCargando(false);
         }
@@ -64,19 +76,51 @@ const RegistroImprevisto = () => {
     }, [menuAbierto]);
 
     const handleProductoChange = (e) => {
-        const idProductoSeleccionado = e.target.value;
+        const idProductoSeleccionado = Number(e.target.value);
         setIdInventarioProducto(idProductoSeleccionado);
-
+        setErrors({});
+        
         // Buscar el producto seleccionado
-        const productoSeleccionado = productos.find(p => p.idProducto === idProductoSeleccionado);
-        const inventarioSeleccionado = inventarios.find(i => i.idProducto === idProductoSeleccionado);
+        const inventarioSeleccionado = inventarios.find(
+            i => i.Producto_idProducto === idProductoSeleccionado
+        );
 
-        if (productoSeleccionado && inventarioSeleccionado) {
-            setUnidadMedidaProducto(productoSeleccionado.unidadMedida); // Unidad de medida desde productos (cocina)
-            setIdUnidadMedida(inventarioSeleccionado.idUnidadMedida); // Unidad de medida desde inventarioProducto (registro)
+        const medidaSeleccionada = medidas.find(
+            m => m.idUnidadMedida === inventarioSeleccionado.UnidadMedida_idUnidadMedida 
+        );
+
+        if (inventarioSeleccionado) {
+            setIdInventario(inventarioSeleccionado.idInventarioProducto);
+            setInventarioDisponible(inventarioSeleccionado.cantidadActual);
+            setMedidaProducto(medidaSeleccionada.abreviatura);
+            setIdUnidadMedida(medidaSeleccionada.idUnidadMedida);
         } else {
-            setUnidadMedidaProducto(''); // Si no se encuentra el producto, limpia el estado
+            setInventarioDisponible(null);
+            setMedidaProducto('');
             setIdUnidadMedida('');
+        }
+    };
+
+    // Add cantidad validation
+    const handleCantidadChange = (e) => {
+        const value = e.target.value;
+        setCantidad(value);
+        
+        if (inventarioDisponible !== null && Number(value) > inventarioDisponible) {
+            setErrors({
+                ...errors,
+                cantidad: `La cantidad no puede superar el inventario disponible (${inventarioDisponible})`
+            });
+        } else if (Number(value) <= 0) {
+            setErrors({
+                ...errors,
+                cantidad: 'La cantidad debe ser mayor a 0'
+            });
+        } else {
+            setErrors({
+                ...errors,
+                cantidad: null
+            });
         }
     };
 
@@ -84,25 +128,41 @@ const RegistroImprevisto = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        if (!idInventarioProducto || !cantidad || !descripcion) {
-            setMessage('Los campos con * son obligatorios.');
+        //Validaciones
+        const newErrors = {};
+        if (!idInventarioProducto) newErrors.producto = 'Debe seleccionar un producto';
+        if (!cantidad) newErrors.cantidad = 'Debe ingresar una cantidad';
+        if (!descripcion.trim()) newErrors.descripcion = 'Debe ingresar una descripción';
+        
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
 
-        try {
-            const response = await axios.post('/api/imprevistos/crear', {
-                idUsuarioReporta: user.id,
-                idInventarioProducto,
-                descripcion,
-                cantidad,
-                idUnidadMedida,
-            });
+        setCargando(true);
+        setTimeout(async () => {
+            try {
+                const response = await api.post('/api/imprevistos/crear', {
+                    idUsuarioReporta: user.id,
+                    idInventarioProducto,
+                    descripcion,
+                    cantidad,
+                    idUnidadMedida: idUnidadMedida,
+                });
+            
+                setMessage('Imprevisto registrado con éxito');
+                // Actualizar el inventario después de registrar el imprevisto
+                await api.put(`/api/inventario/${idInventario}`, {
+                    cantidadActual: inventarioDisponible - Number(cantidad)
+                });
 
-            setMessage('Imprevisto registrado con éxito');
-            setTimeout(() => navigate('/PanelChef'), 1500);
-        } catch (err) {
-            setMessage(err.response?.data?.mensaje || 'Error al registrar imprevisto');
-        }
+                setTimeout(() => navigate('/PanelChef'), 750);
+            } catch (err) {
+                setMessage(err.response?.data?.mensaje || err.message || 'Error al registrar imprevisto-front');
+            } finally {
+                setCargando(false);  // Restaura el botón después de la solicitud
+            }
+        }, 300);  // Retraso de 2 segundos
     };
 
 
@@ -114,15 +174,20 @@ const RegistroImprevisto = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
+
 
     return (
         <div className={styles.container}>
             {/* Encabezado */}
             <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                <button className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
@@ -130,11 +195,13 @@ const RegistroImprevisto = () => {
             </div>
 
             {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+            <div className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
+                    <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
+                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
@@ -154,14 +221,18 @@ const RegistroImprevisto = () => {
                                 value={idInventarioProducto}
                                 onChange={handleProductoChange}
                                 required
+                                className={errors.producto ? styles.errorInput : ''}
                             >
                                 <option value="">Selecciona un producto</option>
                                 {productos.map((p) => (
                                     <option key={p.idProducto} value={p.idProducto}>
-                                        {p.nombre}
+                                        {p.nombre} {inventarios.find(i => i.Producto_idProducto === p.idProducto)?.cantidadActual 
+                                            ? `(Disponible: ${inventarios.find(i => i.Producto_idProducto === p.idProducto).cantidadActual})` 
+                                            : '(Sin stock)'}
                                     </option>
                                 ))}
                             </select>
+                            {errors.producto && <span className={styles.errorText}>{errors.producto}</span>}
                         </div>
 
                         <div className={styles.inputContainer}>
@@ -178,21 +249,25 @@ const RegistroImprevisto = () => {
                             <input
                                 type="number"
                                 value={cantidad}
-                                onChange={(e) => setCantidad(e.target.value)}
+                                onChange={handleCantidadChange}
                                 required
+                                min="0.01"
+                                step="0.01"
+                                className={errors.cantidad ? styles.errorInput : ''}
                             />
+                            {errors.cantidad && <span className={styles.errorText}>{errors.cantidad}</span>}
                         </div>
 
                         <div className={styles.inputContainer}>
-                            <h4>Unidad de Medida: {unidadMedidaProducto}</h4>
+                            <h4>Unidad de Medida: {medidaProducto}</h4>
                         </div>
 
-                        <button className={styles.registerBtn} type="submit">
-                            REGISTRAR IMPREVISTO
+                        <button className={styles.registerBtn} type="submit" disabled={cargando}>
+                            {cargando ? <ClipLoader size={20} color="#fff" /> : 'REGISTRAR IMPREVISTO'}
                         </button>
 
                         <button
-                            className={stylesCommon.backBtn}
+                            className={styles.loginBtn}
                             type="button"
                             onClick={() => navigate('/PanelChef')}
                         >

@@ -1,7 +1,7 @@
 USE makibase;
 
 ALTER TABLE Platillo
-MODIFY column descricion varchar(255),
+MODIFY column descripcion varchar(255),
 ADD COLUMN categoria VARCHAR(100) AFTER descripcion,
 ADD column imagen varchar(100) after categoria;
 
