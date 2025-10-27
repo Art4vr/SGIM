@@ -28,6 +28,9 @@ import OrdenChef from './screens/ordenes/ordenChef';
 //Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
 
+//Importación de las ordenes de mesero
+import OrdenesMesero from './screens/ordenes/ordenMesero'; 
+
 function App() {
   
   const {user,loading} = useAuth();
@@ -42,13 +45,12 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/PanelChef" element={<PanelChef />} />
-          <Route path="/NuevoUsuario" element={<Registro />} />
-     
           <Route path="/Productos" element={<VistaProductos />} />
           <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/Platillos" element={<VistaPlatillos />} />
+
+          <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 
           <Route 
             path="/RegistroImprevisto" 

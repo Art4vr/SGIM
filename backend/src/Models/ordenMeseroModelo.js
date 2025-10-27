@@ -5,48 +5,88 @@
 
 import conexionDB from '../config/db.js';
 
-//--------------------- ALTA ORDEN-----------------------------------------
-// Funcion para dar de alta una orden
-export const agregarOrden = async ({ idUsuario, idMesa })=>{ 
-    const query = 'INSERT INTO Orden (Usuario_idUsuario, Mesa,idMesa) VALUES (?, ?)';
-    try{
-        const[resultado] = await conexionDB.execute(query,[idUsuario, idMesa]);
-        return resultado.insertId; 
-    }catch(err){
-        console.error('Error con la base de datos (agregarOrden): ', err); //manejo de errores
-        throw err;
+// --------------------- CREAR ORDEN -----------------------------------------
+export const agregarOrden = async (conn, { idUsuario, idMesa }) => {
+    const query = `
+        INSERT INTO Orden (Usuario_idUsuario, Mesa_idMesa)
+        VALUES (?, ?)`;
+    try {
+        const [resultado] = await conn.execute(query, [idUsuario, idMesa]);
+        return resultado.insertId; // Retorna el id generado
+    } catch (err) {
+        console.error('Error en agregarOrden:', err);
+        throw new Error('Error al insertar la orden en la base de datos');
     }
 };
 
-//--------------------- ACTUALIZACION ORDEN-----------------------------------------
-// Funcion para actualizar una orden (el mesero y el total al agregar platillos)
-export const actualizarOrden = async ({ idOrden, estado, total }) => {
-    let query = 'UPDATE Orden SET ';
+// --------------------- ACTUALIZAR ORDEN ------------------------------------
+export const actualizarOrden = async (conn, { idOrden, estado, total }) => {
+    const campos = [];
     const params = [];
-    const cambios = [];
 
-    if (estado) {
-        cambios.push('estado = ?');
+    if (estado !== undefined) {
+        campos.push('estado = ?');
         params.push(estado);
     }
-    // actualizacion del total conforme a los platillos agregados
-    if (total) {
-        cambios.push('total = ?');
+
+    if (total !== undefined) {
+        campos.push('total = ?');
         params.push(total);
     }
 
-    // Si no hay campos para actualizar
-    if (cambios.length === 0) return 0;
+    if (campos.length === 0) {
+        console.warn('Ningún campo para actualizar en actualizarOrden()');
+        return 0;
+    }
 
-    query += cambios.join(', ') + ' WHERE idOrden = ?';
+    const query = `
+        UPDATE Orden
+        SET ${campos.join(', ')}
+        WHERE idOrden = ?
+    `;
     params.push(idOrden);
 
     try {
-        const [resultado] = await conexionDB.execute(query, params);
-        return resultado.affectedRows; 
+        const [resultado] = await conn.execute(query, params);
+        return resultado.affectedRows;
     } catch (err) {
-        console.error('Error al modificar orden:', err);
-        throw err;
+        console.error('Error en actualizarOrden:', err);
+        throw new Error('Error al actualizar la orden');
     }
 };
 
+// --------------------- CALCULAR TOTAL DE LA ORDEN ---------------------------
+export const calcularTotalOrden = async (conn, idOrden) => {
+    const query = `
+        SELECT IFNULL(SUM(cantidad * precioUnitario), 0) AS total
+        FROM Platillo_Orden
+        WHERE Orden_idOrden = ?
+    `;
+    try {
+        const [rows] = await conn.execute(query, [idOrden]);
+        return rows[0]?.total ?? 0;
+    } catch (err) {
+        console.error('Error en calcularTotalOrden:', err);
+        throw new Error('Error al calcular el total de la orden');
+    }
+};
+
+// --------------------- FINALIZAR ORDEN ------------------------------------
+export const finalizarOrden = async (conn, idOrden, idMesa) => {
+    try {
+        await conn.beginTransaction();
+
+        // Actualizar el estado de la orden a 'cerrada'
+        await actualizarOrden(conn, { idOrden, estado: 'cerrada' });
+
+        // Liberar la mesa
+        await conn.execute('UPDATE Mesa SET estado = ? WHERE idMesa = ?', ['disponible', idMesa]);
+
+        await conn.commit();
+        return true;
+    } catch (err) {
+        await conn.rollback();
+        console.error('Error al finalizar la orden:', err);
+        throw new Error('Error al finalizar la orden');
+    }
+};
