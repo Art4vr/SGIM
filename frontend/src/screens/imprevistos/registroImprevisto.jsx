@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import styles from '../../styles/auth/Register.module.css';
 import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
+import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 
 const RegistroImprevisto = () => {
     const navigate = useNavigate();
