@@ -1,6 +1,5 @@
 // src/App.jsx
 import React, {useEffect, useState} from 'react'
-import api from './api/axiosConfig';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -11,7 +10,8 @@ import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
-
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -19,8 +19,6 @@ import VistaProductos from './screens/productos/vistaProducto';
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
-//Importación de Imprevistos
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
 
@@ -41,15 +39,32 @@ function App() {
   return (
     
       <BrowserRouter>
-      {/* Rutas de autenticación*/}
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-     
-          <Route path="/Productos" element={<VistaProductos />} />
-          <Route path="/Proveedores" element={<VistaProveedores />} />
+          
+          <Route path="/Productos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProductos />
+            </ProtectedRoute>
+            } 
+          />
 
-          <Route path="/Platillos" element={<VistaPlatillos />} />
+          <Route path="/Platillos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
+              <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Imprevistos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <MostrarImprevistos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route 
             path="/RegistroImprevisto" 
@@ -92,7 +107,7 @@ function App() {
             }
           />
           <Route path="/Menu" element={<Menu />} />
-          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />    
+          <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
         </Routes>
       </BrowserRouter>
   );
