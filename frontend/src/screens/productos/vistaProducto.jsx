@@ -24,6 +24,7 @@ const VistaProductos = () => {
             const res = await getProductos();
             setProductos(res.data);
         } catch (err) {
+            console.error(err);
             setMensaje('Error al cargar productos');
         } finally {
             setCargando(false);
@@ -55,6 +56,7 @@ const VistaProductos = () => {
             setMensaje('Producto eliminado correctamente');
             await cargarProductos();
         } catch (err) {
+            console.error(err);
             setMensaje('Error al eliminar producto');
         } finally {
             setEliminandoId(null);

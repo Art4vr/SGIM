@@ -35,6 +35,11 @@ import { listaMedidasController } from '../Controllers/medidaControlador.js';
 
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
+//importancion de controladores de categoria de platillos
+import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlatilloControlador.js';
+
+//importancion de funciones de ordenMesero
+import ordenMeseroRutas from './ordenMeseroRutas.js';
 
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
