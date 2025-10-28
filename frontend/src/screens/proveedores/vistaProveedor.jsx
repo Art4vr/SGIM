@@ -91,6 +91,27 @@ const VistaProveedores = () => {
         };
     }, [menuAbierto]);
 
+    const [filtros, setFiltros] = useState({
+        nombre: '',
+        telefono: '',
+        correo: ''
+    });
+
+    const handleFiltroChange = (e, campo) => {
+        setFiltros({
+            ...filtros,
+            [campo]: e.target.value
+        });
+    };
+
+    // Lógica del filtrado
+    const proveedoresFiltrados = proveedores.filter((p) =>
+        p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
+        p.telefono.toLowerCase().includes(filtros.telefono.toLowerCase()) &&
+        p.correo.toLowerCase().includes(filtros.correo.toLowerCase())
+    );
+
+
     return (
         <div className={styles.container}>
             {/* Encabezado */}
@@ -105,10 +126,17 @@ const VistaProveedores = () => {
             {/* Menú lateral */}
             <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
+                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                    <li onClick={() => navigate('/Productos')}>Productos</li>
+                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 
+            {/*Contenido principal */}
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
@@ -119,6 +147,33 @@ const VistaProveedores = () => {
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
+
+                        {/* === FILTROS === */}
+                        <div className={stylesCommon.filterContainer}>
+                        <input
+                            type="text"
+                            placeholder="Filtrar por nombre"
+                            value={filtros.nombre}
+                            onChange={(e) => handleFiltroChange(e, 'nombre')}
+                            className={stylesCommon.filterInput}
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Filtrar por teléfono"
+                            value={filtros.telefono}
+                            onChange={(e) => handleFiltroChange(e, 'telefono')}
+                            className={stylesCommon.filterInput}
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Filtrar por correo"
+                            value={filtros.correo}
+                            onChange={(e) => handleFiltroChange(e, 'correo')}
+                            className={stylesCommon.filterInput}
+                        />
+                        </div>
 
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando proveedores...</p>
@@ -137,7 +192,7 @@ const VistaProveedores = () => {
                                     </thead>
                                     <tbody>
                                         {proveedores.length > 0 ? (
-                                            proveedores.map((p) => (
+                                            proveedoresFiltrados.map((p) => (
                                                 <tr key={p.idProveedor}>
                                                     <td>{p.nombre}</td>
                                                     <td>{p.telefono}</td>

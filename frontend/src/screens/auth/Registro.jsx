@@ -88,6 +88,12 @@ const Registro = () => {
                     {/* Menú lateral */}
                     <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                         <ul>
+                            <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                            <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                            <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                            <li onClick={() => navigate('/Productos')}>Productos</li>
+                            <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                            <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
                             <li onClick={handleLogout}>Log Out</li>
                         </ul>
                     </div>
@@ -161,8 +167,8 @@ const Registro = () => {
                             >
                                 VOLVER AL LOGIN
                             </button>
-
-                            {message && <p className={styles.message}>{message}</p>}
+                        
+                        {message && <p className={stylesCommon.message}>{message}</p>}
                         </form>
 
                         {/* <WhatsAppButton pageName="registro"/> */}

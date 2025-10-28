@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Login.module.css';
-
+import stylesCommon from '../../styles/common/common.module.css';
 /**
  * Componente de inicio de sesión (simulado).
  * 
@@ -121,7 +121,7 @@ const Login = ({setUser}) => {
                             REGISTRAR
                         </button>
 
-                        {errorMessage && <p className={styles.message}>{errorMessage}</p>}
+                        {errorMessage && <p className={stylesCommon.message}>{errorMessage}</p>}    
                     </form>
                 </div>
             </div>

@@ -89,6 +89,35 @@ const VistaProductos = () => {
         };
     }, [menuAbierto]);
 
+    // Justo antes del return, debajo de tus otros useState
+        const [filtros, setFiltros] = useState({
+        nombre: '',
+        categoria: '',
+        unidad: '',
+        estado: ''
+        });
+
+        const handleFiltroChange = (e, campo) => {
+        setFiltros({
+            ...filtros,
+            [campo]: e.target.value
+        });
+        };
+
+        // Obtener listas únicas para los selects
+        const categoriasUnicas = [...new Set(productos.map(p => p.categoria))];
+        const unidadesUnicas = [...new Set(productos.map(p => p.unidad))];
+        const estadosUnicos = [...new Set(productos.map(p => p.estado))];
+
+        // Filtrado
+        const productosFiltrados = productos.filter((p) =>
+        p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
+        (filtros.categoria === '' || p.categoria === filtros.categoria) &&
+        (filtros.unidad === '' || p.unidad === filtros.unidad) &&
+        (filtros.estado === '' || p.estado === filtros.estado)
+        );
+
+
     return (
         <div className={styles.container}>
                     {/* Encabezado */}
@@ -96,16 +125,23 @@ const VistaProductos = () => {
                         <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                             <img src="/imagenes/menu_btn.png" alt="Menú" />
                         </button>
-                        <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                        <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
                         <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
                     </div>
         
                     {/* Menú lateral */}
                     <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                         <ul>
+                            <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                            <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                            <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                            <li onClick={() => navigate('/Productos')}>Productos</li>
+                            <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                            <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
                             <li onClick={handleLogout}>Log Out</li>
                         </ul>
                     </div>
+            {/*Contenido principal*/}
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
@@ -115,7 +151,52 @@ const VistaProductos = () => {
                             Agregar Producto
                         </button>
 
-                        {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
+
+                        {/* === FILTROS === */}
+                        <div className={stylesCommon.filterContainer}>
+                        <input
+                            type="text"
+                            placeholder="Filtrar por nombre"
+                            value={filtros.nombre}
+                            onChange={(e) => handleFiltroChange(e, 'nombre')}
+                            className={stylesCommon.filterInput}
+                        />
+
+                        <select
+                            value={filtros.categoria}
+                            onChange={(e) => handleFiltroChange(e, 'categoria')}
+                            className={stylesCommon.filterSelect}
+                        >
+                            <option value="">Todas las categorías</option>
+                            {categoriasUnicas.map((cat, idx) => (
+                            <option key={idx} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+
+                        <select
+                            value={filtros.unidad}
+                            onChange={(e) => handleFiltroChange(e, 'unidad')}
+                            className={stylesCommon.filterSelect}
+                        >
+                            <option value="">Todas las unidades</option>
+                            {unidadesUnicas.map((uni, idx) => (
+                            <option key={idx} value={uni}>{uni}</option>
+                            ))}
+                        </select>
+
+                        <select
+                            value={filtros.estado}
+                            onChange={(e) => handleFiltroChange(e, 'estado')}
+                            className={stylesCommon.filterSelect}
+                        >
+                            <option value="">Todos los estados</option>
+                            {estadosUnicos.map((est, idx) => (
+                            <option key={idx} value={est}>{est}</option>
+                            ))}
+                        </select>
+                        </div>
+
 
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando productos...</p>
@@ -132,7 +213,7 @@ const VistaProductos = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {productos.map((p) => (
+                                        {productosFiltrados.map((p) => (
                                             <tr key={p.idProducto}>
                                                 <td>{p.nombre}</td>
                                                 <td>{p.categoria}</td>

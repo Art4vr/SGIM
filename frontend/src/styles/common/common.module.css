@@ -121,7 +121,9 @@ body {
 
 /* ======== BOTÓN DE VOLVER ======== */
 .backBtn {
-    width: 100%;
+    display: block;
+    width: auto;
+    max-width: 200px;
     padding: 12px;
     font-size: 16px;
     color: white;
@@ -130,8 +132,8 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 20px auto;
+    text-align: center;
 }
 
 .backBtn:hover {
@@ -195,3 +197,68 @@ body {
     scrollbar-width: thin;             /* grosor */
     scrollbar-color: #b44a82 #e8d9e2;  /* color del thumb y del track */
 }
+
+/* ======== MENSAJE ======== */
+.message {
+    font-size: 1rem;
+    color: #df015e;
+    margin: 15px 0;
+    background-color: rgba(100, 100, 100, 0.4); /* fondo oscuro semitransparente */
+    padding: 10px 15px;                  /* espacio interno */
+    border-radius: 6px;                  /* bordes suaves */
+    text-align: center;                  /* centra el texto */
+}
+
+/* Contenedor de filtros */
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0);
+    padding: 15px;
+}
+
+/* Input de búsqueda */
+.filterInput {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterInput:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+}
+
+/* Selects */
+.filterSelect {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterSelect:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+    }
+

@@ -28,8 +28,8 @@ const RegistroImprevisto = () => {
     const [idInventario, setIdInventario] = useState('');
 
     const [menuAbierto, setMenuAbierto] = useState(false);
-        const menuRef = useRef(null);
-        const botonRef = useRef(null);
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -55,6 +55,15 @@ const RegistroImprevisto = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+
+    const toggleMenu = () => {
+        setMenuAbierto(!menuAbierto);
+        };
+
+    const handleLogout = async () => {
+        await api.post('/api/auth/logout');
+        navigate('/');
+    };
 
     useEffect(() => { 
         const handleClickOutside = (event) =>{
@@ -169,39 +178,31 @@ const RegistroImprevisto = () => {
     if (loading) {
         return <div>Cargando usuario...</div>;
     }
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-        };
-
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
-
+    
     return (
         <div className={styles.container}>
             {/* Encabezado */}
             <div className={stylesCommon.header}>
-                <button className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                <button
+                    ref={botonRef}
+                    className={stylesCommon.menuBoton}
+                    onClick={toggleMenu}
+                >
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
                 <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
-            <div className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+            <div
+                ref={menuRef} 
+                className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
+            >
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
-                    <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
@@ -274,7 +275,7 @@ const RegistroImprevisto = () => {
                             VOLVER AL INICIO
                         </button>
 
-                        {message && <p className={styles.message}>{message}</p>}
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
                     </form>
                 </div>
             </div>

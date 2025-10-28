@@ -145,7 +145,7 @@ const MostrarImprevistos = () => {
           <img src="/imagenes/menu_btn.png" alt="Menú" />
         </button>
 
-        <h1 className={stylesCommon.headerTitle}>Sistema de Gestión de Inventarios y Menús</h1>
+        <h1 className={stylesCommon.headerTitle}>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
 
         <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
       </div>
@@ -157,9 +157,11 @@ const MostrarImprevistos = () => {
       >
         <ul>
           <li onClick={() => navigate('/Perfil')}>Perfil</li>
-          <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
           <li onClick={() => navigate('/Platillos')}>Platillos</li>
-          <li onClick={() => navigate('/MostrarImprevistos')}>Ver Imprevistos</li>
+          <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+          <li onClick={() => navigate('/Productos')}>Productos</li>
+          <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+          <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
           <li onClick={handleLogout}>Log Out</li>
         </ul>
       </div>
@@ -194,7 +196,7 @@ const MostrarImprevistos = () => {
             </form>
           </div>
 
-          {mensaje && <p className={styles.message}>{mensaje}</p>}
+          {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
 
           {/* Tabla */}
           <div className={stylesCommon.tableWrapper}>
