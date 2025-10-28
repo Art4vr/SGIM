@@ -13,6 +13,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import api from '../../api/axiosConfig'; // Asegúrate de tener tu instancia configurada
 import stylesCommon from '../../styles/common/common.module.css'; // Ajusta la ruta a tu CSS
+import stylesOrden from '../../styles/ordenes/orden.module.css';
 
 const OrdenMesero = () => {
   const { user } = useAuth();
@@ -200,22 +201,23 @@ const OrdenMesero = () => {
       </div>
 
       {/* 🟩 CONTENIDO PRINCIPAL */}
-      <div style={{ padding: '20px' }}>
-        <h2>Crear Orden</h2>
-        <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
-          <option value="">Selecciona una mesa</option>
-          {mesas.map((mesa) => (
-            <option key={mesa.idMesa} value={mesa.idMesa}>
-              Mesa {mesa.numeroMesa} ({mesa.estado})
-            </option>
-          ))}
-        </select>
-        <button onClick={handleCrearOrden} style={{ marginLeft: '10px' }}>
-          Crear Orden
-        </button>
+      <div className={stylesOrden.contenidoPrincipal}>
+        <h1 className={stylesOrden.tituloPrincipal}>Pedidos</h1>
+          <h2>Crear Orden</h2>
+          <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
+            <option value="">Selecciona una mesa</option>
+            {mesas.map((mesa) => (
+              <option key={mesa.idMesa} value={mesa.idMesa}>
+                Mesa {mesa.numeroMesa} ({mesa.estado})
+              </option>
+            ))}
+          </select>
+          <button onClick={handleCrearOrden} style={{ marginLeft: '10px' }}>
+            Crear Orden
+          </button>
 
         <h2>Órdenes Abiertas</h2>
-        <ul>
+        <ul className={stylesOrden.listaOrdenes}>
           {ordenes.map((orden) => (
             <li key={orden.idOrden}>
               <b>Orden #{orden.idOrden}</b> - Mesa {orden.mesa} - Usuario {orden.usuario} - Total $
@@ -229,14 +231,7 @@ const OrdenMesero = () => {
 
         {/* Vista de platillos de la orden */}
         {ordenSeleccionada && (
-          <div
-            style={{
-              marginTop: '20px',
-              border: '1px solid #ccc',
-              padding: '15px',
-              borderRadius: '8px'
-            }}
-          >
+          <div className={stylesOrden.contenedorPlatillos}>
             <h3>Platillos de Orden #{ordenSeleccionada.idOrden}</h3>
             <button
               style={{ marginBottom: '10px' }}
