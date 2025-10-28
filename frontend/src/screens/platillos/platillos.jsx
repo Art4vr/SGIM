@@ -89,6 +89,28 @@ const VistaPlatillos = () => {
         };
     }, [menuAbierto]);
 
+    const [filtros, setFiltros] = useState({
+        nombre: '',
+        categoria: '',
+        estado: ''
+    });
+
+    const handleFiltroChange = (e, campo) => {
+        setFiltros({
+            ...filtros,
+            [campo]: e.target.value
+        });
+    };
+
+    const platillosFiltrados = platillos.filter((p) => {
+        const coincideNombre = p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
+        const coincideCategoria = filtros.categoria === '' || p.categoria === filtros.categoria;
+        const coincideEstado = filtros.estado === '' || p.estado === filtros.estado;
+        return coincideNombre && coincideCategoria && coincideEstado;
+    });
+
+
+
     return (
         <div className={styles.container}>
         {/* Encabezado */}
@@ -124,6 +146,38 @@ const VistaPlatillos = () => {
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
 
+                        {/* === FILTROS === */}
+                        <div className={stylesCommon.filterContainer}>
+                            <input
+                                type="text"
+                                placeholder="Filtrar por nombre"
+                                value={filtros.nombre}
+                                onChange={(e) => handleFiltroChange(e, 'nombre')}
+                                className={stylesCommon.filterInput}
+                            />
+
+                            <select
+                                value={filtros.categoria}
+                                onChange={(e) => handleFiltroChange(e, 'categoria')}
+                                className={stylesCommon.filterInput}
+                            >
+                                <option value="">Todas las categorías</option>
+                                {[...new Set(platillos.map((p) => p.categoria))].map((cat) => (
+                                <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+
+                            <select
+                                value={filtros.estado}
+                                onChange={(e) => handleFiltroChange(e, 'estado')}
+                                className={stylesCommon.filterInput}
+                            >
+                                <option value="">Todos los estados</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="agotado">Agotado</option>
+                                <option value="descontinuado">Descontinuado</option>
+                            </select>
+                        </div>
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando platillos...</p>
                         ) : (
@@ -141,7 +195,7 @@ const VistaPlatillos = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {platillos.map((p) => (
+                                        {platillosFiltrados.map((p) => (
                                             <tr key={p.idPlatillo}>
                                                 <td>{p.nombre}</td>
                                                 <td>{p.descripcion}</td>
