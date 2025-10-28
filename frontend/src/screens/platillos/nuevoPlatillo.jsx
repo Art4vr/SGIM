@@ -1,30 +1,42 @@
-//pantalla para visualizar detalles de un platillo
 import React, { useState, useEffect } from 'react';
-import { crearPlatillo, modificarPlatillo } from '../../api/platilloApi';
+import { crearPlatillo, modificarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 
-//Cambiar estilos
-import styles from '../../styles/productos/producto.module.css';
+import styles from '../../styles/platillos/nuevoPlatillo.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
 
 const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     const [nombre, setNombre] = useState('');
     const [descripcion, setDescripcion] = useState('');
+    const [idCategoria, setIdCategoria] = useState('');
+    const [imagen, setImagen] = useState('');
     const [precio, setPrecio] = useState('');
     const [estado, setEstado] = useState('disponible');
+    const [categorias, setCategorias] = useState([]);
     const [mensaje, setMensaje] = useState('');
     const [guardadoExitoso, setGuardadoExitoso] = useState(false);
 
     useEffect(() => {
         const cargarDatos = async () => {
             try {
+                const catRes = await getCategoriasPlatillo();
+                const categoriasFormateadas = catRes.data.map(c => ({
+                    idCategoria: c.id_categoria_platillo,
+                    nombre: c.nombre
+                }));
+                setCategorias(categoriasFormateadas);
+
                 if (platillo) {
                     setNombre(platillo.nombre || '');
                     setDescripcion(platillo.descripcion || '');
-                    setPrecio(platillo.precio || '')
+                    setIdCategoria(platillo.id_categoria_platillo?.toString() || '');
+                    setImagen(platillo.imagen || '');
+                    setPrecio(platillo.precio || '');
                     setEstado(platillo.estado || 'disponible');
                 } else {
                     limpiarCampos();
                 }
-            } catch {
+            } catch (err) {
+                console.error(err);
                 setMensaje('Error al cargar datos');
             }
         };
@@ -34,33 +46,42 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     const limpiarCampos = () => {
         setNombre('');
         setDescripcion('');
+        setIdCategoria('');
+        setImagen('');
         setPrecio('');
-        setEstado('vigente');
+        setEstado('disponible');
         setMensaje('');
         setGuardadoExitoso(false);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!nombre || !precio ) {
-            setMensaje('Campos obligatorios, nombre y precio');
+        if (!nombre || !precio || !idCategoria) {
+            setMensaje('Campos obligatorios: nombre, precio y categoría');
             return;
         }
+
         try {
             if (platillo) {
-                await modificarPlatillo(platillo.idPlatillo, { nombre, descripcion, precio, estado });
+                await modificarPlatillo(platillo.idPlatillo, { 
+                    nombre, descripcion, idCategoria, imagen, precio, estado 
+                });
             } else {
-                await crearPlatillo({ nombre, descripcion, precio });
+                await crearPlatillo({ nombre, descripcion, idCategoria, imagen, precio });
             }
+
             setGuardadoExitoso(true);
             setMensaje('✅ Platillo guardado con éxito');
+
             setTimeout(() => {
                 onRefresh();
                 onClose();
                 limpiarCampos();
             }, 1200);
+
         } catch (err) {
-            setMensaje(err.response?.data?.mensaje || 'Error al guardar');
+            console.error(err);
+            setMensaje(err.response?.data?.mensaje || 'Error al guardar platillo');
         }
     };
 
@@ -69,43 +90,56 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
             <div className={styles.modalCard}>
                 <h2 className={styles.modalTitle}>{platillo ? 'Editar Platillo' : 'Agregar Platillo'}</h2>
                 <form onSubmit={handleSubmit}>
-                    {/* Nombre */}
                     <div className={styles.inputContainer}>
                         <label>Nombre</label>
                         <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} />
                     </div>
 
-                    {/* Descripcion */}
                     <div className={styles.inputContainer}>
-                        <label>Descripcion</label>
+                        <label>Descripción</label>
                         <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} />
                     </div>
 
-                    {/* Precio */}
+                    <div className={styles.inputContainer}>
+                        <label>Categoría</label>
+                        <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
+                            
+                            
+                            {platillo && <option value={platillo.idCategoria}>{platillo.categoria}</option>}
+                            {categorias.map(c => (
+                                <option key={c.idCategoria} value={c.idCategoria}>
+                                    {c.nombre}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className={styles.inputContainer}>
+                        <label>Imagen</label>
+                        <input type="text" value={imagen} onChange={e => setImagen(e.target.value)} />
+                    </div>
+
                     <div className={styles.inputContainer}>
                         <label>Precio</label>
                         <input type="text" value={precio} onChange={e => setPrecio(e.target.value)} />
                     </div>
 
-                    {/* Estado (solo para edición) */}
                     {platillo && (
                         <div className={styles.inputContainer}>
                             <label>Estado</label>
                             <select value={estado} onChange={e => setEstado(e.target.value)}>
-                                <option value="Disponible">Disponible</option>
-                                <option value="Agotado">Agotado</option>
-                                <option value="Descontinuado">Descontinuado</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="agotado">Agotado</option>
+                                <option value="descontinuado">Descontinuado</option>
                             </select>
                         </div>
                     )}
 
-                    {/* Botones */}
                     <div className={styles.modalButtons}>
                         <button type="submit" className={styles.btnGuardar}>Guardar</button>
                         <button type="button" className={styles.btnCancelar} onClick={() => { onClose(); limpiarCampos(); }}>Cancelar</button>
                     </div>
 
-                    {/* Mensaje */}
                     {mensaje && (
                         <p className={`${styles.message} ${guardadoExitoso ? styles.exito : styles.error}`}>{mensaje}</p>
                     )}

@@ -1,14 +1,3 @@
-/* ======== REGLAS GENERALES ======== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(to right, #664152, #8c747c);
-}
-
 /* ======== CONTENEDOR PRINCIPAL ======== */
 .container {
     display: flex;
@@ -17,84 +6,6 @@ body {
     height: 100vh; /* Ocupa toda la altura de la pantalla */
     width: 100%; /* Mejor usar 100% en lugar de 100vw para evitar problemas con la barra de desplazamiento */
     min-height: 100vh;
-}
-
-/* Botón de menú */
-.header {
-    height: 20vh; /* Asegura que el header ocupe el 20% de la altura */
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.menuBoton{
-    all: unset;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    color: inherit;
-}
-
-.menuBoton img{
-    cursor: pointer;
-    margin:1rem;
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 10%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
-}
-.menuBoton img:hover{
-    transform: scale(1.10);
-}
-
-.logo {
-    aspect-ratio: 1 / 1; /* Relación cuadrada */
-    max-width: 30%;
-    object-fit: contain; /* Asegura que la imagen no se deforme */
-}
-
-/* ======== SIDEBAR ======== */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100vh;
-    background-color: #3d2d3aef;
-    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
-    padding-top: 4rem;
-    transition: left 0.3s ease;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-}
-
-.sidebarAbierto {
-    left: 0;
-}
-
-.sidebar ul {
-    list-style: none;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar li {
-    width: 100%;
-    color: #f6c9e0;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.sidebar li:hover {
-    background-color: #b44a82;
-    color: #fff;
 }
 
 /* ======== FORMULARIO DE IMPREVISTOS ======== */
@@ -114,6 +25,7 @@ body {
     max-width: 350px;
     text-align: center;
     color: #000;
+    margin-top: 30px;
 }
 
 .inputContainer {

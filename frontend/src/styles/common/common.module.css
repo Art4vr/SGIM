@@ -1,0 +1,264 @@
+/* ======== REGLAS GENERALES ======== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(to right, #664152, #8c747c);
+}
+
+/* ===== Header ===== */
+
+.header {
+    height: 13vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #5e2a45 0%, #b44a82 60%, #e17aa9 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #00000044;
+}
+
+/* ===== Título dentro del header ===== */
+.header h1 {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    letter-spacing: 1px;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 3rem; /* separa del logo o del botón */
+    margin-top: 20px;
+}
+
+/* ===== Botón del menú ===== */
+.menuBoton{
+    all: unset;
+    background: #f8f8f8e1;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 6px;
+    cursor: pointer; 
+    margin: 1rem; 
+    width: 45px; 
+    height: 45px;
+    align-self: flex-start;
+    transition: all 0.2s ease; 
+}
+
+.menuBoton:hover{
+    transform: scale(1.10);
+    background-color: #ffe1ef;
+}
+
+.menuBoton img{
+    aspect-ratio: 1 / 1;
+    
+    /* === AJUSTES === */
+    width: 100%; 
+    height: 100%;
+    object-fit: contain;
+    display: block; 
+}
+
+/* ========== Maki-Logo ======== */
+.logo {
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 30%;
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
+/* ===== Menú lateral ===== */
+
+/* ======== SIDEBAR ======== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%); /* 👈 usa % en lugar de px */
+    width: 250px;
+    height: 100vh;
+    background-color: #3d2d3aef;
+    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    padding-top: 4rem;
+    transition: transform 0.3s ease;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    pointer-events: none; /* desactiva clics cuando está cerrado */
+}
+
+.sidebarAbierto {
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.sidebar ul {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    width: 100%;
+    color: #f6c9e0;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar li:hover {
+    background-color: #b44a82;
+    color: #fff;
+}
+
+/* ======== BOTÓN DE VOLVER ======== */
+.backBtn {
+    display: block;
+    width: auto;
+    max-width: 200px;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #D92579;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.backBtn:hover {
+    background-color: #400C24;
+    transform: scale(1.05);
+}
+
+/* ======= Botón de registrar ========*/
+.registerBtn {
+    display: inline-block;       /* Evita que se expanda al 100% */
+    width: auto;                 /* Solo ocupa lo que necesita */
+    padding: 8px 16px;           /* Ajusta el tamaño del botón */
+    font-size: 15px;
+    color: white;
+    background-color: #D92579;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px auto;           /* Centra el botón horizontalmente */
+    text-align: center;
+}
+
+.registerBtn:hover {
+    background-color: #400C24;
+    transform: scale(1.05);
+}
+
+/* ===== Scrollbar Personalizado ===== */
+
+.tableWrapper {
+    max-height: 400px;          /* Ajusta según el tamaño del panel */
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar {
+    width: 10px;               /* ancho del scroll vertical */
+    height: 10px;              /* alto del scroll horizontal */
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+    background: #e8d9e2;        /* color del fondo del track */
+    border-radius: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #b44a82, #8b3a65);
+    border-radius: 10px;
+    border: 2px solid #e8d9e2;  /* hace que se vea con relieve */
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #dc057b, #a04270);
+    cursor: pointer;
+}
+
+/* Firefox */
+.tableWrapper {
+    scrollbar-width: thin;             /* grosor */
+    scrollbar-color: #b44a82 #e8d9e2;  /* color del thumb y del track */
+}
+
+/* ======== MENSAJE ======== */
+.message {
+    font-size: 1rem;
+    color: #df015e;
+    margin: 15px 0;
+    background-color: rgba(100, 100, 100, 0.4); /* fondo oscuro semitransparente */
+    padding: 10px 15px;                  /* espacio interno */
+    border-radius: 6px;                  /* bordes suaves */
+    text-align: center;                  /* centra el texto */
+}
+
+/* Contenedor de filtros */
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0);
+    padding: 15px;
+}
+
+/* Input de búsqueda */
+.filterInput {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterInput:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+}
+
+/* Selects */
+.filterSelect {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterSelect:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+    }
+

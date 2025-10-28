@@ -91,6 +91,5 @@ export const meController = (req, res) => {
     res.json({
         id: req.user.id, 
         username: req.user.username, 
-        rol: req.user.role
-    });
+        rol: req.user.rol });
 };

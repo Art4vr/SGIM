@@ -1,7 +1,7 @@
 USE makibase;
 
 ALTER TABLE Platillo
-MODIFY column descricion varchar(255),
+MODIFY column descripcion varchar(255),
 ADD COLUMN categoria VARCHAR(100) AFTER descripcion,
 ADD column imagen varchar(100) after categoria;
 
@@ -140,7 +140,6 @@ insert into unidadmedida (idUnidadMedida,medida,abreviatura,medidaEquivalente,fa
  (009002,"FRUTOS ROJOS","vigente",6,2),
  (009001,"HELADO VAINILLA","vigente",6,2),
  (009003,"MANGO","vigente",6,2),
-
  (006002,"AGUACATE","vigente",7,2),
  (002022,"AJO","vigente",7,2),
  (002028,"APIO","vigente",7,3),
