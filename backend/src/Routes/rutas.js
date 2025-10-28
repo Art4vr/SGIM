@@ -68,6 +68,10 @@ router.use('/productos', productoRutas);
 //----------------------- RUTAS DE CATEGORIAS---------------------------
 router.get('/categorias', listaCategoriasController);
 
+
+//----------------------- RUTAS DE CATEGORIAS PLATILLOS---------------------------
+router.get('/categoriasPlatillo', listaCategoriasPlatilloController);
+
 //----------------------- RUTAS DE UNIDADES---------------------------
 router.get('/unidades', listaMedidasController);
 
