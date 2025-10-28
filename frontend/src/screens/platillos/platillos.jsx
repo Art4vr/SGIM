@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { getPlatillos, eliminarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 import { useNavigate } from 'react-router-dom';
 import NuevoPlatillo from './nuevoPlatillo';
@@ -7,6 +8,7 @@ import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 
 const VistaPlatillos = () => {
+    const { logout, user, loading } = useAuth();
     const navigate = useNavigate();
     const [platillos, setPlatillos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -55,7 +57,7 @@ const VistaPlatillos = () => {
             setMensaje('Platillo eliminado correctamente');
             await cargarPlatillos();
         } catch (err) {
-            setMensaje('Error al eliminar platillo');
+            setMensaje(err.response?.data?.mensaje || err.message || 'Error al eliminar platillo');
         } finally {
             setEliminandoId(null);
         }
@@ -66,8 +68,12 @@ const VistaPlatillos = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     useEffect(() => { 

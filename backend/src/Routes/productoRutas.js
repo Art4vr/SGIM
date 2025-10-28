@@ -1,4 +1,8 @@
 import express from 'express';
+
+import { authMiddleware } from '../Middleware/authMiddleware.js';
+import { requirePermission, requireRole } from '../Middleware/roleMiddleware.js';
+
 import {
     
     agregarProductoController,
@@ -10,15 +14,15 @@ import {
     const router = express.Router();
 
 // Obtener todos los productos
-router.get('/',obtenerProductosController);
+router.get('/', authMiddleware, requireRole([1,2,3]), obtenerProductosController);
 
 // Agregar producto
-router.post('/', agregarProductoController);
+router.post('/', authMiddleware, requirePermission('gestionar_productos'), agregarProductoController);
 
 // Modificar producto
-router.put('/:id', modificarProductoController);
+router.put('/:id', authMiddleware, requirePermission('gestionar_productos'), modificarProductoController);
 
 // Eliminar producto
-router.delete('/:id', eliminarProductoController);
+router.delete('/:id', authMiddleware, requirePermission('gestionar_productos'), eliminarProductoController);
 
 export default router;
