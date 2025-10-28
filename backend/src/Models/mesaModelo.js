@@ -6,14 +6,13 @@
 import conexionDB from '../config/db.js';
 
 export const obtenerMesa = async () => {
-    const query = 'SELECT idMesa,estado, numeroMesa FROM Mesa';
+    const query = 'SELECT idMesa,estado, numeroMesa FROM Mesa ORDER BY CASE WHEN estado = "disponible" THEN 0 ELSE 1 END, numeroMesa;';
     const [mesa] = await conexionDB.execute(query);
     return mesa;
 };
 
-
 // Funcion para actualizar la mesa cuando se hace una orden
-export const actualizarMesa = async ({ idMesa, estado }) => {
+export const actualizarMesa = async (conn, { idMesa, estado }) => {
     let query = 'UPDATE Mesa SET ';
     const params = [];
     const cambios = [];
@@ -23,18 +22,16 @@ export const actualizarMesa = async ({ idMesa, estado }) => {
         params.push(estado);
     }
 
-    // Si no hay campos para actualizar
     if (cambios.length === 0) return 0;
 
     query += cambios.join(', ') + ' WHERE idMesa = ?';
     params.push(idMesa);
 
     try {
-        const [resultado] = await conexionDB.execute(query, params);
-        return resultado.affectedRows; 
+        const [resultado] = await conn.execute(query, params); // <- usar la conexión de la transacción
+        return resultado.affectedRows;
     } catch (err) {
         console.error('Error al modificar mesa:', err);
         throw err;
     }
-
 };
