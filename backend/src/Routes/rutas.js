@@ -83,5 +83,7 @@ router.use('/platillos', platilloRutas);
 //----------------------- RUTAS DE MESAS---------------------------
 router.get('/mesas', listaMesasController);
 
+//----------------------- RUTAS DE CATEGORIAS DE PLATILLO ----------------
+router.get('categoriasPlatillos',listaCategoriasPlatilloController);
 
 export default router;
