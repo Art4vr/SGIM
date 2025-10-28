@@ -45,15 +45,36 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!nombre || !idCategoria || !idUnidadMedida) {
-            setMensaje('Todos los campos son obligatorios');
-            return;
+
+        const datos = {};
+
+        if (producto) {
+            // Edición: solo enviar los campos que cambiaron
+            if (nombre.trim() !== producto.nombre) datos.nombre = nombre;
+            if (idCategoria !== producto.idCategoria?.toString()) datos.idCategoria = idCategoria;
+            if (idUnidadMedida !== producto.idUnidadMedida?.toString()) datos.idUnidadMedida = idUnidadMedida;
+            if (estado !== producto.estado) datos.estado = estado;
+
+            if (Object.keys(datos).length === 0) {
+                setMensaje('No hay cambios para guardar');
+                return;
+            }
+        } else {
+            // Alta: todos los campos obligatorios
+            if (!nombre || !idCategoria || !idUnidadMedida) {
+                setMensaje('Todos los campos son obligatorios');
+                return;
+            }
+            datos.nombre = nombre;
+            datos.idCategoria = idCategoria;
+            datos.idUnidadMedida = idUnidadMedida;
         }
+
         try {
             if (producto) {
-                await modificarProducto(producto.idProducto, { nombre, idCategoria, idUnidadMedida, estado });
+                await modificarProducto(producto.idProducto, datos);
             } else {
-                await crearProducto({ nombre, idCategoria, idUnidadMedida });
+                await crearProducto(datos);
             }
             setGuardadoExitoso(true);
             setMensaje('✅ Producto guardado con éxito');
@@ -82,17 +103,14 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                     <div className={styles.inputContainer}>
                         <label>Categoría</label>
                         <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
-                            {/* Opción actual del producto */}
                             {producto && <option value={producto.idCategoria}>{producto.categoria}</option>}
-                            {/* Otras opciones disponibles */}
                             {categorias
-                                .filter(c => c.idCategoria !== producto?.idCategoria) // evitar repetir
+                                .filter(c => c.idCategoria !== producto?.idCategoria)
                                 .map(c => (
                                     <option key={c.idCategoria} value={c.idCategoria.toString()}>
                                         {c.nombre}
                                     </option>
-                                ))
-                            }
+                                ))}
                         </select>
                     </div>
 
@@ -100,21 +118,18 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                     <div className={styles.inputContainer}>
                         <label>Unidad de Medida</label>
                         <select value={idUnidadMedida} onChange={e => setIdUnidadMedida(e.target.value)}>
-                            {/* Opción actual del producto */}
                             {producto && <option value={producto.idUnidadMedida}>{producto.unidad}</option>}
-                            {/* Otras opciones disponibles */}
                             {medidas
-                                .filter(m => m.idUnidadMedida !== producto?.idUnidadMedida) // evitar repetir
+                                .filter(m => m.idUnidadMedida !== producto?.idUnidadMedida)
                                 .map(m => (
                                     <option key={m.idUnidadMedida} value={m.idUnidadMedida.toString()}>
                                         {m.medida} ({m.abreviatura})
                                     </option>
-                                ))
-                            }
+                                ))}
                         </select>
                     </div>
 
-                    {/* Estado (solo para edición) */}
+                    {/* Estado (solo edición) */}
                     {producto && (
                         <div className={styles.inputContainer}>
                             <label>Estado</label>
@@ -129,7 +144,13 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                     {/* Botones */}
                     <div className={styles.modalButtons}>
                         <button type="submit" className={styles.btnGuardar}>Guardar</button>
-                        <button type="button" className={styles.btnCancelar} onClick={() => { onClose(); limpiarCampos(); }}>Cancelar</button>
+                        <button
+                            type="button"
+                            className={styles.btnCancelar}
+                            onClick={() => { onClose(); limpiarCampos(); }}
+                        >
+                            Cancelar
+                        </button>
                     </div>
 
                     {/* Mensaje */}
