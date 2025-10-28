@@ -61,8 +61,12 @@ const RegistroImprevisto = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     useEffect(() => { 
