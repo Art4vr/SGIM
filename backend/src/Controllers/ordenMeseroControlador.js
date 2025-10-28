@@ -23,9 +23,17 @@ export const agregarOrdenController = async (req, res) => {
         if (!idUsuario || !idMesa)
             return res.status(400).json({ mensaje: 'Faltan datos obligatorios' });
 
-        const [mesa] = await conn.execute('SELECT idMesa FROM Mesa WHERE idMesa = ?', [idMesa]);
+        const [mesa] = await conn.execute('SELECT idMesa, estado FROM Mesa WHERE idMesa = ?', [idMesa]);
         if (mesa.length === 0)
             return res.status(400).json({ mensaje: 'Mesa no válida' });
+
+        //validar que no este ocupada o inhabiliatda
+        const estadoMesa = mesa[0].estado ? mesa[0].estado.toLowerCase() : 'disponible';
+        if (estadoMesa === 'ocupada' || estadoMesa === 'inhabilitada') {
+            return res.status(400).json({
+                mensaje: `La mesa está ${estadoMesa}. La mesa ya está ocupada o está inhabilitada.`
+            });
+        }
 
         await conn.beginTransaction();
 
