@@ -29,6 +29,11 @@ const VistaInventario = () => {
     const [medidas, setMedidas] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
+    //Alertas
+    const [lowStockAlerts, setLowStockAlerts] = useState([]);
+    const [expiringAlerts, setExpiringAlerts] = useState([]);
+    const [showLowStockAlert, setShowLowStockAlert] = useState(true);
+    const [showExpiringAlert, setShowExpiringAlert] = useState(true);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -92,9 +97,42 @@ const VistaInventario = () => {
         }
     };
 
+    //Ahora se va a hacer una especie de alerta o modal para cuando un inventario de producto sea igual a su cantidad minima se muestre en pantalla
+    //Igual si la fecha de caducidad esta cerca (por ejemplo 2 dias) se lanza una alerta pero de caducidad
+    useEffect(() => {
+        if (!listaInventario || listaInventario.length === 0) {
+            setLowStockAlerts([]);
+            setExpiringAlerts([]);
+            setShowLowStockAlert(false);
+            setShowExpiringAlert(false);
+            return;
+        }
+
+        const low = listaInventario.filter(item =>
+            item.cantidadActual != null &&
+            item.cantidadMinima != null &&
+            Number(item.cantidadActual) <= Number(item.cantidadMinima)
+        );
+
+        const hoy = new Date();
+        const expiringThresholdDays = 2; // adjust threshold here
+        const exp = listaInventario.filter(item => {
+            if (!item.fechaCaducidad) return false;
+            const fechaCad = new Date(item.fechaCaducidad);
+            const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));
+            return diffDays <= expiringThresholdDays;
+        });
+
+        setLowStockAlerts(low);
+        setExpiringAlerts(exp);
+        setShowLowStockAlert(low.length > 0);
+        setShowExpiringAlert(exp.length > 0);
+    }, [listaInventario]);
+
     if (loading) {
         return <div className={styles.loading}><ClipLoader /></div>;
     }
+
 
     return (
         <div className={styles.container}>
@@ -105,6 +143,40 @@ const VistaInventario = () => {
                 </button>
                 <h1>Inventario de Productos</h1>
                 <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+            </div>
+            {/* Non-blocking alert boxes (keeps existing styles) */}
+            <div style={{ padding: '0 20px' }}>
+                {showLowStockAlert && lowStockAlerts.length > 0 && (
+                    <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                        <strong>Productos con bajo stock ({lowStockAlerts.length}):</strong>
+                        <ul style={{ margin: '8px 0 0 16px' }}>
+                            {lowStockAlerts.map(item => (
+                                <li key={item.idInventarioProducto}>
+                                    {item.nombreProducto} — {item.cantidadActual} (mín {item.cantidadMinima})
+                                </li>
+                            ))}
+                        </ul>
+                        <button onClick={() => setShowLowStockAlert(false)} style={{ marginLeft: 8 }}>
+                            Cerrar
+                        </button>
+                    </div>
+                )}
+
+                {showExpiringAlert && expiringAlerts.length > 0 && (
+                    <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                        <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
+                        <ul style={{ margin: '8px 0 0 16px' }}>
+                            {expiringAlerts.map(item => (
+                                <li key={item.idInventarioProducto}>
+                                    {item.nombreProducto} — caduca: {item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : 'N/A'}
+                                </li>
+                            ))}
+                        </ul>
+                        <button onClick={() => setShowExpiringAlert(false)} style={{ marginLeft: 8 }}>
+                            Cerrar
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Sidebar Menu */}
