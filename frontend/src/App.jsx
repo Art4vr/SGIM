@@ -16,6 +16,10 @@ import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
 
+//Importacion de vista inventario
+import VistaInventario from './screens/inventario/vistaInventario';
+import ActualizarStock from './screens/inventario/actualizarStock';
+
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
@@ -51,6 +55,20 @@ function App() {
           <Route path="/Platillos" element={
             <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
               <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Inventario" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaInventario />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/ActualizarStock" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <ActualizarStock />
             </ProtectedRoute>
             } 
           />

@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/',listarProductosInventarioController);
 
 // Agregar registro de inventario de algún producto
-router.post('/', registrarInventarioController);
+router.post('/crear', registrarInventarioController);
 
 // Modificar lote de producto
 router.put('/:id', actualizarInventarioController);

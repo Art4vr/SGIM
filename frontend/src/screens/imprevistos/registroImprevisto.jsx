@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
+import { getProductos, getUnidades } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
@@ -43,7 +43,7 @@ const RegistroImprevisto = () => {
             setInventarios(inventariosRes.data.resultados || []);
 
             //Obteniendo las unidades de medida disponibles (tabla UnidadMedida)
-            const medidasRes = await api.get('/api/unidades'); // Llamada a la ruta de medidas
+            const medidasRes = await getUnidades(); // Llamada a la ruta de medidas
             setMedidas(medidasRes.data);
         } catch (err) {
             setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
@@ -55,6 +55,10 @@ const RegistroImprevisto = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+    
+    //console.log("productos cargadas: ", productos);
+    //console.log("inventarios cargadas: ", inventarios);
+    console.log("medidaS cargadas: ", medidas);
 
     const toggleMenu = () => {
         setMenuAbierto(!menuAbierto);
@@ -98,9 +102,15 @@ const RegistroImprevisto = () => {
             i => i.Producto_idProducto === idProductoSeleccionado
         );
 
-        const medidaSeleccionada = medidas.find(
-            m => m.idUnidadMedida === inventarioSeleccionado.UnidadMedida_idUnidadMedida 
+        const productoSeleccionado = productos.find(
+            p => p.idProducto === idProductoSeleccionado
         );
+
+
+        const medidaSeleccionada = medidas.find(
+            m => m.medida === productoSeleccionado.unidad
+        );
+        console.log("medidaSeleccionada: ", medidaSeleccionada);
 
         if (inventarioSeleccionado) {
             setIdInventario(inventarioSeleccionado.idInventarioProducto);

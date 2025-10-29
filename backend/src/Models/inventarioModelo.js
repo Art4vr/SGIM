@@ -51,9 +51,10 @@ export const listarInventario = async (filtro,busqueda)=>{ //recibe el filtro y 
 // Funcion para registrar entrada de algun producto al inventario
 export const ingresarInventario = async ({Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida})=>{ //recibe objeto con los datos del nuevo registro de inventario
     const query = 'INSERT INTO inventarioproducto (Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, fechaIngreso, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)';//consulta sql
+    console.log('------ QUERY: ',query,[Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida]);
     try{
         const [resultado] = await conexionDB.execute(query,[Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida]);//ejecuta la consulta, los ? se remplazan por los valores del array (parametros)
-        //console.log('Modelo',resultado);
+        console.log('Modelo',resultado);
         return resultado.insertId; // Devuelve el ID del nuevo imprevisto
     }catch(err){
         console.error('Error con la base de datos (ingresarInventario): ', err);//manejo de errores
