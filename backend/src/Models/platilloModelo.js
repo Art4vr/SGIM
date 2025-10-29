@@ -7,15 +7,15 @@ import conexionDB from '../config/db.js';
 
 //--------------------- ALTA PLATILLO-----------------------------------------
 // Funcion para dar de alta un platillo
-export const agregarPlatillo = async ({ nombre, descripcion = null, categoria, imagen = null, precio })=>{ 
+export const agregarPlatillo = async ({ nombre, descripcion = null, id_categoria, imagen = null, precio })=>{ 
     try{
 
         //Descripcion e imagen es opcional
         const query = `
-            INSERT INTO Platillo (nombre, descripcion, categoria, imagen, precio)
+            INSERT INTO Platillo (nombre, descripcion, id_categoria, imagen, precio)
             VALUES (?, ?, ?, ?, ?)
         `;
-        const params = [nombre, descripcion, categoria, imagen, precio];
+        const params = [nombre, descripcion, id_categoria, imagen, precio];
         const [resultado] = await conexionDB.execute(query, params);
         return resultado.affectedRows; 
 
@@ -40,7 +40,7 @@ export const eliminarPlatillo = async (idPlatillo) => {
 
 //--------------------- ACTUALIZACION PLATILLO -----------------------------------------
 // Funcion para actualizar un platillo
-export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, categoria, imagen, precio, estado }) => {
+export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, id_categoria, imagen, precio, estado }) => {
     let query = 'UPDATE Platillo SET ';
     const params = [];
     const cambios = [];
@@ -53,9 +53,9 @@ export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, cate
         cambios.push('descripcion = ?');
         params.push(descripcion);
     }
-    if (categoria) {
-        cambios.push('categoria = ?');
-        params.push(categoria);
+    if (id_categoria) {
+        cambios.push('id_categoria = ?');
+        params.push(id_categoria);
     }
     if (imagen) {
         cambios.push('imagen = ?');
@@ -73,7 +73,7 @@ export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, cate
     // Si no hay campos para actualizar
     if (cambios.length === 0) return 0;
 
-    query += cambios.join(', ') + ' WHERE idProducto = ?';
+    query += cambios.join(', ') + ' WHERE idPlatillo = ?';
     params.push(idPlatillo);
 
     try {
