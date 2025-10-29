@@ -10,22 +10,21 @@ import styles from '../../styles/auth/Register.module.css'; // Asegúrate que es
 const RegistroImprevisto = () => {
     const { logout, user, loading } = useAuth();
     const [cargando, setCargando] = useState(false);
-    const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-
     const [errors, setErrors] = useState({});
-    const [inventarioDisponible, setInventarioDisponible] = useState(null);
 
-    const [productos, setProductos] = useState([]);
-    const [inventarios, setInventarios] = useState([]);
-    const [medidas, setMedidas] = useState([]);
-    const [idInventarioProducto, setIdInventarioProducto] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-    const [cantidad, setCantidad] = useState('');
-    const [medidaProducto, setMedidaProducto] = useState('');
-    const [idUnidadMedida, setIdUnidadMedida] = useState('');
-    const [message, setMessage] = useState('');
-    const [idInventario, setIdInventario] = useState('');
+    const [productos, setProductos] = useState([]);//lista de todos los productos 
+    const [inventarios, setInventarios] = useState([]);//lista de todos los inventarios
+    const [medidas, setMedidas] = useState([]);//lista de todas las medidas
+    const [descripcion, setDescripcion] = useState('');//descripcion que agrega el usuario sobre el imprevisto
+    const [cantidad, setCantidad] = useState('');//cantidad ingresada
+    const [medidaProducto, setMedidaProducto] = useState('');//unidad de medida equivalente al producto seleccionado
+    const [medidaInventario, setMedidaInventario] = useState('');//unidad de medida equivalente al inventario de dicho producto
+    const [message, setMessage] = useState('');//variable de mensajes de error
+    const [inventario, setInventario] = useState('');//objeto del inventario correspondiente al producto seleccionado
+
+    const [selectedProductId, setSelectedProductId] = useState('');
+    const [cantidadConvertida, setCantidadConvertida] = useState(0.0);
 
     const [menuAbierto, setMenuAbierto] = useState(false);
     const menuRef = useRef(null);
@@ -40,13 +39,14 @@ const RegistroImprevisto = () => {
             setProductos(productosRes.data || []);
              // Obteniendo los lotes de productos en inventario (tabla InventarioProducto)
             const inventariosRes = await api.get('/api/inventario');
-            setInventarios(inventariosRes.data.resultados || []);
+            setInventarios(inventariosRes.data?.resultados || []);
 
             //Obteniendo las unidades de medida disponibles (tabla UnidadMedida)
             const medidasRes = await getUnidades(); // Llamada a la ruta de medidas
-            setMedidas(medidasRes.data);
+            setMedidas(medidasRes.data || []);
+
         } catch (err) {
-            setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
+            setMessage('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
         } finally {
             setCargando(false);
         }
@@ -55,10 +55,6 @@ const RegistroImprevisto = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
-    
-    //console.log("productos cargadas: ", productos);
-    //console.log("inventarios cargadas: ", inventarios);
-    console.log("medidaS cargadas: ", medidas);
 
     const toggleMenu = () => {
         setMenuAbierto(!menuAbierto);
@@ -93,34 +89,33 @@ const RegistroImprevisto = () => {
     }, [menuAbierto]);
 
     const handleProductoChange = (e) => {
+        // Recibe el id del producto seleccionado
         const idProductoSeleccionado = Number(e.target.value);
-        setIdInventarioProducto(idProductoSeleccionado);
+        setSelectedProductId(e.target.value); // Set the selected product ID
         setErrors({});
         
-        // Buscar el producto seleccionado
-        const inventarioSeleccionado = inventarios.find(
-            i => i.Producto_idProducto === idProductoSeleccionado
-        );
+        // Buscar el objeto de inventario correspondiente al id del producto seleccionado
+        const inventarioSeleccionado = inventarios.find(i => i.Producto_idProducto === idProductoSeleccionado) || null;
 
-        const productoSeleccionado = productos.find(
-            p => p.idProducto === idProductoSeleccionado
-        );
+        //Busca el objeto del producto correspondiente al id del producto seleccionado
+        const productoSeleccionado = productos.find(p => p.idProducto === idProductoSeleccionado) || null;
 
+        //Busca el objeto de medida correspondiente a la medida del producto seleccionado
+        const medidaSeleccionadaProductos = productoSeleccionado ? medidas.find(m => m.medida === productoSeleccionado.unidad) || null : null;
+        //console.log("inventario seleccionado: ", inventarioSeleccionado);
+        //console.log("producto seleccionado: ", productoSeleccionado);
 
-        const medidaSeleccionada = medidas.find(
-            m => m.medida === productoSeleccionado.unidad
-        );
-        console.log("medidaSeleccionada: ", medidaSeleccionada);
+        //Busca el objeto de medida correspondiente al inventario de dicho producto seleccionado
+        const medidaSeleccionadaInventario = inventarioSeleccionado ? medidas.find(m => m.idUnidadMedida === inventarioSeleccionado.UnidadMedida_idUnidadMedida) || null : null;
 
         if (inventarioSeleccionado) {
-            setIdInventario(inventarioSeleccionado.idInventarioProducto);
-            setInventarioDisponible(inventarioSeleccionado.cantidadActual);
-            setMedidaProducto(medidaSeleccionada.abreviatura);
-            setIdUnidadMedida(medidaSeleccionada.idUnidadMedida);
+            setInventario(inventarioSeleccionado);
+            setMedidaProducto(medidaSeleccionadaProductos);
+            setMedidaInventario(medidaSeleccionadaInventario);
         } else {
-            setInventarioDisponible(null);
+            setInventario('');
             setMedidaProducto('');
-            setIdUnidadMedida('');
+            setMedidaInventario('');
         }
     };
 
@@ -128,11 +123,28 @@ const RegistroImprevisto = () => {
     const handleCantidadChange = (e) => {
         const value = e.target.value;
         setCantidad(value);
-        
-        if (inventarioDisponible !== null && Number(value) > inventarioDisponible) {
+
+        if (!value || !medidaProducto?.factorConversion) {
+            setCantidadConvertida(0);
+            return;
+        }
+
+        //hay que hacer una conversion de cantidad
+        //actualmente se usa la cantidad correspondiente a la tabla inventarioProducto
+        //entonces se hace una conversion respecto a la unidad de medida del producto hacia la unidad de medida correspondiente en inventarioProducto
+        //se usa la columna factorConversion y medidaEquivalente (ej. 'Kilogramo') de la tabla unidadMedida para hacer la conversion
+        //en el caso de medida equivalente habria que mapear medidas de nuevo
+
+        //ej. cantidad del producto -> gramo | se convierte a kilogramo | multiplica por factorConversion -> 0.001
+
+        //unidad de medida: gramo           100                  0.001
+        const cantidadConv = (Number(value) * Number(medidaProducto.factorConversion))
+        setCantidadConvertida(cantidadConv);
+
+        if (inventario?.cantidadActual !== null && Number(cantidadConv) > inventario.cantidadActual) {
             setErrors({
                 ...errors,
-                cantidad: `La cantidad no puede superar el inventario disponible (${inventarioDisponible})`
+                cantidad: `La cantidad no puede superar el inventario disponible (${inventario.cantidadActual})`
             });
         } else if (Number(value) <= 0) {
             setErrors({
@@ -153,9 +165,11 @@ const RegistroImprevisto = () => {
 
         //Validaciones
         const newErrors = {};
-        if (!idInventarioProducto) newErrors.producto = 'Debe seleccionar un producto';
+        if (!inventario?.idInventarioProducto) newErrors.producto = 'Debe seleccionar un producto';
         if (!cantidad) newErrors.cantidad = 'Debe ingresar una cantidad';
         if (!descripcion.trim()) newErrors.descripcion = 'Debe ingresar una descripción';
+        
+
         
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -164,19 +178,21 @@ const RegistroImprevisto = () => {
 
         setCargando(true);
         setTimeout(async () => {
+            console.log("cantidad enviada a imprevistos: ", cantidad);
+            console.log("cantidad enviada a inventario: ", inventario.cantidadActual, " - ", cantidadConvertida);
             try {
                 const response = await api.post('/api/imprevistos/crear', {
                     idUsuarioReporta: user.id,
-                    idInventarioProducto,
+                    idInventarioProducto: inventario.idInventarioProducto,
                     descripcion,
-                    cantidad,
-                    idUnidadMedida: idUnidadMedida,
+                    cantidad: Number(cantidad),
+                    idUnidadMedida: medidaProducto?.idUnidadMedida ?? null,
                 });
             
                 setMessage('Imprevisto registrado con éxito');
                 // Actualizar el inventario después de registrar el imprevisto
-                await api.put(`/api/inventario/${idInventario}`, {
-                    cantidadActual: inventarioDisponible - Number(cantidad)
+                await api.put(`/api/inventario/${inventario.idInventarioProducto}`, {
+                    cantidadActual: (inventario.cantidadActual ?? 0) - Number(cantidadConvertida)
                 });
 
                 setTimeout(() => navigate('/PanelChef'), 750);
@@ -233,7 +249,7 @@ const RegistroImprevisto = () => {
                         <div className={styles.inputContainer}>
                             <h4>Producto:</h4>
                             <select
-                                value={idInventarioProducto}
+                                value={selectedProductId}
                                 onChange={handleProductoChange}
                                 required
                                 className={errors.producto ? styles.errorInput : ''}
@@ -274,7 +290,7 @@ const RegistroImprevisto = () => {
                         </div>
 
                         <div className={styles.inputContainer}>
-                            <h4>Unidad de Medida: {medidaProducto}</h4>
+                            <h4>Unidad de Medida: {medidaProducto.abreviatura}</h4>
                         </div>
 
                         <button className={styles.registerBtn} type="submit" disabled={cargando}>
@@ -289,7 +305,7 @@ const RegistroImprevisto = () => {
                             VOLVER AL INICIO
                         </button>
 
-                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
+                        {message && <p className={stylesCommon.message}>{message}</p>}
                     </form>
                 </div>
             </div>
