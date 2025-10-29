@@ -39,7 +39,7 @@
 /* Subtítulos */
 .contenidoPrincipal h3,
 .contenidoPrincipal h4 {
-  color: #4caf50;
+  color: #df0a9b;
   margin-top: 15px;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .contenedorPlatillos button:hover {
-  background-color: #2e7d32;
+  background-color: #be1111;
 }
 
 /* ----- RESPONSIVE ----- */
