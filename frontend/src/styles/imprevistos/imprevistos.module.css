@@ -1,0 +1,106 @@
+/* ======== CONTENEDOR PRINCIPAL ======== */
+.registerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 13vh); /* deja espacio para el header */
+    padding: 40px 20px;
+}
+
+/* ======== TARJETA CENTRAL ======== */
+.registerCard {
+    width: 90%;                     /* ocupa el 90% del ancho del contenedor */
+    max-width: 1000px;              /* límite máximo para pantallas grandes */
+    margin: 0 auto;                 /* centra horizontalmente */
+    padding: 40px;
+    border-radius: 12px;
+    background: rgba(218, 216, 217, 0.9);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #000;
+    text-align: center;
+}
+
+
+/* ======== TÍTULO PRINCIPAL ======== */
+.title {
+    font-size: 2rem;
+    color: #400C24;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+/* ======== FILTROS Y BUSCADOR ======== */
+.filterRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.busqueda,
+.searchForm input[type="text"],
+.filterRow select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+    font-size: 1rem;
+    min-width: 180px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.busqueda::placeholder {
+    color: #ccc;
+}
+
+.busqueda:focus {
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+}
+
+/* ======== FORMULARIO DE BÚSQUEDA ======== */
+.searchForm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ======== TABLA ======== */
+.Table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.Table th {
+    background-color: #b44a82;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.Table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+}
+
+.Table tr:hover {
+    background-color: rgba(255, 210, 230, 0.5);
+    transition: background-color 0.3s ease;
+}
+

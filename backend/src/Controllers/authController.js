@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 //importar modelo para login, consulta los datos del usuario
-import { obtenerUsuario, crearUsuario } from '../Models/usuarioModelo.js';
+import { obtenerUsuario } from '../Models/usuarioModelo.js';
+
+//importar modelo para el registro de accesos
+import { crearRegistroAcceso } from '../Models/registroAccesoModelo.js';
 
 // Función auxiliar para firmar (crear) un token JWT con un payload personalizado y duración
 const signToken = (payload) => // payload: objeto con datos del usuario (id, username, rol)
@@ -16,8 +19,10 @@ const signToken = (payload) => // payload: objeto con datos del usuario (id, use
 
 export const loginController = async (req,res) => { //crea la funcion asincrona que maneja la solicitud y la respuesta del login
     const {username,password} = req.body; //extrae el username y la contraseña del cuerpo de la solicitud
+    const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     if (!username?.trim() || !password?.trim()) { //valida que los campos no queden vacios
+        await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, motivo: 'Login invalido', detalle: 'Campos vacíos' });
         return res.status(400).json({ mensaje: 'Usuario y contraseña son requeridos' }); 
     }
 
@@ -25,6 +30,7 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
         //const {username,password} = req.body;
         const resultados = await obtenerUsuario(username); //llama a la funcion del modelo para obtener el usuario
         if (resultados.length === 0) { //si no se encuentra al usuario hay error
+            await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, motivo: 'Login fallido', detalle: 'Usuario no encontrado' });
             return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
         }
 
@@ -32,6 +38,7 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
         const match = await bcrypt.compare(password,usuario.password);//compara la contraseña ingresada con la almacenada (encriptada)
 
         if (!match){//si no hay coincidencia hay error
+            await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, usuario_id: usuario.idUsuario, motivo: 'Login fallido', detalle: 'Contraseña incorrecta' });
             return res.status(401).json({mensaje: 'Username o Contraseña incorrectos'});
         }
 
@@ -60,6 +67,7 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
         });
     } catch(err){//manejo de errores
         console.error('Error al iniciar sesion:',err);
+        await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, motivo: 'Error servidor', detalle: err.message });
         res.status(500).json({//error del servidor
             mensaje: err.message || 'Error con la solicitud'
         });
@@ -91,6 +99,5 @@ export const meController = (req, res) => {
     res.json({
         id: req.user.id, 
         username: req.user.username, 
-        rol: req.user.role
-    });
+        rol: req.user.rol });
 };

@@ -1,6 +1,9 @@
 import express from 'express';
+
+import { authMiddleware } from '../Middleware/authMiddleware.js';
+import { requirePermission, requireRole } from '../Middleware/roleMiddleware.js';
+
 import {
-    
     agregarPlatilloController,
     eliminarPlatilloController,
     modificarPlatilloController,
@@ -9,16 +12,16 @@ import {
 
 const router = express.Router();
 
-// Obtener todos los productos
-router.get('/',obtenerPlatillosController);
+// Obtener todos los platillos
+router.get('/', authMiddleware, requireRole([1,3,4]), obtenerPlatillosController);
 
-// Agregar producto
-router.post('/', agregarPlatilloController);
+// Agregar platillos
+router.post('/', authMiddleware, requirePermission('gestionar_platillos'), agregarPlatilloController);
 
-// Modificar producto
-router.put('/:id', modificarPlatilloController);
+// Modificar platillos
+router.put('/:id', authMiddleware, requirePermission('gestionar_platillos'), modificarPlatilloController);
 
-// Eliminar producto
-router.delete('/:id', eliminarPlatilloController);
+// Eliminar platillos
+router.delete('/:id', authMiddleware, requirePermission('gestionar_platillos'), eliminarPlatilloController);
 
 export default router;

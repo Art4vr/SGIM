@@ -7,3 +7,4 @@ entrar a la carpeta de backend y ejecutar el hash para las contraseñas, en caso
 
 cd backend 
 node src/scripts/hash_existing_passwords.js
+node --experimental-vm-modules node_modules/jest/bin/jest.js

@@ -1,38 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
+import { ClipLoader } from 'react-spinners';  // Si usas react-spinners
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { getProductos, getInventarioProducto } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
-import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 import api from '../../api/axiosConfig';
+import stylesCommon from '../../styles/common/common.module.css';
+import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 
 const RegistroImprevisto = () => {
-    const navigate = useNavigate();
-    const [productos, setProductos] = useState([]);
-    const [inventarios, setInventarios] = useState([]);
+    const { logout, user, loading } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
+    const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({});
+    const [inventarioDisponible, setInventarioDisponible] = useState(null);
+
+    const [productos, setProductos] = useState([]);
+    const [inventarios, setInventarios] = useState([]);
     const [medidas, setMedidas] = useState([]);
-    const { user, loading } = useAuth();
     const [idInventarioProducto, setIdInventarioProducto] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [cantidad, setCantidad] = useState('');
+    const [medidaProducto, setMedidaProducto] = useState('');
     const [idUnidadMedida, setIdUnidadMedida] = useState('');
     const [message, setMessage] = useState('');
-    const [unidadMedidaProducto, setUnidadMedidaProducto] = useState('');
+    const [idInventario, setIdInventario] = useState('');
 
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
         setCargando(true);
         try {
-            const productosRes = await getProductos(); // Obtén los productos
-            setProductos(productosRes.data);
-            const inventariosRes = await getInventarioProducto(); // Obtén el inventario
-            setInventarios(inventariosRes.data);
+             // Obteniendo los productos (tabla Producto)
+            const productosRes = await getProductos();
+            setProductos(productosRes.data || []);
+             // Obteniendo los lotes de productos en inventario (tabla InventarioProducto)
+            const inventariosRes = await api.get('/api/inventario');
+            setInventarios(inventariosRes.data.resultados || []);
+
+            //Obteniendo las unidades de medida disponibles (tabla UnidadMedida)
+            const medidasRes = await api.get('/api/unidades'); // Llamada a la ruta de medidas
+            setMedidas(medidasRes.data);
         } catch (err) {
-            setMensaje('Error al cargar datos');
+            setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
         } finally {
             setCargando(false);
         }
@@ -42,52 +56,6 @@ const RegistroImprevisto = () => {
         cargarDatos();
     }, []);
 
-    const handleProductoChange = (e) => {
-        const idProductoSeleccionado = e.target.value;
-        setIdInventarioProducto(idProductoSeleccionado);
-
-        // Buscar el producto seleccionado
-        const productoSeleccionado = productos.find(p => p.idProducto === idProductoSeleccionado);
-        const inventarioSeleccionado = inventarios.find(i => i.idProducto === idProductoSeleccionado);
-
-        if (productoSeleccionado && inventarioSeleccionado) {
-            setUnidadMedidaProducto(productoSeleccionado.unidadMedida); // Unidad de medida desde productos (cocina)
-            setIdUnidadMedida(inventarioSeleccionado.idUnidadMedida); // Unidad de medida desde inventarioProducto (registro)
-        } else {
-            setUnidadMedidaProducto(''); // Si no se encuentra el producto, limpia el estado
-            setIdUnidadMedida('');
-        }
-    };
-
-    // Manejo de registro de imprevisto
-    const handleRegister = async (e) => {
-        e.preventDefault();
-
-        if (!idInventarioProducto || !cantidad || !descripcion) {
-            setMessage('Los campos con * son obligatorios.');
-            return;
-        }
-
-        try {
-            const response = await axios.post('/api/imprevistos/crear', {
-                idUsuarioReporta: user.id,
-                idInventarioProducto,
-                descripcion,
-                cantidad,
-                idUnidadMedida,
-            });
-
-            setMessage('Imprevisto registrado con éxito');
-            setTimeout(() => navigate('/PanelChef'), 1500);
-        } catch (err) {
-            setMessage(err.response?.data?.mensaje || 'Error al registrar imprevisto');
-        }
-    };
-
-
-    if (loading) {
-        return <div>Cargando usuario...</div>;
-    }
     const toggleMenu = () => {
         setMenuAbierto(!menuAbierto);
         };
@@ -97,22 +65,144 @@ const RegistroImprevisto = () => {
         navigate('/');
     };
 
+    useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
+
+    const handleProductoChange = (e) => {
+        const idProductoSeleccionado = Number(e.target.value);
+        setIdInventarioProducto(idProductoSeleccionado);
+        setErrors({});
+        
+        // Buscar el producto seleccionado
+        const inventarioSeleccionado = inventarios.find(
+            i => i.Producto_idProducto === idProductoSeleccionado
+        );
+
+        const medidaSeleccionada = medidas.find(
+            m => m.idUnidadMedida === inventarioSeleccionado.UnidadMedida_idUnidadMedida 
+        );
+
+        if (inventarioSeleccionado) {
+            setIdInventario(inventarioSeleccionado.idInventarioProducto);
+            setInventarioDisponible(inventarioSeleccionado.cantidadActual);
+            setMedidaProducto(medidaSeleccionada.abreviatura);
+            setIdUnidadMedida(medidaSeleccionada.idUnidadMedida);
+        } else {
+            setInventarioDisponible(null);
+            setMedidaProducto('');
+            setIdUnidadMedida('');
+        }
+    };
+
+    // Add cantidad validation
+    const handleCantidadChange = (e) => {
+        const value = e.target.value;
+        setCantidad(value);
+        
+        if (inventarioDisponible !== null && Number(value) > inventarioDisponible) {
+            setErrors({
+                ...errors,
+                cantidad: `La cantidad no puede superar el inventario disponible (${inventarioDisponible})`
+            });
+        } else if (Number(value) <= 0) {
+            setErrors({
+                ...errors,
+                cantidad: 'La cantidad debe ser mayor a 0'
+            });
+        } else {
+            setErrors({
+                ...errors,
+                cantidad: null
+            });
+        }
+    };
+
+    // Manejo de registro de imprevisto
+    const handleRegister = async (e) => {
+        e.preventDefault();
+
+        //Validaciones
+        const newErrors = {};
+        if (!idInventarioProducto) newErrors.producto = 'Debe seleccionar un producto';
+        if (!cantidad) newErrors.cantidad = 'Debe ingresar una cantidad';
+        if (!descripcion.trim()) newErrors.descripcion = 'Debe ingresar una descripción';
+        
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setCargando(true);
+        setTimeout(async () => {
+            try {
+                const response = await api.post('/api/imprevistos/crear', {
+                    idUsuarioReporta: user.id,
+                    idInventarioProducto,
+                    descripcion,
+                    cantidad,
+                    idUnidadMedida: idUnidadMedida,
+                });
+            
+                setMessage('Imprevisto registrado con éxito');
+                // Actualizar el inventario después de registrar el imprevisto
+                await api.put(`/api/inventario/${idInventario}`, {
+                    cantidadActual: inventarioDisponible - Number(cantidad)
+                });
+
+                setTimeout(() => navigate('/PanelChef'), 750);
+            } catch (err) {
+                setMessage(err.response?.data?.mensaje || err.message || 'Error al registrar imprevisto-front');
+            } finally {
+                setCargando(false);  // Restaura el botón después de la solicitud
+            }
+        }, 300);  // Retraso de 2 segundos
+    };
+
+
+    if (loading) {
+        return <div>Cargando usuario...</div>;
+    }
+    
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={styles.header}>
-                <button className={styles.menuBoton} onClick={toggleMenu}>
+            <div className={stylesCommon.header}>
+                <button
+                    ref={botonRef}
+                    className={stylesCommon.menuBoton}
+                    onClick={toggleMenu}
+                >
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
+                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
+            <div
+                ref={menuRef} 
+                className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
+            >
                 <ul>
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                    <li onClick={() => navigate('/Ordenes')}>Órdenes</li>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
+                    <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
@@ -132,14 +222,18 @@ const RegistroImprevisto = () => {
                                 value={idInventarioProducto}
                                 onChange={handleProductoChange}
                                 required
+                                className={errors.producto ? styles.errorInput : ''}
                             >
                                 <option value="">Selecciona un producto</option>
                                 {productos.map((p) => (
                                     <option key={p.idProducto} value={p.idProducto}>
-                                        {p.nombre}
+                                        {p.nombre} {inventarios.find(i => i.Producto_idProducto === p.idProducto)?.cantidadActual 
+                                            ? `(Disponible: ${inventarios.find(i => i.Producto_idProducto === p.idProducto).cantidadActual})` 
+                                            : '(Sin stock)'}
                                     </option>
                                 ))}
                             </select>
+                            {errors.producto && <span className={styles.errorText}>{errors.producto}</span>}
                         </div>
 
                         <div className={styles.inputContainer}>
@@ -156,17 +250,21 @@ const RegistroImprevisto = () => {
                             <input
                                 type="number"
                                 value={cantidad}
-                                onChange={(e) => setCantidad(e.target.value)}
+                                onChange={handleCantidadChange}
                                 required
+                                min="0.01"
+                                step="0.01"
+                                className={errors.cantidad ? styles.errorInput : ''}
                             />
+                            {errors.cantidad && <span className={styles.errorText}>{errors.cantidad}</span>}
                         </div>
 
                         <div className={styles.inputContainer}>
-                            <h4>Unidad de Medida: {unidadMedidaProducto}</h4>
+                            <h4>Unidad de Medida: {medidaProducto}</h4>
                         </div>
 
-                        <button className={styles.registerBtn} type="submit">
-                            REGISTRAR IMPREVISTO
+                        <button className={styles.registerBtn} type="submit" disabled={cargando}>
+                            {cargando ? <ClipLoader size={20} color="#fff" /> : 'REGISTRAR IMPREVISTO'}
                         </button>
 
                         <button
@@ -177,7 +275,7 @@ const RegistroImprevisto = () => {
                             VOLVER AL INICIO
                         </button>
 
-                        {message && <p className={styles.message}>{message}</p>}
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
                     </form>
                 </div>
             </div>

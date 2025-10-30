@@ -11,6 +11,6 @@ const router = express.Router();
 router.post('/crear', authMiddleware, requireRole([3]), nuevoImprevistoController);
 
 //Listar Imprevistos -> Gerente | Chef - Rol 1|3
-router.get('/', authMiddleware, requireRole([1,3]), consultaImprevistoController);
+router.get('/listar', authMiddleware, requireRole([1,3]), consultaImprevistoController);
 
 export default router;

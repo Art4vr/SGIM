@@ -1,0 +1,124 @@
+/* ======== CONTENIDO PRINCIPAL ======== */
+.bodyContainer {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 2rem;
+}
+
+/* ======== TARJETA DE REGISTRO ======== */
+.registerContainer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    margin-top: 8rem; /* o el valor que se vea mejor */
+}
+
+.registerCard {
+    background-color: #d5c3cfbd;
+    border-radius: 12px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
+    padding: 2rem;
+    width: 85%;
+    max-width: 1000px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ======== TÍTULOS ======== */
+.title {
+    color: #000000ef;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.message {
+    color: #fff;
+    background-color: rgba(180, 74, 130, 0.8);
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+}
+
+/* ======== TABLA ======== */
+.tableWrapper {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+
+.productTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.productTable th {
+    background-color: #b44a82;
+    color: white;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+.productTable td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.productTable tr:hover {
+    background-color: #f0d8e3;
+}
+
+/* ===== Botones de acciones ===== */
+.acciones button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+
+}
+
+.acciones button:hover {
+    transform: scale(1.2);
+}
+
+/* Botón editar */
+.acciones button:first-child {
+    background-color: #b44a82;
+}
+
+.acciones button:first-child:hover {
+    background-color: #dc057b;
+    transform: scale(1.1);
+}
+
+/* Botón eliminar */
+.acciones button:last-child {
+    background-color: #992f53;
+}
+
+.acciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
+}
+
+.noData {
+    text-align: center;
+    color: #555;
+    padding: 1rem;
+}
+
+/* ======== TEXTO DE CARGA ======== */
+.loadingText {
+    color: #fff;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+

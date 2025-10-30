@@ -13,7 +13,7 @@ import conexionDB from '../config/db.js';
 
 export const agregarPlatilloController = async (req, res) => {
     try {
-        const { nombre, descripcion, precio } = req.body;
+        const { nombre, descripcion, idCategoria, imagen, precio } = req.body;
 
         // Validación de campos obligatorios
         if (!nombre?.trim() || !precio) {
@@ -31,13 +31,19 @@ export const agregarPlatilloController = async (req, res) => {
             return res.status(400).json({ mensaje: 'Ya existe un platillo con ese nombre' });
         }
 
+        // Validación de existencia de categoria
+        const [cate] = await conexionDB.execute('SELECT id_categoria_platillo FROM platillo_categoria WHERE id_categoria_platillo = ?',[categoria]);
+        if (cate.length === 0) {
+            return res.status(400).json({ mensaje: 'Categoria no válida' });
+        }
+
         // Validación de precio sin letras y con decimales
         if (!/^\d+(\.\d{1,2})?$/.test(precio)) {
             return res.status(400).json({ mensaje: 'No se permiten letras en el precio' });
         }
 
         // Crear platillo
-        const nuevoId = await agregarPlatillo({ nombre, descripcion, precio });
+        const nuevoId = await agregarPlatillo({ nombre, descripcion, idCategoria, imagen, precio });
         res.status(201).json({
             mensaje: 'Platillo creado con éxito',
             productoId: nuevoId
@@ -80,7 +86,7 @@ export const eliminarPlatilloController = async (req, res) => {
 export const modificarPlatilloController = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, descripcion, precio, estado } = req.body;
+        const { nombre, descripcion, idCategoria, imagen, precio, estado } = req.body;
 
         // Validación obligatoria: id
         if (!id) {
@@ -92,6 +98,12 @@ export const modificarPlatilloController = async (req, res) => {
             return res.status(400).json({ mensaje: 'No se permiten números en el nombre' });
         }
 
+        // Validación de existencia de categoria
+        const [cate] = await conexionDB.execute('SELECT idCategoria FROM Categoria WHERE idCategoria = ?',[categoria]);
+        if (cate.length === 0) {
+            return res.status(400).json({ mensaje: 'Categoria no válida' });
+        }
+        
         // Validación de precio sin letras y con dos decimales(si se envía)
         if (precio && !/^\d+(\.\d{1,2})?$/.test(precio)) {
             return res.status(400).json({ mensaje: 'No se permiten letras en el precio' });
@@ -113,7 +125,7 @@ export const modificarPlatilloController = async (req, res) => {
         }
 
         // Llamar al modelo para actualizar solo los campos proporcionados
-        const filasAfectadas = await actualizarPlatillo({ idPlatillo: id, nombre, descripcion, precio, estado });
+        const filasAfectadas = await actualizarPlatillo({ idPlatillo: id, nombre, descripcion, idCategoria, imagen, precio, estado });
 
         if (filasAfectadas === 0) {
             return res.status(404).json({ mensaje: 'No se encontró el platillo o no se realizaron cambios' });
@@ -134,15 +146,18 @@ export const obtenerPlatillosController = async (req, res) => {
     try {
         //La prioridad de platillos conforme este el estado
         const [platillos] = await conexionDB.execute(`
-            SELECT idPlatillo, nombre, descripcion, precio,estado
-            FROM Platillo
+            SELECT p.idPlatillo, p.nombre, p.descripcion, p.imagen, p.precio, p.estado,
+                c.nombre AS categoria
+            FROM Platillo p
+            JOIN platillo_categoria c ON p.id_categoria = c.id_categoria_platillo
             ORDER BY 
-                CASE estado
+                CASE p.estado
                     WHEN 'disponible' THEN 1
                     WHEN 'agotado' THEN 2
                     WHEN 'descontinuado' THEN 3
                     ELSE 4
                 END;
+            
         `);
         res.json(platillos);
     } catch (err) {

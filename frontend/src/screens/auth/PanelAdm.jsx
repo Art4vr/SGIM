@@ -15,7 +15,7 @@ const PanelAdm = () => {
     };
 
     const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
+        setMenuAbierto(!menuAbierto);
     };
 
     return (
@@ -31,7 +31,7 @@ const PanelAdm = () => {
             {/* Menú lateral */}
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/usuarios')}>Usuarios</li>
+                    <li onClick={() => navigate('/nuevousuario')}>Nuevo Usuario</li>
                     <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                     <li onClick={() => navigate('/inventario')}>Inventario</li>
                     <li onClick={() => navigate('/platillos')}>Platillos</li>
@@ -39,14 +39,15 @@ const PanelAdm = () => {
                     <li onClick={() => navigate('/reportes')}>Reportes</li>
                     <li onClick={() => navigate('/mesas')}>Mesas</li>
                     <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                    <li onClick={() => navigate('/productos')}>Productos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 
             {/* Contenido principal */}
             <div className={styles.contenido}>
-                <button className={styles.tarjetas} onClick={() => navigate('/usuarios')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Usuarios.png" alt="Usuarios" />
+                <button className={styles.tarjetas} onClick={() => navigate('/nuevoUsuario')}>
+                    <img className={styles.imagenMenu} src="/imagenes/Usuarios.png" alt="Nuevo usuario" />
                     <h3>Usuarios</h3>
                 </button>
 
@@ -83,6 +84,16 @@ const PanelAdm = () => {
                 <button className={styles.tarjetas} onClick={() => navigate('/imprevistosAdm')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
+                </button>
+
+                <button className={styles.tarjetas} onClick={() => navigate('/ordenesMesero')}>
+                    <img className={styles.imagenMenu} src="/imagenes/OrdenMesa.png" alt="Ordenes Mesero" />
+                    <h3>Ordenes Mesero</h3>
+                </button>
+
+                <button className={styles.tarjetas} onClick={() => navigate('/productos')}>
+                    <img className={styles.imagenMenu} src="/imagenes/Productos.png" alt="Productos" />
+                    <h3>Productos</h3>
                 </button>
             </div>
         </div>

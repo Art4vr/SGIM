@@ -4,7 +4,7 @@
 //realiza las operaciones CRUD definidas en el modelo 
 
 //importacion de modelos a utilizar
-import { crearImprevisto,listarImprevisto } from "../Models/imprevistoModelo.js";
+import { crearImprevisto,listarImprevisto, eliminarImprevisto, actualizarImprevisto } from "../Models/imprevistoModelo.js";
 
 //--------------------- REGISTRO DE IMPREVISTO -----------------------------------------
 // Controlador para el registro de imprevistos. Valida que el id sea unico y que los campos no esten vacios
@@ -29,15 +29,16 @@ export const nuevoImprevistoController = async (req,res)=>{//crea la funcion asi
 //--------------------- CONSULTA DE IMPREVISTO -----------------------------------------
 // Controlador para la busqueda o consulta de imprevistos. 
 export const consultaImprevistoController = async (req,res) => { //crea la funcion asincrona que maneja la solicitud y la respuesta
-    const {idUsuarioReporta, idInventarioProducto, descripcion, fecha, cantidad, idUnidadMedida, estado, idUsuarioAutoriza} = req.body; //extrae los datos del cuerpo de la solicitud
+    const {filtro = null, busqueda = null} = req.query; //extrae los datos del cuerpo de la solicitud
 
     try{ // ejecuta el bloque de codigo y captura errores
         const resultados = await listarImprevisto(filtro,busqueda); //llama a la funcion del modelo para obtener el imprevisto solicitado
+        //console.log("Resultados imprevistos: -controlador: ", resultados);
         if (resultados.length === 0) { //si no se encuentra hay error
-            return res.status(401).json({ mensaje: 'Datos incorrectos' });
+            return res.status(404).json({ mensaje: 'No se encontraron imprevistos.' });
         }
 
-        res.status(201).json({mensaje:'Imprevistos disponibles',resultados});
+        res.status(200).json({mensaje:'Imprevistos disponibles',resultados});
     } catch(err){//manejo de errores
         console.error('Error al consultar imprevistos:',err);
         res.status(500).json({//error del servidor
@@ -46,3 +47,40 @@ export const consultaImprevistoController = async (req,res) => { //crea la funci
     }
 };
 
+//--------------------- MODIFICACIÓN DE IMPREVISTO -----------------------------------------
+// Controlador para la actualización o edición de imprevistos. 
+export const editarImprevistoController = async (req,res) => {
+    const { idImprevisto } = req.params;
+    const { idInventarioProducto, descripcion, cantidad, idUnidadMedida } = req.body;
+
+    try{
+        const resultado = await actualizarImprevisto({ idImprevisto, idInventarioProducto, descripcion, cantidad, idUnidadMedida });
+        if (resultado === 0) {
+            return res.status(404).json({ mensaje: 'Imprevisto no encontrado. -imprevistoControlador' });
+        }
+        res.status(200).json({ mensaje: 'Imprevisto actualizado con éxito.' });
+    }catch(err){
+        console.error('Error al editar imprevisto-imprevistoControlador:', err);
+        res.status(500).json({
+            mensaje: err.message || 'Error con la solicitud-imprevistoControlador'
+        });
+    }
+};
+
+//--------------------- ELIMINACIÓN DE IMPREVISTO -----------------------------------------
+// Controlador para la eliminación de imprevistos. 
+export const eliminarImprevistoController = async (req,res) => {
+    const { idImprevisto } = req.params;
+    try{
+        const resultado = await eliminarImprevisto(idImprevisto);
+        if (resultado === 0) {
+            return res.status(404).json({ mensaje: 'Imprevisto no encontrado. -imprevistoControlador' });
+        }
+        res.status(200).json({ mensaje: 'Imprevisto eliminado con éxito.' });
+    }catch(err){
+        console.error('Error al eliminar imprevisto-imprevistoControlador:', err);
+        res.status(500).json({
+            mensaje: err.message || 'Error con la solicitud-imprevistoControlador'
+        });
+    }
+};

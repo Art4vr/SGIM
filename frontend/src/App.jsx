@@ -12,6 +12,7 @@ import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 import PanelAdm from './screens/auth/PanelAdm';
+import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -28,6 +29,9 @@ import OrdenChef from './screens/ordenes/ordenChef';
 //Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
 
+//Importación de las ordenes de mesero
+import OrdenesMesero from './screens/ordenes/ordenMesero'; 
+
 function App() {
   
   const {user,loading} = useAuth();
@@ -42,13 +46,28 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          
           <Route path="/Productos" element={<VistaProductos />} />
           <Route path="/Proveedores" element={<VistaProveedores />} />
           
                 
 
-          <Route path="/Platillos" element={<VistaPlatillos />} />
+          <Route path="/Platillos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
+              <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Imprevistos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <MostrarImprevistos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Proveedores" element={<VistaProveedores />} />
+
+          <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 
           <Route 
             path="/PanelAdm" 
