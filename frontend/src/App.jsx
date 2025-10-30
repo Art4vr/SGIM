@@ -10,6 +10,7 @@ import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
+import PanelAdm from './screens/auth/PanelAdm';
 
 
 
@@ -108,7 +109,15 @@ function App() {
               </ProtectedRoute>
             }
           />
-            <Route 
+          <Route 
+            path="/PanelAdm" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelAdm />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
             path="/ordenChef" 
             element={
               <ProtectedRoute user={user} allowedRoles={[3]}>
