@@ -206,7 +206,6 @@ const MostrarImprevistos = () => {
               <table className={styles.Table || ''}>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Reportado por</th>
                     <th>Producto</th>
                     <th>Descripción</th>
@@ -221,7 +220,6 @@ const MostrarImprevistos = () => {
                   {imprevistos.length > 0 ? (
                     imprevistos.map((imp) => (
                       <tr key={imp.idImprevisto}>
-                        <td>{imp.idImprevisto}</td>
                         <td>{imp.Usuario_idUsuarioReporta}</td>
                         <td>{imp.InventarioProducto_idInventarioProducto}</td>
                         <td>{imp.descripcion}</td>

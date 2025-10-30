@@ -16,7 +16,7 @@ import { listaMesasController } from '../Controllers/mesaControlador.js';
 import imprevistoRouter from './imprevistosRutas.js';
 
 //importacion de las funciones de los controladores de usuario
-import {registerController} from '../Controllers/usuarioControlador.js';
+import usuarioRutas from './usuariosRutas.js';
 import { loginController, logoutController, meController } from '../Controllers/authController.js';
 
 //importacion de las funciones de los controladores de inventario
@@ -53,7 +53,7 @@ const authLimiter = rateLimit({
 
 //----------------------- RUTAS DE USUARIO---------------------------
 router.post('/auth/login', authLimiter, loginController);
-router.post('/auth/registroUsuario',registerController);
+router.use('/usuarios', usuarioRutas);
 router.post('/auth/logout', logoutController);
 
 router.get('/auth/me',authMiddleware,meController)
@@ -67,6 +67,10 @@ router.use('/productos', productoRutas);
 
 //----------------------- RUTAS DE CATEGORIAS---------------------------
 router.get('/categorias', listaCategoriasController);
+
+
+//----------------------- RUTAS DE CATEGORIAS PLATILLOS---------------------------
+router.get('/categoriasPlatillo', listaCategoriasPlatilloController);
 
 //----------------------- RUTAS DE UNIDADES---------------------------
 router.get('/unidades', listaMedidasController);

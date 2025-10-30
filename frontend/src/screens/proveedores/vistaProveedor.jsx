@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import NuevoProveedor from './agregarProveedor';
+import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/proveedores/proveedor.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
@@ -8,6 +9,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 
 const VistaProveedores = () => {
+    const { logout, user, loading } = useAuth();
     const navigate = useNavigate();
     const [proveedores, setProveedores] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -68,8 +70,12 @@ const VistaProveedores = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     useEffect(() => { 

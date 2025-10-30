@@ -4,7 +4,7 @@
 //realiza las operaciones CRUD definidas en el modelo 
 
 //importacion de modelos a utilizar
-import {obtenerUsuario,crearUsuario} from '../Models/usuarioModelo.js';
+import {obtenerUsuario,crearUsuario, listarUsuarios, eliminarUsuario, modificarUsuario} from '../Models/usuarioModelo.js';
 import bcrypt from 'bcrypt'; //libreria para encriptar contraseñas
 
 //--------------------- REGISTRO -----------------------------------------
@@ -38,6 +38,60 @@ export const registerController = async (req,res)=>{//crea la funcion asincrona 
     }catch(err){
         console.error('Error en registerController:', err);
         res.status(500).json({//error del servidor
+            mensaje: err.message || 'Error en el servidor'
+        });
+    }
+};
+
+//--------------------- LISTADO -----------------------------------------
+// Controlador para obtener todos los usuarios
+export const listarUsuariosController = async (req, res) => {
+    try {
+        const usuarios = await listarUsuarios();
+        res.status(200).json(usuarios);
+    } catch (err) {
+        console.error('Error en listarUsuariosController:', err);
+        res.status(500).json({
+            mensaje: err.message || 'Error en el servidor'
+        });
+    }
+};
+
+//--------------------- ELIMINAR -----------------------------------------
+// Controlador para eliminar a un usuario
+export const eliminarUsuarioController = async (req, res) => {
+    const { idUsuario } = req.params;
+    try {
+        const eliminado = await eliminarUsuario(idUsuario);
+        if (eliminado) {
+            res.status(200).json({ mensaje: 'Usuario eliminado con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+    } catch (err) {
+        console.error('Error en eliminarUsuarioController:', err);
+        res.status(500).json({
+            mensaje: err.message || 'Error en el servidor'
+        });
+    }
+};
+
+//--------------------- MODIFICAR -----------------------------------------
+// Controlador para modificar los datos de un usuario
+export const modificarUsuarioController = async (req, res) => {
+    const { id } = req.params;
+    const { nombre, username, rolId } = req.body;
+
+    try {
+        const usuarioActualizado = await modificarUsuario(id, { nombre, username, rolId });
+        if (usuarioActualizado) {
+            res.status(200).json({ mensaje: 'Usuario modificado con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+    } catch (err) {
+        console.error('Error en modificarUsuarioController:', err);
+        res.status(500).json({
             mensaje: err.message || 'Error en el servidor'
         });
     }

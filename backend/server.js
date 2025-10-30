@@ -32,13 +32,14 @@ const globalLimiter = rateLimit({
 app.use(globalLimiter);
 
 
-const PORT = process.env.PORT || 5000;
+//const PORT = process.env.PORT || 5000;
 
 //aqui se define el prefijo para las rutas
 app.use('/api',router);
 app.use('/api/platillos',menuRutas);
 
-app.listen(PORT,()=>{
-    console.log('<Servidor escuchando en el puerto', PORT + '>');
-    console.log('URL:', process.env.FRONTEND_URL );
-})
+//app.listen(PORT,()=>{
+//    console.log('<Servidor escuchando en el puerto', PORT + '>');
+//    console.log('URL:', process.env.FRONTEND_URL );
+//})
+export default app;
