@@ -17,6 +17,8 @@ import { getProductos, getUnidades, getCategorias } from '../../api/productoApi'
 import { getProveedores } from '../../api/proveedorApi';
 
 const VistaInventario = () => {
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
     const { logout, loading, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
@@ -84,9 +86,7 @@ const VistaInventario = () => {
         setListaInventario(lista);
     }, [inventarios, productos, medidas, proveedores, usuarios]);
 
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-    };
+    const toggleMenu = () => setMenuAbierto((s) => !s);
 
     const handleLogout = async () => {
         try {
@@ -96,6 +96,22 @@ const VistaInventario = () => {
             console.error("Error al cerrar sesión:", error);
         }
     };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ) {
+                setMenuAbierto(false);
+            }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [menuAbierto]);
 
     //Ahora se va a hacer una especie de alerta o modal para cuando un inventario de producto sea igual a su cantidad minima se muestre en pantalla
     //Igual si la fecha de caducidad esta cerca (por ejemplo 2 dias) se lanza una alerta pero de caducidad
@@ -134,14 +150,22 @@ const VistaInventario = () => {
     }
 
 
+
     return (
         <div className={styles.container}>
             {/* Header */}
             <div className={stylesCommon.header}>
-                <button className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                <button
+                    ref={botonRef}
+                    className={stylesCommon.menuBoton}
+                    onClick={toggleMenu}
+                    aria-label="Abrir menú"
+                >
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <h1>Inventario de Productos</h1>
+                    
+                <h1 className={stylesCommon.headerTitle}>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
+        
                 <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
             {/* Non-blocking alert boxes (keeps existing styles) */}
@@ -179,14 +203,22 @@ const VistaInventario = () => {
                 )}
             </div>
 
-            {/* Sidebar Menu */}
-            <div className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                    <li onClick={() => navigate('/PanelAdmin')}>Panel Principal</li>
-                    <li onClick={handleLogout}>Cerrar Sesión</li>
-                </ul>
-            </div>
+            {/* Sidebar */}
+                <div
+                    ref={menuRef}
+                    className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
+                >
+                    <ul>
+                        <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                        <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                        <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                        <li onClick={() => navigate('/Productos')}>Productos</li>
+                        <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                        <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
+                        <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
+                        <li onClick={handleLogout}>Log Out</li>
+                    </ul>
+                </div>
             {/* Main Content */}
             <div className={styles.content}>
                 {mensaje && <div className={styles.mensaje}>{mensaje}</div>}

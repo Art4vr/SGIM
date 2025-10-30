@@ -10,8 +10,8 @@ import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
-import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
+
+
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -22,6 +22,10 @@ import ActualizarStock from './screens/inventario/actualizarStock';
 
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
+
+//Importacion de vista de imprevistos
+import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';

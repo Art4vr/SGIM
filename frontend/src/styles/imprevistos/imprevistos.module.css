@@ -76,6 +76,7 @@
 
 /* ======== TABLA ======== */
 .Table {
+    margin-top: 10px;
     width: 100%;
     border-collapse: collapse;
     color: #333;

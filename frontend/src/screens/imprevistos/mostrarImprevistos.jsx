@@ -161,6 +161,7 @@ const MostrarImprevistos = () => {
           <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
           <li onClick={() => navigate('/Productos')}>Productos</li>
           <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+          <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
           <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
           <li onClick={handleLogout}>Log Out</li>
         </ul>
