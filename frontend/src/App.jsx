@@ -54,7 +54,13 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/Productos" element={<VistaProductos />} />
-          <Route path="/Proveedores" element={<VistaProveedores />} />
+          
+          <Route path="/Proveedores" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProveedores />
+            </ProtectedRoute>
+            } 
+          />
 
           <Route path="/Platillos" element={
             <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
@@ -83,8 +89,6 @@ function App() {
             </ProtectedRoute>
             } 
           />
-
-          <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 
