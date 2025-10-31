@@ -50,17 +50,17 @@ const PanelAdm = () => {
                     <h3>Usuarios</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/proveedores')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/Proveedores')}>
                     <img className={styles.imagenMenu} src="/imagenes/Proveedores.png" alt="Proveedores" />
                     <h3>Proveedores</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/inventario')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/Inventario')}>
                     <img className={styles.imagenMenu} src="/imagenes/Inventario.png" alt="Inventario" />
                     <h3>Inventario</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/platillosAdm')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/Platillos')}>
                     <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Platillos" />
                     <h3>Platillos</h3>
                 </button>
@@ -80,7 +80,7 @@ const PanelAdm = () => {
                     <h3>Mesas</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/imprevistosAdm')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/Imprevistos')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
                 </button>
