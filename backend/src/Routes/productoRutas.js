@@ -13,6 +13,8 @@ import {
 
     const router = express.Router();
 
+//Con autenticacion
+
 // Obtener todos los productos
 router.get('/', authMiddleware, requireRole([1,2,3]), obtenerProductosController);
 
@@ -25,4 +27,18 @@ router.put('/:id', authMiddleware, requirePermission('gestionar_productos'), mod
 // Eliminar producto
 router.delete('/:id', authMiddleware, requirePermission('gestionar_productos'), eliminarProductoController);
 
+/*
+//Sin autenticacion
+
+router.get('/', obtenerProductosController);
+
+// Agregar producto
+router.post('/', agregarProductoController);
+
+// Modificar producto
+router.put('/:id', modificarProductoController);
+
+// Eliminar producto
+router.delete('/:id', eliminarProductoController);
+*/
 export default router;
