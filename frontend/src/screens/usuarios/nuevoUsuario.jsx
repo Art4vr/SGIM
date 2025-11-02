@@ -1,1 +1,0 @@
-//pantalla para crear un nuevo usuario (registro)

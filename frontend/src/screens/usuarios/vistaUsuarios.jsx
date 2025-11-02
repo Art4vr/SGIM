@@ -1,0 +1,277 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import EditarUsuario from './editarUsuario';
+import styles from '../../styles/productos/producto.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/axiosConfig';
+
+const VistaUsuarios = () => {
+    const { logout} = useAuth();
+    const navigate = useNavigate();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [usuarios, setUsuarios] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [usuarioEditando, setUsuarioEditando] = useState(null);
+    const [cargando, setCargando] = useState(false);
+    const [mensaje, setMensaje] = useState('');
+    const [eliminandoId, setEliminandoId] = useState(null);
+    const [menuAbierto, setMenuAbierto] = useState(false);
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
+
+    const cargarUsuarios = async () => {
+        setCargando(true);
+        try {
+            const usuariosRes = await api.get('/api/usuarios');
+            setUsuarios(usuariosRes.data);
+            const rolesRes = await api.get('/api/roles');
+            setRoles(rolesRes.data);
+        } catch (err) {
+            console.error(err);
+            setMensaje(err.response?.data?.mensaje || 'Error al cargar los datos de los usuarios');
+        } finally {
+            setCargando(false);
+        }
+    };
+
+    useEffect(() => {
+        cargarUsuarios();
+    }, []);
+
+    const abrirModal = (usuario = null) => {
+        setUsuarioEditando(usuario);
+        setModalVisible(true);
+        setMensaje('');
+    };
+
+    const cerrarModal = () => {
+        setModalVisible(false);
+        setUsuarioEditando(null);
+    };
+
+
+    const eliminar = async (id) => {
+        const usuarionombre = usuarios.find(u => u.idUsuario === id);
+        const confirm = window.confirm("¿Estás seguro de que deseas eliminar al usuario <" + usuarionombre.nombre + "> ?");
+        if (!confirm) return;
+
+
+        setEliminandoId(id);
+        try {
+            await api.delete(`/api/usuarios/eliminar/${id}`);
+            setMensaje('Usuario eliminado correctamente');
+            await cargarUsuarios();
+        } catch (err) {
+            console.error(err);
+            setMensaje(err.response?.data?.mensaje || 'Error al eliminar usuario');
+        } finally {
+            setEliminandoId(null);
+        }
+    };
+
+    const toggleMenu = () => {
+        setMenuAbierto(!menuAbierto);
+        };
+
+    const handleLogout = async () => {
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
+
+    useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
+
+    // Justo antes del return, debajo de tus otros useState
+        const [filtros, setFiltros] = useState({
+        nombre: '',
+        rol: '',
+        estado: ''
+        });
+
+        const handleFiltroChange = (e, campo) => {
+        setFiltros({
+            ...filtros,
+            [campo]: e.target.value
+        });
+        };
+
+        // Obtener listas únicas para los selects
+        const rolesUnicos = [...new Set(roles.map(r => r.idRol))];
+        //hacer que roles unicos tenga el nombre del rol en vez del id
+        const rolesUnicosConNombre = rolesUnicos.map(idRol => {
+            const rol = roles.find(r => r.idRol === idRol);
+            return {
+                idRol,
+                nombre: rol ? rol.nombre : 'Desconocido'
+            };
+        });
+        const estadosUnicos = [...new Set(usuarios.map(u => u.estado))];
+
+        // Filtrado
+        const usuariosFiltrados = usuarios.filter((u) =>
+        u.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
+        (filtros.rol === '' || u.Rol_idRol === Number(filtros.rol)) &&
+        (filtros.estado === '' || u.estado === filtros.estado) 
+        );
+        
+
+        //mapear que el rol del usuario a base del id obtenga el nombre del rol y la descripcion pero que no intervenga con el filtrado
+        usuariosFiltrados.forEach(u => {
+            const rol = roles.find(r => r.idRol === u.Rol_idRol);
+            u.rol = rol ? rol.nombre : 'Desconocido';
+            u.descripcionRol = rol ? rol.descripcion : 'Sin descripción';
+        });
+        
+
+
+    return (
+        <div className={styles.container}>
+                    {/* Encabezado */}
+                    <div className={stylesCommon.header}>
+                        <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                            <img src="/imagenes/menu_btn.png" alt="Menú" />
+                        </button>
+                        <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
+                        <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                    </div>
+        
+                    {/* Menú lateral */}
+                    <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+                        <ul>
+                            <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                            <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                            <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                            <li onClick={() => navigate('/Productos')}>Productos</li>
+                            <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                            <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
+                            <li onClick={() => navigate('/Usuarios')}>Usuarios</li>
+                            <li onClick={handleLogout}>Log Out</li>
+                        </ul>
+                    </div>
+            {/*Contenido principal*/}
+            <div className={styles.bodyContainer}>
+                <div className={styles.registerContainer}>
+                    <div className={styles.registerCard}>
+                        <h1 className={styles.title}>Gestión de Usuarios</h1>
+
+                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/NuevoUsuario')}>
+                            Agregar usuario
+                        </button>
+
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
+
+                        {/* === FILTROS === */}
+                        <div className={stylesCommon.filterContainer}>
+                        <input
+                            type="text"
+                            placeholder="Filtrar por nombre"
+                            value={filtros.nombre}
+                            onChange={(e) => handleFiltroChange(e, 'nombre')}
+                            className={stylesCommon.filterInput}
+                        />
+
+                        <select
+                            value={filtros.rol}
+                            onChange={(e) => handleFiltroChange(e, 'rol')}
+                            className={stylesCommon.filterSelect}
+                        >
+                            <option value="">Todos los roles</option>
+                            {rolesUnicosConNombre.map((rol, idx) => (
+                            <option key={idx} value={rol.idRol}>{rol.nombre}</option>
+                            ))}
+                        </select>
+
+                        <select
+                            value={filtros.estado}
+                            onChange={(e) => handleFiltroChange(e, 'estado')}
+                            className={stylesCommon.filterSelect}
+                        >
+                            <option value="">Todos los estados</option>
+                            {estadosUnicos.map((est, idx) => (
+                            <option key={idx} value={est}>{est}</option>
+                            ))}
+                        </select>
+                        </div>
+
+
+                        {cargando ? (
+                            <p className={styles.loadingText}>🔄 Cargando usuarios...</p>
+                        ) : (
+                            <div className={stylesCommon.tableWrapper}>
+                                <table className={styles.productTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Username</th>
+                                            <th>Rol</th>
+                                            <th>Descripción</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {usuariosFiltrados.map((u) => (
+                                            <tr key={u.idUsuario}>
+                                                <td>{u.nombre}</td>
+                                                <td>{u.username}</td>
+                                                <td>{u.rol}</td>
+                                                <td>{u.descripcionRol}</td>
+                                                <td>{u.estado}</td>
+                                                <td className={styles.acciones}>
+                                                    <button onClick={() => abrirModal(u)}>✏️</button>
+                                                    <button
+                                                        onClick={() => eliminar(u.idUsuario)}
+                                                        disabled={eliminandoId === u.idUsuario}
+                                                    >
+                                                        {eliminandoId === u.idUsuario ? '🗑️...' : '🗑️'}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                        <button
+                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            type="button"
+                            onClick={() => navigate('/PanelGerente')}
+                            >
+                            VOLVER AL INICIO
+                        </button>
+                        {modalVisible && (
+                            <EditarUsuario
+                                usuario={usuarioEditando}
+                                onClose={cerrarModal}
+                                onRefresh={cargarUsuarios}
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default VistaUsuarios;
