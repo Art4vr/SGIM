@@ -78,7 +78,7 @@ const OrdenMesero = () => {
     try {
       const response = await getPlatillosOrden(orden.idOrden);
       setOrdenPlatillos(response.data);
-      console.log('🟢 Platillos de la orden:', response.data);
+      console.log('Platillos de la orden:', response.data);
     } catch (err) {
       console.error('Error al cargar platillos de la orden:', err);
     }
@@ -107,7 +107,7 @@ const OrdenMesero = () => {
       seleccionarOrden(ordenSeleccionada);
       cargarOrdenes();
     } catch (err) {
-      console.error('❌ Error al agregar platillo:', err);
+      console.error('Error al agregar platillo:', err);
       alert('No se pudo agregar el platillo a la orden');
     }
   };
