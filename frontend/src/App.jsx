@@ -9,6 +9,10 @@ import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
 import Registro from './screens/auth/Registro';
 import PanelChef from './screens/auth/PanelChef';
+
+//Importación de la parte de mesero para hacer pruebas...
+import MeseroPanel from './screens/auth/PanelMesero';
+
 import Menu from './screens/public/menu';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 import PanelAdm from './screens/auth/PanelAdm';
@@ -68,6 +72,8 @@ function App() {
           <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
+
+          <Route path="/Mesero" element={<MeseroPanel />} />
 
           <Route 
             path="/PanelAdm" 
