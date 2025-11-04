@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getProductos, eliminarProducto } from '../../api/productoApi';
-import NuevoProducto from './nuevoProducto';
+import EditarUsuario from './editarUsuario';
 import styles from '../../styles/productos/producto.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 
-const VistaProductos = () => {
-    const { logout, user, loading } = useAuth();
+const VistaUsuarios = () => {
+    const { logout} = useAuth();
     const navigate = useNavigate();
-    const [productos, setProductos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [productoEditando, setProductoEditando] = useState(null);
+    const [usuarios, setUsuarios] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [usuarioEditando, setUsuarioEditando] = useState(null);
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
@@ -20,46 +20,51 @@ const VistaProductos = () => {
     const menuRef = useRef(null);
     const botonRef = useRef(null);
 
-    const cargarProductos = async () => {
+    const cargarUsuarios = async () => {
         setCargando(true);
         try {
-            const res = await getProductos();
-            setProductos(res.data);
+            const usuariosRes = await api.get('/api/usuarios');
+            setUsuarios(usuariosRes.data);
+            const rolesRes = await api.get('/api/roles');
+            setRoles(rolesRes.data);
         } catch (err) {
             console.error(err);
-            setMensaje(err.response?.data?.mensaje || 'Error al cargar productos');
+            setMensaje(err.response?.data?.mensaje || 'Error al cargar los datos de los usuarios');
         } finally {
             setCargando(false);
         }
     };
 
     useEffect(() => {
-        cargarProductos();
+        cargarUsuarios();
     }, []);
 
-    const abrirModal = (producto = null) => {
-        setProductoEditando(producto);
+    const abrirModal = (usuario = null) => {
+        setUsuarioEditando(usuario);
         setModalVisible(true);
         setMensaje('');
     };
 
     const cerrarModal = () => {
         setModalVisible(false);
-        setProductoEditando(null);
+        setUsuarioEditando(null);
     };
 
+
     const eliminar = async (id) => {
-        const confirm = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+        const usuarionombre = usuarios.find(u => u.idUsuario === id);
+        const confirm = window.confirm("¿Estás seguro de que deseas eliminar al usuario <" + usuarionombre.nombre + "> ?");
         if (!confirm) return;
+
 
         setEliminandoId(id);
         try {
-            await eliminarProducto(id);
-            setMensaje('Producto eliminado correctamente');
-            await cargarProductos();
+            await api.delete(`/api/usuarios/eliminar/${id}`);
+            setMensaje('Usuario eliminado correctamente');
+            await cargarUsuarios();
         } catch (err) {
             console.error(err);
-            setMensaje(err.response?.data?.mensaje || 'Error al eliminar producto');
+            setMensaje(err.response?.data?.mensaje || 'Error al eliminar usuario');
         } finally {
             setEliminandoId(null);
         }
@@ -100,8 +105,7 @@ const VistaProductos = () => {
     // Justo antes del return, debajo de tus otros useState
         const [filtros, setFiltros] = useState({
         nombre: '',
-        categoria: '',
-        unidad: '',
+        rol: '',
         estado: ''
         });
 
@@ -113,17 +117,32 @@ const VistaProductos = () => {
         };
 
         // Obtener listas únicas para los selects
-        const categoriasUnicas = [...new Set(productos.map(p => p.categoria))];
-        const unidadesUnicas = [...new Set(productos.map(p => p.unidad))];
-        const estadosUnicos = [...new Set(productos.map(p => p.estado))];
+        const rolesUnicos = [...new Set(roles.map(r => r.idRol))];
+        //hacer que roles unicos tenga el nombre del rol en vez del id
+        const rolesUnicosConNombre = rolesUnicos.map(idRol => {
+            const rol = roles.find(r => r.idRol === idRol);
+            return {
+                idRol,
+                nombre: rol ? rol.nombre : 'Desconocido'
+            };
+        });
+        const estadosUnicos = [...new Set(usuarios.map(u => u.estado))];
 
         // Filtrado
-        const productosFiltrados = productos.filter((p) =>
-        p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
-        (filtros.categoria === '' || p.categoria === filtros.categoria) &&
-        (filtros.unidad === '' || p.unidad === filtros.unidad) &&
-        (filtros.estado === '' || p.estado === filtros.estado)
+        const usuariosFiltrados = usuarios.filter((u) =>
+        u.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
+        (filtros.rol === '' || u.Rol_idRol === Number(filtros.rol)) &&
+        (filtros.estado === '' || u.estado === filtros.estado) 
         );
+        
+
+        //mapear que el rol del usuario a base del id obtenga el nombre del rol y la descripcion pero que no intervenga con el filtrado
+        usuariosFiltrados.forEach(u => {
+            const rol = roles.find(r => r.idRol === u.Rol_idRol);
+            u.rol = rol ? rol.nombre : 'Desconocido';
+            u.descripcionRol = rol ? rol.descripcion : 'Sin descripción';
+        });
+        
 
 
     return (
@@ -146,6 +165,7 @@ const VistaProductos = () => {
                             <li onClick={() => navigate('/Productos')}>Productos</li>
                             <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
                             <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
+                            <li onClick={() => navigate('/Usuarios')}>Usuarios</li>
                             <li onClick={handleLogout}>Log Out</li>
                         </ul>
                     </div>
@@ -153,10 +173,10 @@ const VistaProductos = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Productos</h1>
+                        <h1 className={styles.title}>Gestión de Usuarios</h1>
 
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
-                            Agregar Producto
+                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/NuevoUsuario')}>
+                            Agregar usuario
                         </button>
 
                         {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
@@ -172,24 +192,13 @@ const VistaProductos = () => {
                         />
 
                         <select
-                            value={filtros.categoria}
-                            onChange={(e) => handleFiltroChange(e, 'categoria')}
+                            value={filtros.rol}
+                            onChange={(e) => handleFiltroChange(e, 'rol')}
                             className={stylesCommon.filterSelect}
                         >
-                            <option value="">Todas las categorías</option>
-                            {categoriasUnicas.map((cat, idx) => (
-                            <option key={idx} value={cat}>{cat}</option>
-                            ))}
-                        </select>
-
-                        <select
-                            value={filtros.unidad}
-                            onChange={(e) => handleFiltroChange(e, 'unidad')}
-                            className={stylesCommon.filterSelect}
-                        >
-                            <option value="">Todas las unidades</option>
-                            {unidadesUnicas.map((uni, idx) => (
-                            <option key={idx} value={uni}>{uni}</option>
+                            <option value="">Todos los roles</option>
+                            {rolesUnicosConNombre.map((rol, idx) => (
+                            <option key={idx} value={rol.idRol}>{rol.nombre}</option>
                             ))}
                         </select>
 
@@ -207,33 +216,35 @@ const VistaProductos = () => {
 
 
                         {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando productos...</p>
+                            <p className={styles.loadingText}>🔄 Cargando usuarios...</p>
                         ) : (
                             <div className={stylesCommon.tableWrapper}>
                                 <table className={styles.productTable}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Categoría</th>
-                                            <th>Unidad</th>
+                                            <th>Username</th>
+                                            <th>Rol</th>
+                                            <th>Descripción</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {productosFiltrados.map((p) => (
-                                            <tr key={p.idProducto}>
-                                                <td>{p.nombre}</td>
-                                                <td>{p.categoria}</td>
-                                                <td>{p.unidad}</td>
-                                                <td>{p.estado}</td>
+                                        {usuariosFiltrados.map((u) => (
+                                            <tr key={u.idUsuario}>
+                                                <td>{u.nombre}</td>
+                                                <td>{u.username}</td>
+                                                <td>{u.rol}</td>
+                                                <td>{u.descripcionRol}</td>
+                                                <td>{u.estado}</td>
                                                 <td className={styles.acciones}>
-                                                    <button onClick={() => abrirModal(p)}>✏️</button>
+                                                    <button onClick={() => abrirModal(u)}>✏️</button>
                                                     <button
-                                                        onClick={() => eliminar(p.idProducto)}
-                                                        disabled={eliminandoId === p.idProducto}
+                                                        onClick={() => eliminar(u.idUsuario)}
+                                                        disabled={eliminandoId === u.idUsuario}
                                                     >
-                                                        {eliminandoId === p.idProducto ? '🗑️...' : '🗑️'}
+                                                        {eliminandoId === u.idUsuario ? '🗑️...' : '🗑️'}
                                                     </button>
                                                 </td>
                                             </tr>
@@ -250,10 +261,10 @@ const VistaProductos = () => {
                             VOLVER AL INICIO
                         </button>
                         {modalVisible && (
-                            <NuevoProducto
-                                producto={productoEditando}
+                            <EditarUsuario
+                                usuario={usuarioEditando}
                                 onClose={cerrarModal}
-                                onRefresh={cargarProductos}
+                                onRefresh={cargarUsuarios}
                             />
                         )}
                     </div>
@@ -263,4 +274,4 @@ const VistaProductos = () => {
     );
 };
 
-export default VistaProductos;
+export default VistaUsuarios;

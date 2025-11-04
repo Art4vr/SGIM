@@ -32,7 +32,7 @@ const Registro = () => {
         }
 
         try{
-            const response = await api.post('/api/auth/registroUsuario',{
+            const response = await api.post('/api/usuarios/register',{
                 nombre,
                 username,
                 password,

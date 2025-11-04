@@ -82,7 +82,7 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                 onRefresh();
                 onClose();
                 limpiarCampos();
-            }, 1200);
+            }, 400);
         } catch (err) {
             setMensaje(err.response?.data?.mensaje || 'Error al guardar');
         }
@@ -119,7 +119,7 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                     <div className={styles.inputContainer}>
                         <label>Unidad de Medida</label>
                         <select value={idUnidadMedida} onChange={e => setIdUnidadMedida(e.target.value)}>
-                            {!producto && <option value="" disabled>Selecciona una unidad de medida</option>}
+                            {!producto && <option value="" disabled>Selecciona una unidad</option>}
                             {producto && <option value={producto.idUnidadMedida}>{producto.unidad}</option>}
                             {medidas
                                 .filter(m => m.idUnidadMedida !== producto?.idUnidadMedida)

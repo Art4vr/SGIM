@@ -30,6 +30,7 @@ export const listarProductosInventarioController = async (req, res) => {
 // Controlador para crear o registrar un nuevo lote de algún producto y registrar en inventario
 export const registrarInventarioController = async (req,res) => {
     try{
+        console.log("req.body: ", req.body);
         const {Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida} = req.body;
         const nuevoInventarioId = await ingresarInventario({Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida});
         res.status(201).json({mensaje:'Producto registrado en inventario con éxito',nuevoInventarioId});

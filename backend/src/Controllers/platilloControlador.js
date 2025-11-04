@@ -32,7 +32,7 @@ export const agregarPlatilloController = async (req, res) => {
         }
 
         // Validación de existencia de categoria
-        const [cate] = await conexionDB.execute('SELECT id_categoria_platillo FROM platillo_categoria WHERE id_categoria_platillo = ?',[categoria]);
+        const [cate] = await conexionDB.execute('SELECT id_categoria_platillo FROM platillo_categoria WHERE id_categoria_platillo = ?',[idCategoria]);
         if (cate.length === 0) {
             return res.status(400).json({ mensaje: 'Categoria no válida' });
         }
@@ -43,7 +43,7 @@ export const agregarPlatilloController = async (req, res) => {
         }
 
         // Crear platillo
-        const nuevoId = await agregarPlatillo({ nombre, descripcion, idCategoria, imagen, precio });
+        const nuevoId = await agregarPlatillo({ nombre, descripcion:descripcion || null, id_categoria:idCategoria, imagen:imagen || null, precio });
         res.status(201).json({
             mensaje: 'Platillo creado con éxito',
             productoId: nuevoId
@@ -99,9 +99,14 @@ export const modificarPlatilloController = async (req, res) => {
         }
 
         // Validación de existencia de categoria
-        const [cate] = await conexionDB.execute('SELECT idCategoria FROM Categoria WHERE idCategoria = ?',[categoria]);
-        if (cate.length === 0) {
-            return res.status(400).json({ mensaje: 'Categoria no válida' });
+        if (idCategoria) {
+            const [cate] = await conexionDB.execute(
+                'SELECT id_categoria_platillo FROM platillo_categoria WHERE id_categoria_platillo = ?',
+                [idCategoria]
+            );
+            if (cate.length === 0) {
+                return res.status(400).json({ mensaje: 'Categoria no válida' });
+            }
         }
         
         // Validación de precio sin letras y con dos decimales(si se envía)
@@ -125,7 +130,7 @@ export const modificarPlatilloController = async (req, res) => {
         }
 
         // Llamar al modelo para actualizar solo los campos proporcionados
-        const filasAfectadas = await actualizarPlatillo({ idPlatillo: id, nombre, descripcion, idCategoria, imagen, precio, estado });
+        const filasAfectadas = await actualizarPlatillo({ idPlatillo: id, nombre, descripcion, id_categoria:idCategoria, imagen, precio, estado });
 
         if (filasAfectadas === 0) {
             return res.status(404).json({ mensaje: 'No se encontró el platillo o no se realizaron cambios' });
