@@ -4,6 +4,7 @@
 //realiza las operaciones CRUD definidas en el modelo 
 
 //importacion de modelos a utilizar
+import { id } from 'date-fns/locale';
 import {obtenerUsuario,crearUsuario, listarUsuarios, eliminarUsuario, modificarUsuario} from '../Models/usuarioModelo.js';
 import bcrypt from 'bcrypt'; //libreria para encriptar contraseñas
 
@@ -60,7 +61,8 @@ export const listarUsuariosController = async (req, res) => {
 //--------------------- ELIMINAR -----------------------------------------
 // Controlador para eliminar a un usuario
 export const eliminarUsuarioController = async (req, res) => {
-    const { idUsuario } = req.params;
+    const idUsuario = req.params.id;
+    console.log("ID Usuario a eliminar:", idUsuario);
     try {
         const eliminado = await eliminarUsuario(idUsuario);
         if (eliminado) {
@@ -79,11 +81,27 @@ export const eliminarUsuarioController = async (req, res) => {
 //--------------------- MODIFICAR -----------------------------------------
 // Controlador para modificar los datos de un usuario
 export const modificarUsuarioController = async (req, res) => {
-    const { id } = req.params;
-    const { nombre, username, rolId } = req.body;
-
+    //validaciones considerar que no se repita un nombre de usuario existente
+    //considerar que no se actualizan todos los campos
     try {
-        const usuarioActualizado = await modificarUsuario(id, { nombre, username, rolId });
+        const idUsuario = req.params.id;
+        console.log("req.body:", req.body);
+        const { nombre, username, rolId, estado } = req.body;
+        console.log("Datos a modificar:", { nombre, username, rolId, estado });
+
+        if(username){
+            // Verificar si el nombre de usuario ya está en uso
+            const usuarioExistente = await obtenerUsuario(username);
+            console.log("Usuario existente para verificación:", usuarioExistente);
+            if (usuarioExistente && usuarioExistente.idUsuario === parseInt(idUsuario)) {
+                return res.status(400).json({ mensaje: 'El nombre de usuario ya está en uso' });
+            }
+        }
+        //validar que incluyaa al menos un campo para modificar
+        if (!nombre && !username && !rolId && !estado) {
+            return res.status(400).json({ mensaje: 'No se proporcionaron datos para modificar' });
+        }
+        const usuarioActualizado = await modificarUsuario(idUsuario, nombre, username, rolId, estado);
         if (usuarioActualizado) {
             res.status(200).json({ mensaje: 'Usuario modificado con éxito' });
         } else {

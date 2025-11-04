@@ -82,7 +82,7 @@ const NuevoProducto = ({ producto, onClose, onRefresh }) => {
                 onRefresh();
                 onClose();
                 limpiarCampos();
-            }, 1200);
+            }, 400);
         } catch (err) {
             setMensaje(err.response?.data?.mensaje || 'Error al guardar');
         }

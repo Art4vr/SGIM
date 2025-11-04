@@ -16,16 +16,16 @@ import {
 //Con autenticacion
 
 // Obtener todos los productos
-router.get('/', authMiddleware, requireRole([1,2,3]), obtenerProductosController);
+router.get('/', authMiddleware, requirePermission('ver_productos'), obtenerProductosController);
 
 // Agregar producto
-router.post('/', authMiddleware, requirePermission('gestionar_productos'), agregarProductoController);
+router.post('/', authMiddleware, requirePermission('crear_producto'), agregarProductoController);
 
 // Modificar producto
-router.put('/:id', authMiddleware, requirePermission('gestionar_productos'), modificarProductoController);
+router.put('/:id', authMiddleware, requirePermission('editar_producto'), modificarProductoController);
 
 // Eliminar producto
-router.delete('/:id', authMiddleware, requirePermission('gestionar_productos'), eliminarProductoController);
+router.delete('/:id', authMiddleware, requirePermission('eliminar_producto'), eliminarProductoController);
 
 /*
 //Sin autenticacion
