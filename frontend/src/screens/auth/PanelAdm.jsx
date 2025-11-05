@@ -1,7 +1,8 @@
 import api from '../../api/axiosConfig';
-import { useState } from 'react';
+import { useState, botonRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
 
 
 const PanelAdm = () => {
@@ -15,17 +16,18 @@ const PanelAdm = () => {
     };
 
     const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
+        setMenuAbierto(!menuAbierto);
     };
 
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={styles.header}>
-                <button className={styles.menuBoton} onClick={toggleMenu}>
+            <div className={stylesCommon.header}>
+                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                <img className={styles.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
             </div>
 
             {/* Menú lateral */}

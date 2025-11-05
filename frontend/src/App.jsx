@@ -125,7 +125,7 @@ function App() {
             }
           />
           <Route 
-            path="/PanelAdm" 
+            path="/PanelGerente" 
             element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <PanelAdm />
