@@ -39,7 +39,7 @@ const Registro = () => {
                 rolId
             });
             setMessage('Usuario Creado con exito');
-            setTimeout(() => navigate('/PanelAdm'), 1000); // Redirige al login despues de un segundo
+            setTimeout(() => navigate('/Usuarios'), 1000); // Redirige al login despues de un segundo
         }catch(err){
             setMessage(err.response?.data?.mensaje|| 'Error al registrar');
         }
