@@ -97,25 +97,19 @@ const VistaProveedores = () => {
         };
     }, [menuAbierto]);
 
-    const [filtros, setFiltros] = useState({
-        nombre: '',
-        telefono: '',
-        correo: ''
-    });
+    //Filtrar los resultados
+    const [filtroEstado, setFiltroEstado] = useState('todos');
 
-    const handleFiltroChange = (e, campo) => {
-        setFiltros({
-            ...filtros,
-            [campo]: e.target.value
-        });
+    const handleFiltroChange = (e) => {
+        setFiltroEstado(e.target.value);
     };
 
-    // Lógica del filtrado
-    const proveedoresFiltrados = proveedores.filter((p) =>
-        p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase()) &&
-        p.telefono.toLowerCase().includes(filtros.telefono.toLowerCase()) &&
-        p.correo.toLowerCase().includes(filtros.correo.toLowerCase())
-    );
+    const proveedoresFiltrados = proveedores.filter((p) => {
+        // Si el filtro es 'todos', los muestra todos
+        if (filtroEstado === 'todos') return true;
+        // Si no, compara el estado del proveedor con el filtro
+        return p.estado === filtroEstado;
+    });
 
 
     return (
@@ -156,29 +150,15 @@ const VistaProveedores = () => {
 
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>
-                        <input
-                            type="text"
-                            placeholder="Filtrar por nombre"
-                            value={filtros.nombre}
-                            onChange={(e) => handleFiltroChange(e, 'nombre')}
+                        <select
+                            value={filtroEstado}
+                            onChange={handleFiltroChange}
                             className={stylesCommon.filterInput}
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Filtrar por teléfono"
-                            value={filtros.telefono}
-                            onChange={(e) => handleFiltroChange(e, 'telefono')}
-                            className={stylesCommon.filterInput}
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Filtrar por correo"
-                            value={filtros.correo}
-                            onChange={(e) => handleFiltroChange(e, 'correo')}
-                            className={stylesCommon.filterInput}
-                        />
+                        >
+                            <option value="todos">Mostrar Todos</option>
+                            <option value="activo">Activos</option>
+                            <option value="inactivo">Inactivos</option>
+                        </select>
                         </div>
 
                         {cargando ? (
