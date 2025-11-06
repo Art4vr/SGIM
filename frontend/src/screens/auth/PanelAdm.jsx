@@ -63,7 +63,7 @@ const PanelAdm = () => {
                 </button>
 
 
-                <button className={styles.tarjetas} onClick={() => navigate('/platillosAdm')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/platillos')}>
                     <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Platillos" />
                     <h3>Platillos</h3>
                 </button>
@@ -84,7 +84,7 @@ const PanelAdm = () => {
                 </button>
 
 
-                <button className={styles.tarjetas} onClick={() => navigate('/imprevistosAdm')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
                 </button>
