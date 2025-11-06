@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { crearPlatillo, modificarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
-
 import styles from '../../styles/platillos/nuevoPlatillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 
@@ -18,9 +17,10 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     useEffect(() => {
         const cargarDatos = async () => {
             try {
-                const catRes = await getCategoriasPlatillo();
+                const [catRes] = await Promise.all([getCategoriasPlatillo()]);
+                // Formatear categorías para el select
                 const categoriasFormateadas = catRes.data.map(c => ({
-                    idCategoria: c.id_categoria_platillo,
+                    idCategoria: c.id_categoria_platillo.toString(),
                     nombre: c.nombre
                 }));
                 setCategorias(categoriasFormateadas);
@@ -28,7 +28,7 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
                 if (platillo) {
                     setNombre(platillo.nombre || '');
                     setDescripcion(platillo.descripcion || '');
-                    setIdCategoria(platillo.id_categoria_platillo?.toString() || '');
+                    setIdCategoria(platillo.id_categoria?.toString() || '');
                     setImagen(platillo.imagen || '');
                     setPrecio(platillo.precio || '');
                     setEstado(platillo.estado || 'disponible');
@@ -56,18 +56,44 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!nombre || !precio || !idCategoria) {
-            setMensaje('Campos obligatorios: nombre, precio y categoría');
-            return;
+
+        const datos = {};
+
+        if (platillo) {
+            // Solo enviar campos que cambiaron
+            if (nombre.trim() !== platillo.nombre) datos.nombre = nombre;
+            if (descripcion !== platillo.descripcion) datos.descripcion = descripcion || null;
+            if (idCategoria && idCategoria !== platillo.id_categoria?.toString()) datos.idCategoria = idCategoria;
+            if (imagen !== platillo.imagen) datos.imagen = imagen || null;
+            if (precio !== platillo.precio) datos.precio = precio;
+            if (estado !== platillo.estado) datos.estado = estado;
+
+            if (idCategoria) {
+                datos.idCategoria = Number(idCategoria);
+            }
+
+            if (Object.keys(datos).length === 0) {
+                setMensaje('No hay cambios para guardar');
+                return;
+            }
+        } else {
+            if (!nombre || !idCategoria || !precio) {
+                setMensaje('Campos obligatorios: nombre, precio y categoría');
+                return;
+            }
+            datos.nombre = nombre;
+            datos.descripcion = descripcion || null;
+            datos.idCategoria = idCategoria;
+            datos.imagen = imagen || null;
+            datos.precio = precio;
+            datos.estado = estado;
         }
 
         try {
             if (platillo) {
-                await modificarPlatillo(platillo.idPlatillo, { 
-                    nombre, descripcion, idCategoria, imagen, precio, estado 
-                });
+                await modificarPlatillo(platillo.idPlatillo, datos);
             } else {
-                await crearPlatillo({ nombre, descripcion, idCategoria, imagen, precio });
+                await crearPlatillo(datos);
             }
 
             setGuardadoExitoso(true);
@@ -101,18 +127,15 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
                     </div>
 
                     <div className={styles.inputContainer}>
-                        <label>Categoría</label>
-                        <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
-                            
-                            
-                            {platillo && <option value={platillo.idCategoria}>{platillo.categoria}</option>}
-                            {categorias.map(c => (
-                                <option key={c.idCategoria} value={c.idCategoria}>
-                                    {c.nombre}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <label>Categoría</label>
+                    <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
+                        {!platillo && <option value="" disabled>Selecciona una categoría</option>}
+                        {platillo && <option value={platillo.id_categoria}>{platillo.categoria}</option>}
+                        {categorias.map(c => (
+                            <option key={c.idCategoria} value={c.idCategoria}>{c.nombre}</option>
+                        ))}
+                    </select>
+                </div>
 
                     <div className={styles.inputContainer}>
                         <label>Imagen</label>

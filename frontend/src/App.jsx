@@ -14,15 +14,23 @@ import PanelChef from './screens/auth/PanelChef';
 import MeseroPanel from './screens/auth/PanelMesero';
 
 import Menu from './screens/public/menu';
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+
+
 import PanelAdm from './screens/auth/PanelAdm';
-import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
 
+//Importacion de vista inventario
+import VistaInventario from './screens/inventario/vistaInventario';
+import ActualizarStock from './screens/inventario/actualizarStock';
+
 //Importacion de proveedores 
 import VistaProveedores from './screens/proveedores/vistaProveedor';
+
+//Importacion de vista de imprevistos
+import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
@@ -51,13 +59,31 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/Productos" element={<VistaProductos />} />
-          <Route path="/Proveedores" element={<VistaProveedores />} />
           
-                
+          <Route path="/Proveedores" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProveedores />
+            </ProtectedRoute>
+            } 
+          />
 
           <Route path="/Platillos" element={
             <ProtectedRoute user={user} allowedRoles={[1,3,4]}>
               <VistaPlatillos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Inventario" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaInventario />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/ActualizarStock" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <ActualizarStock />
             </ProtectedRoute>
             } 
           />
@@ -68,8 +94,6 @@ function App() {
             </ProtectedRoute>
             } 
           />
-
-          <Route path="/Proveedores" element={<VistaProveedores />} />
 
           <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { getProductos, eliminarProducto } from '../../api/productoApi';
 import NuevoProducto from './nuevoProducto';
 import styles from '../../styles/productos/producto.module.css';
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 
 const VistaProductos = () => {
+    const { logout, user, loading } = useAuth();
     const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -25,7 +27,7 @@ const VistaProductos = () => {
             setProductos(res.data);
         } catch (err) {
             console.error(err);
-            setMensaje('Error al cargar productos');
+            setMensaje(err.response?.data?.mensaje || 'Error al cargar productos');
         } finally {
             setCargando(false);
         }
@@ -57,7 +59,7 @@ const VistaProductos = () => {
             await cargarProductos();
         } catch (err) {
             console.error(err);
-            setMensaje('Error al eliminar producto');
+            setMensaje(err.response?.data?.mensaje || 'Error al eliminar producto');
         } finally {
             setEliminandoId(null);
         }
@@ -68,8 +70,12 @@ const VistaProductos = () => {
         };
 
     const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
+        try {
+            await logout(); // Esto hace POST /logout, limpia user y localStorage
+            navigate('/'); // Redirige al login
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
     };
 
     useEffect(() => { 

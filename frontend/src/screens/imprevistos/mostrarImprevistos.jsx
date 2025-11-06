@@ -161,6 +161,7 @@ const MostrarImprevistos = () => {
           <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
           <li onClick={() => navigate('/Productos')}>Productos</li>
           <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+          <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
           <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
           <li onClick={handleLogout}>Log Out</li>
         </ul>
@@ -206,7 +207,6 @@ const MostrarImprevistos = () => {
               <table className={styles.Table || ''}>
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Reportado por</th>
                     <th>Producto</th>
                     <th>Descripción</th>
@@ -221,7 +221,6 @@ const MostrarImprevistos = () => {
                   {imprevistos.length > 0 ? (
                     imprevistos.map((imp) => (
                       <tr key={imp.idImprevisto}>
-                        <td>{imp.idImprevisto}</td>
                         <td>{imp.Usuario_idUsuarioReporta}</td>
                         <td>{imp.InventarioProducto_idInventarioProducto}</td>
                         <td>{imp.descripcion}</td>
