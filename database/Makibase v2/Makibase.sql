@@ -218,7 +218,7 @@ CREATE TABLE `permiso` (
   `descripcion` varchar(65) DEFAULT NULL,
   PRIMARY KEY (`idPermiso`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,6 +227,7 @@ CREATE TABLE `permiso` (
 
 LOCK TABLES `permiso` WRITE;
 /*!40000 ALTER TABLE `permiso` DISABLE KEYS */;
+INSERT INTO `permiso` VALUES (13,'eliminar_platillo','Puede eliminar platillos del menú'),(14,'crear_producto','Dar de alta un nuevo producto'),(15,'ver_productos','Puede visualizar el catalogo de productos'),(16,'editar_producto','Puede modificar o actualizar las caracteristicas de un producto'),(17,'eliminar_producto','Puede eliminar cualquier producto'),(18,'crear_usuario','Puede dar de alta algún usuario'),(19,'ver_usuarios','Puede consultar los usuarios existentes'),(20,'editar_usuario','Puede modificar los datos del usuario'),(21,'eliminar_usuario','Puede dar de baja a cualquier usuario'),(22,'crear_proveedor','Puede dar de alta algún proveedor'),(23,'ver_proveedores','Puede consultar los proveedores existentes'),(24,'editar_proveedor','Puede modificar los datos del proveedor'),(25,'eliminar_proveedor','Puede dar de baja a cualquier proveedor'),(26,'ver_inventario','Puede consultar el inventario'),(27,'crear_inventario','Puede registrar un nuevo lote en el inventario'),(28,'editar_inventario','Puede actualizar el stock de algún producto en inventario'),(29,'eliminar_inventario','Puede eliminar cualquier lote existente en inventario'),(30,'crear_imprevisto','Puede reportar un imprevisto en inventario'),(31,'editar_imprevisto','Puede autorizar o rechazar imprevistos'),(32,'ver_imprevistos','Puede consultar los imprevistos registrados'),(33,'eliminar_imprevisto','Puede eliminar cualquier imprevisto'),(34,'ver_menu','Puede visualizar el menú de platillos');
 /*!40000 ALTER TABLE `permiso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,6 +254,7 @@ CREATE TABLE `permiso_rol` (
 
 LOCK TABLES `permiso_rol` WRITE;
 /*!40000 ALTER TABLE `permiso_rol` DISABLE KEYS */;
+INSERT INTO `permiso_rol` VALUES (1,13),(1,14),(1,15),(2,15),(3,15),(4,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(2,23),(1,24),(1,25),(1,26),(2,26),(1,27),(1,28),(2,28),(3,28),(4,28),(1,29),(1,30),(3,30),(1,31),(1,32),(1,33),(1,34),(4,34),(5,34);
 /*!40000 ALTER TABLE `permiso_rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -463,7 +465,7 @@ CREATE TABLE `proveedor` (
 
 LOCK TABLES `proveedor` WRITE;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
-INSERT INTO `proveedor` VALUES (2,'ProveedorUno','1234567898','Su casa','correo@gmail.com','activo'),(3,'ProveedorDos','9876543210','Por allá','correo2@gmail.com','activo');
+INSERT INTO `proveedor` VALUES (2,'ProveedorUno','1234567898','Su casa','correo@gmail.com','inactivo'),(3,'ProveedorDos','9876543210','Por allá','correo2@gmail.com','activo');
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -487,7 +489,7 @@ CREATE TABLE `registroacceso` (
   `detalle` text,
   PRIMARY KEY (`idRegistro`),
   KEY `usuario_id` (`usuario_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -496,6 +498,7 @@ CREATE TABLE `registroacceso` (
 
 LOCK TABLES `registroacceso` WRITE;
 /*!40000 ALTER TABLE `registroacceso` DISABLE KEYS */;
+INSERT INTO `registroacceso` VALUES (1,'2025-11-05 18:39:14','::ffff:127.0.0.1','/api/auth/me','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(2,'2025-11-05 18:39:30','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(3,'2025-11-05 18:43:04','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(4,'2025-11-05 18:43:04','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(5,'2025-11-05 18:43:05','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(6,'2025-11-05 18:43:25','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(7,'2025-11-05 18:43:25','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(8,'2025-11-05 18:43:26','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(9,'2025-11-05 18:47:40','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(10,'2025-11-05 19:01:25','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(11,'2025-11-05 19:01:49','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(12,'2025-11-05 19:03:56','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(13,'2025-11-05 19:04:26','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(14,'2025-11-05 19:05:43','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(15,'2025-11-05 19:08:44','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(16,'2025-11-05 19:08:45','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(17,'2025-11-05 19:10:46','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(18,'2025-11-05 19:10:47','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(19,'2025-11-05 19:10:47','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(20,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(21,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(22,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(23,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(24,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(25,'2025-11-05 19:10:48','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(26,'2025-11-05 19:10:49','::ffff:127.0.0.1','/api/platillos','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(27,'2025-11-05 19:11:05','::ffff:127.0.0.1','/api/auth/me','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(28,'2025-11-05 19:11:11','::ffff:127.0.0.1','/api/auth/me','GET',NULL,NULL,NULL,'Token faltante','No se encontró token en cookies ni en Authorization'),(29,'2025-11-05 19:19:17','::ffff:127.0.0.1','/api/auth/login','POST','gerente',4,NULL,'Login fallido','Contraseña incorrecta'),(30,'2025-11-05 19:19:22','::ffff:127.0.0.1','/api/usuarios','GET','gerente',4,'ver_usuarios','Permiso insuficiente','Rol 1 no tiene permiso ver_usuarios'),(31,'2025-11-05 19:19:34','::ffff:127.0.0.1','/api/usuarios','GET','gerente',4,'ver_usuarios','Permiso insuficiente','Rol 1 no tiene permiso ver_usuarios'),(32,'2025-11-05 20:07:17','::ffff:127.0.0.1','/api/productos','GET','gerente',4,'ver_productos','Permiso insuficiente','Rol 1 no tiene permiso ver_productos'),(33,'2025-11-05 20:07:51','::ffff:127.0.0.1','/api/productos','GET','gerente',4,'ver_productos','Permiso insuficiente','Rol 1 no tiene permiso ver_productos'),(34,'2025-11-05 20:09:12','::ffff:127.0.0.1','/api/productos','GET','gerente',4,'ver_productos','Permiso insuficiente','Rol 1 no tiene permiso ver_productos'),(35,'2025-11-05 20:09:29','::ffff:127.0.0.1','/api/productos','GET','gerente',4,'ver_productos','Permiso insuficiente','Rol 1 no tiene permiso ver_productos'),(36,'2025-11-05 20:09:29','::ffff:127.0.0.1','/api/usuarios','GET','gerente',4,'ver_usuarios','Permiso insuficiente','Rol 1 no tiene permiso ver_usuarios'),(37,'2025-11-05 20:09:43','::ffff:127.0.0.1','/api/productos','GET','gerente',4,'ver_productos','Permiso insuficiente','Rol 1 no tiene permiso ver_productos'),(38,'2025-11-05 20:09:43','::ffff:127.0.0.1','/api/usuarios','GET','gerente',4,'ver_usuarios','Permiso insuficiente','Rol 1 no tiene permiso ver_usuarios');
 /*!40000 ALTER TABLE `registroacceso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,7 +515,7 @@ CREATE TABLE `rol` (
   `descripcion` varchar(65) DEFAULT NULL,
   PRIMARY KEY (`idRol`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -521,7 +524,7 @@ CREATE TABLE `rol` (
 
 LOCK TABLES `rol` WRITE;
 /*!40000 ALTER TABLE `rol` DISABLE KEYS */;
-INSERT INTO `rol` VALUES (1,'Gerente',NULL),(3,'Chef',NULL),(4,'Mesero',NULL);
+INSERT INTO `rol` VALUES (1,'Gerente',NULL),(2,'Encargado_de_Inventario',NULL),(3,'Chef',NULL),(4,'Mesero',NULL),(5,'Cliente',NULL);
 /*!40000 ALTER TABLE `rol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -593,4 +596,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-05 18:28:49
+-- Dump completed on 2025-11-05 20:25:40
