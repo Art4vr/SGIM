@@ -12,6 +12,9 @@ import { authMiddleware } from '../Middleware/authMiddleware.js';
 //importancion de controlador de mesa
 import { listaMesasController } from '../Controllers/mesaControlador.js';
 
+//importacion de controlador correspondienre al rol del usuario
+import { listaRolesController } from '../Controllers/rolControlador.js';
+
 //importacion de las funciones de los controladores de imprevistos
 import imprevistoRouter from './imprevistosRutas.js';
 
@@ -55,8 +58,9 @@ const authLimiter = rateLimit({
 router.post('/auth/login', authLimiter, loginController);
 router.use('/usuarios', usuarioRutas);
 router.post('/auth/logout', logoutController);
-
 router.get('/auth/me',authMiddleware,meController)
+
+router.get('/roles', listaRolesController);
 
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);

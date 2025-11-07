@@ -7,31 +7,10 @@ import conexionDB from '../config/db.js';
 
 //--------------------- MOSTRAR -----------------------------------------
 // Funcion para obetener los imprevistos de acuerdo a busqueda o todos 
-export const listarImprevisto = async (filtro,busqueda)=>{ //recibe el filtro y el criterio de busqueda como parametro
-    const columnasPermitidas = ['idImprevisto', 
-                                'Usuario_idUsuarioReporta', 
-                                'InventarioProducto_idInventarioProducto',
-                                'descripcion',
-                                'fecha',
-                                'cantidad',
-                                'UnidadMedida_idUnidadMedida',
-                                'estado', 
-                                'Usuario_idUsuarioAutoriza']
-    // Validar filtro para evitar inyección
-    if (filtro && !columnasPermitidas.includes(filtro)){
-        throw new Error('Filtro no válido');
-    }
-    //Base de la consulta
-    let query = 'SELECT * FROM imprevisto WHERE 1=1';
-    let params = [];
-
-    // Agregar condición solo si hay búsqueda
-    if (filtro && busqueda) {
-        query += ` AND ${filtro} LIKE ?`;
-        params.push(`%${busqueda}%`);
-    }
+export const listarImprevisto = async ()=>{ //recibe el filtro y el criterio de busqueda como parametro
+    const query = 'SELECT * FROM imprevisto';//consulta sql
     try{
-        const[resultados] = await conexionDB.execute(query,params);//ejecuta la consulta
+        const[resultados] = await conexionDB.execute(query);//ejecuta la consulta
         //console.log("Resultados imprevistos: -modelo: ", resultados);
         return resultados; //devuelve los resultados de la consulta
     }catch(err){
@@ -64,6 +43,19 @@ export const eliminarImprevisto = async (idImprevisto) => {
         return resultado.affectedRows; // Devuelve cuántas filas fueron afectadas (1 si se eliminó, 0 si no existía)
     } catch (err) {
         console.error('Error al eliminar imprevisto-imprevistoModelo:', err);
+        throw err;
+    }
+};
+
+//--------------------- APROBAR -----------------------------------------
+// Funcion para aprobar algun imprevisto 
+export const evaluarImprevisto = async ({idImprevisto,estado}) => {
+    const query = 'UPDATE imprevisto SET estado = ? WHERE idImprevisto = ?';
+    try {
+        const [resultado] = await conexionDB.execute(query, [estado,idImprevisto]);
+        return resultado.affectedRows; 
+    } catch (err) {
+        console.error('Error al aprobar/rechazar imprevisto.imprevistoModelo:', err);
         throw err;
     }
 };

@@ -7,11 +7,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Importa tus componentes de auth
 import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
-import Registro from './screens/auth/Registro';
+import Registro from './screens/usuarios/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
+import PanelAdm from './screens/auth/PanelAdm';
 
 
+//Importacion de vista usuarios
+import VistaUsuarios from './screens/usuarios/vistaUsuarios';
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -24,7 +27,7 @@ import ActualizarStock from './screens/inventario/actualizarStock';
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de vista de imprevistos
-import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
+import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 //Importacion de platillos
@@ -53,7 +56,20 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/Productos" element={<VistaProductos />} />
+          
+          <Route path="/Productos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProductos />
+            </ProtectedRoute>
+            } 
+          />
+
+          <Route path="/Usuarios" element={
+            <ProtectedRoute user={user} allowedRoles={[1]}>
+              <VistaUsuarios />
+            </ProtectedRoute>
+            } 
+          />
           
           <Route path="/Proveedores" element={
             <ProtectedRoute user={user} allowedRoles={[1,2]}>
@@ -108,7 +124,15 @@ function App() {
               </ProtectedRoute>
             }
           />
-            <Route 
+          <Route 
+            path="/PanelGerente" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelAdm />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
             path="/ordenChef" 
             element={
               <ProtectedRoute user={user} allowedRoles={[3]}>

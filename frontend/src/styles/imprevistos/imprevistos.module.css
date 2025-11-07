@@ -5,13 +5,62 @@
     align-items: center;
     width: 100%;
     min-height: calc(100vh - 13vh); /* deja espacio para el header */
-    padding: 40px 20px;
+    padding: 20px;
+}
+
+/* ===== Botones de acciones ===== */
+.acciones button {
+    background: none;
+    border: 2px solid rgba(44, 42, 42, 0.649);
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+    padding: 4px;
+
+}
+
+.acciones button:hover {
+    transform: scale(1.2);
+}
+
+/* Botón editar */
+.acciones button:first-child {
+    background-color: #03913cc6;
+    color: white;
+}
+
+.acciones button:first-child:hover {
+    background-color: #048723b5;
+    transform: scale(1.1);
+}
+
+/* Boton medio */
+.acciones button:nth-child(2) {
+    background-color: #f96aadd7; /*  */
+    color: white;
+}
+
+.acciones button:nth-child(2):hover {
+    background-color: #ff7abab9; /* Verde oscuro */
+    transform: scale(1.1);
+}
+
+/* Botón eliminar */
+.acciones button:last-child {
+    background-color: #992f53;
+    color: white;
+}
+
+.acciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
 }
 
 /* ======== TARJETA CENTRAL ======== */
 .registerCard {
     width: 90%;                     /* ocupa el 90% del ancho del contenedor */
-    max-width: 1000px;              /* límite máximo para pantallas grandes */
+    max-width: 100%;              /* límite máximo para pantallas grandes */
     margin: 0 auto;                 /* centra horizontalmente */
     padding: 40px;
     border-radius: 12px;

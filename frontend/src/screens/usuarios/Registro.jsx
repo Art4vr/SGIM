@@ -32,14 +32,14 @@ const Registro = () => {
         }
 
         try{
-            const response = await api.post('/api/auth/registroUsuario',{
+            const response = await api.post('/api/usuarios/register',{
                 nombre,
                 username,
                 password,
                 rolId
             });
             setMessage('Usuario Creado con exito');
-            setTimeout(() => navigate('/'), 1000); // Redirige al login despues de un segundo
+            setTimeout(() => navigate('/Usuarios'), 1000); // Redirige al login despues de un segundo
         }catch(err){
             setMessage(err.response?.data?.mensaje|| 'Error al registrar');
         }

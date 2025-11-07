@@ -29,12 +29,17 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
     try{ // ejecuta el bloque de codigo y captura errores
         //const {username,password} = req.body;
         const resultados = await obtenerUsuario(username); //llama a la funcion del modelo para obtener el usuario
+        console.log("Resultados de obtenerUsuario:", resultados);
         if (resultados.length === 0) { //si no se encuentra al usuario hay error
             await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, motivo: 'Login fallido', detalle: 'Usuario no encontrado' });
             return res.status(401).json({ mensaje: 'Credenciales incorrectas' });
         }
 
         const usuario = resultados[0];//toma el primer resultado (deberia ser el unico)
+        if(usuario.estado !== 'activo'){ //verifica que el usuario esté activo
+            await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, usuario_id: usuario.idUsuario, motivo: 'Login fallido', detalle: 'Usuario inactivo' });
+            return res.status(403).json({ mensaje: 'El usuario está inactivo. Contacte al administrador.' });
+        }
         const match = await bcrypt.compare(password,usuario.password);//compara la contraseña ingresada con la almacenada (encriptada)
 
         if (!match){//si no hay coincidencia hay error
