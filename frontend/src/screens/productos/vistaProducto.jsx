@@ -125,6 +125,15 @@ const VistaProductos = () => {
         (filtros.estado === '' || p.estado === filtros.estado)
         );
 
+        //Botón para limpiar filtros
+        const limpiarFiltros = () => {
+            setFiltros({
+                nombre: '',
+                categoria: '',
+                unidad: '',
+                estado: ''
+            })
+        }
 
     return (
         <div className={styles.container}>
@@ -205,6 +214,9 @@ const VistaProductos = () => {
                         </select>
                         </div>
 
+                        <button onClick={limpiarFiltros} className={stylesCommon.registerBtn}>
+                            Limpiar Filtros
+                        </button>
 
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando productos...</p>
