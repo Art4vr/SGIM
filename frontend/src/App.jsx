@@ -27,7 +27,7 @@ import ActualizarStock from './screens/inventario/actualizarStock';
 import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de vista de imprevistos
-import MostrarImprevistos from './screens/imprevistos/mostrarImprevistos';
+import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
 import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
 
 //Importacion de platillos
@@ -125,7 +125,7 @@ function App() {
             }
           />
           <Route 
-            path="/PanelAdm" 
+            path="/PanelGerente" 
             element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <PanelAdm />
