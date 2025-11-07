@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     const platillos = await obtenerPlatillos();
     res.json(platillos);
   } catch (err) {
-    console.error('❌ Error al obtener platillos:', err);
+    console.error('Error al obtener platillos:', err);
     res.status(500).json({ error: 'Error al obtener platillos' });
   }
 });
@@ -21,7 +21,7 @@ router.get('/:categoria', async (req, res) => {
     const platillos = await obtenerPlatillosPorCategoria(req.params.categoria);
     res.json(platillos);
   } catch (err) {
-    console.error('❌ Error al obtener por categoría:', err);
+    console.error('Error al obtener por categoría:', err);
     res.status(500).json({ error: 'Error al obtener platillos por categoría' });
   }
 });

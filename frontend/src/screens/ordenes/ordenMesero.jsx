@@ -81,6 +81,7 @@ const OrdenMesero = () => {
     try {
       const response = await getPlatillosOrden(orden.idOrden);
       setOrdenPlatillos(response.data);
+      console.log('Platillos de la orden:', response.data);
     } catch (err) {
       console.error('Error al cargar platillos de la orden:', err);
     }

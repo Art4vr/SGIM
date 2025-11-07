@@ -163,9 +163,9 @@ const Registro = () => {
                             <button
                                 className={styles.loginBtn}
                                 type="button"
-                                onClick={() => navigate('/Login')}
+                                onClick={() => navigate('/PanelGerente')}
                             >
-                                VOLVER AL LOGIN
+                                VOLVER ATRAS
                             </button>
                         
                         {message && <p className={stylesCommon.message}>{message}</p>}
