@@ -1,14 +1,16 @@
 import api from '../../api/axiosConfig';
-import { useState, botonRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
-
+import PerfilUsuario from '../../components/PerfilUsuario.jsx';
 
 const PanelAdm = () => {
     const navigate = useNavigate();
 
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const menuRef = useRef(null);
+    const botonRef = useRef(null);
 
     const handleLogout = async () => {
         await api.post('/api/auth/logout');
@@ -19,6 +21,25 @@ const PanelAdm = () => {
         setMenuAbierto(!menuAbierto);
     };
 
+useEffect(() => { 
+        const handleClickOutside = (event) =>{
+            if(
+                menuAbierto &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                botonRef.current &&
+                !botonRef.current.contains(event.target)
+            ){
+                setMenuAbierto(false);
+            }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown',handleClickOutside);
+        };
+    }, [menuAbierto]);
+
     return (
         <div className={styles.container}>
             {/* Encabezado */}
@@ -27,11 +48,15 @@ const PanelAdm = () => {
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
 
             {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
+            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
                     <li onClick={() => navigate('/usuarios')}>Usuarios</li>
                     <li onClick={() => navigate('/proveedores')}>Proveedores</li>

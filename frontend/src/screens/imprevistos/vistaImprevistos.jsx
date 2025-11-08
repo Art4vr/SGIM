@@ -13,6 +13,8 @@ import stylesCommon from "../../styles/common/common.module.css";
 
 import { getProductos, getUnidades } from "../../api/productoApi";
 
+import PerfilUsuario from "../../components/PerfilUsuario";
+
 const MostrarImprevistos = () => {
     const { logout } = useAuth();
     const [cargando, setCargando] = useState(false);
@@ -282,26 +284,17 @@ const MostrarImprevistos = () => {
 
     return (
         <div className={stylesCommon.bodyContainer}>
-            {/* Header */}
+            {/* Encabezado */}
             <div className={stylesCommon.header}>
-                <button
-                    ref={botonRef}
-                    className={stylesCommon.menuBoton}
-                    onClick={toggleMenu}
-                    aria-label="Abrir menú"
-                >
+                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-
-                <h1 className={stylesCommon.headerTitle}>
-                    Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi
-                </h1>
-
-                <img
-                    className={stylesCommon.logo}
-                    src="/imagenes/MKSF.png"
-                    alt="LogoMK"
-                />
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
 
             {/* Sidebar */}
@@ -311,7 +304,6 @@ const MostrarImprevistos = () => {
                     }`}
             >
                 <ul>
-                    <li onClick={() => navigate("/Perfil")}>Perfil</li>
                     <li onClick={() => navigate("/Platillos")}>Platillos</li>
                     <li onClick={() => navigate("/Proveedores")}>Proveedores</li>
                     <li onClick={() => navigate("/Productos")}>Productos</li>

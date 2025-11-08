@@ -1,0 +1,72 @@
+/* Contenedor principal para posicionar el dropdown */
+.perfilContainer {
+    position: relative;
+    z-index: 1000; /* Asegura que esté sobre otros elementos del header */
+}
+
+/* El menú desplegable (Estilo oscuro "formulario") */
+.perfilDropdown {
+    position: absolute;
+    top: calc(100% + 12px); /* 12px debajo del botón */
+    right: 0; /* Alineado a la derecha del contenedor */
+    width: 90vw;
+    max-width: 300px;
+    
+    /* Estilo oscuro "tipo formulario" (basado en tu sidebar) */
+    background-color: #3d2d3aef;
+    border: 1px solid #b44a82; /* Borde con el color principal */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    
+    padding: 1rem;
+    color: #f6c9e0; /* Texto claro por defecto */
+    
+    /* Animación para que aparezca suavemente */
+    animation: fadeIn 0.2s ease;
+}
+
+/* Animación simple de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilo para el nombre (ej. Arturo) */
+.perfilDropdown h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #fff; /* Título en blanco */
+    font-weight: 600;
+}
+
+/* Estilo para el username (ej. @Arturo) */
+.perfilDropdown .username {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: #e17aa9; /* Color rosado para el username */
+    font-style: italic;
+    border-bottom: 1px solid #b44a82; /* Línea separadora */
+    padding-bottom: 10px;
+}
+
+/* Estilo para la descripción del rol (ej. Mesero) */
+.perfilDropdown .descripcion {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #f6c9e0; /* Texto claro */
+    line-height: 1.4;
+}
+
+/* Estilos para los mensajes de Carga o Error */
+.perfilDropdown .loading,
+.perfilDropdown .error {
+    text-align: center;
+    color: #f6c9e0; /* Texto claro */
+    padding: 10px 0;
+}

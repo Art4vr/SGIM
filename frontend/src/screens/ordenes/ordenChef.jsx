@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/ordenes/ordenChef.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
+import PerfilUsuario from '../../components/PerfilUsuario';
 
 const OrdenChef = () => {
     const { logout } = useAuth();
@@ -53,13 +54,16 @@ const OrdenChef = () => {
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
 
             {/* Menú lateral */}
             <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>

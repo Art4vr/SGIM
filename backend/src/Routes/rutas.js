@@ -44,6 +44,9 @@ import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlati
 //importancion de funciones de ordenMesero
 import ordenMeseroRutas from './ordenMeseroRutas.js';
 
+//Importación de funciones de perfilUsuario
+import { getPerfilUsuario } from '../Controllers/perfilControlador.js';
+
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
@@ -96,5 +99,8 @@ router.get('/categoriasPlatillo',listaCategoriasPlatilloController);
 
 //----------------------- RUTAS DE ORDENES (MESERO)----------------
 router.use('/ordenes', ordenMeseroRutas);
+
+//----------------------- RUTAS DE PERFIL --------------------------
+router.get('/perfil/me',authMiddleware, getPerfilUsuario);
 
 export default router;
