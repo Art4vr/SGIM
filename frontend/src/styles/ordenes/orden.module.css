@@ -39,11 +39,7 @@
 /* Subtítulos */
 .contenidoPrincipal h3,
 .contenidoPrincipal h4 {
-<<<<<<< HEAD
-  color: #df0a9b;
-=======
   color: #4caf50;
->>>>>>> endira
   margin-top: 15px;
 }
 
@@ -135,11 +131,7 @@
 }
 
 .contenedorPlatillos button:hover {
-<<<<<<< HEAD
-  background-color: #be1111;
-=======
   background-color: #2e7d32;
->>>>>>> endira
 }
 
 /* ----- RESPONSIVE ----- */
@@ -153,8 +145,6 @@
     padding: 20px 10px;
   }
 }
-<<<<<<< HEAD
-=======
 
 /* ----- CONTROL DE CANTIDAD (+ / -) ----- */
 .controlCantidad {
@@ -187,4 +177,4 @@
   width: 25px;
   text-align: center;
 }
->>>>>>> endira
+

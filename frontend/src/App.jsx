@@ -9,12 +9,11 @@ import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
 import Registro from './screens/usuarios/Registro';
 import PanelChef from './screens/auth/PanelChef';
-
-//Importación de la parte de mesero para hacer pruebas...
-import MeseroPanel from './screens/auth/PanelMesero';
+import PanelMesero from './screens/auth/PanelMesero';
 
 import Menu from './screens/public/menu';
 import PanelAdm from './screens/auth/PanelAdm';
+import PanelEncargado from './screens/auth/PanelEncargado';
 
 
 
@@ -114,7 +113,7 @@ function App() {
 
           <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 
-          <Route path="/Mesero" element={<MeseroPanel />} />
+          <Route path="/PanelMesero" element={<PanelMesero />} />
 
           <Route 
             path="/PanelAdm" 
@@ -146,6 +145,14 @@ function App() {
             element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <PanelAdm />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/PanelEncargado" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[2]}>
+                <PanelEncargado/>
               </ProtectedRoute>
             }
           />

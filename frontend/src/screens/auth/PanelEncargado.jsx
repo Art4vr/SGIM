@@ -5,7 +5,7 @@ import styles from '../../styles/auth/PanelAdm.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 
 
-const PanelAdm = () => {
+const PanelEncargado = () => {
     const navigate = useNavigate();
 
     const [menuAbierto, setMenuAbierto] = useState(false);
@@ -33,13 +33,10 @@ const PanelAdm = () => {
             {/* Menú lateral */}
             <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/usuarios')}>Usuarios</li>
                     <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                     <li onClick={() => navigate('/inventario')}>Inventario</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/pedidos')}>Pedidos</li>
-                    <li onClick={() => navigate('/reportes')}>Reportes</li>
-                    <li onClick={() => navigate('/mesas')}>Mesas</li>
+                    <li onClick={() => navigate('/actualizarStock')}>Actualizar Stock</li>
+                    <li onClick={() => navigate('/productos')}>Productos</li>
                     <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
@@ -47,11 +44,6 @@ const PanelAdm = () => {
 
             {/* Contenido principal */}
             <div className={styles.contenido}>
-                <button className={styles.tarjetas} onClick={() => navigate('/usuarios')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Usuarios.png" alt="Usuarios" />
-                    <h3>Usuarios</h3>
-                </button>
-
                 <button className={styles.tarjetas} onClick={() => navigate('/proveedores')}>
                     <img className={styles.imagenMenu} src="/imagenes/Proveedores.png" alt="Proveedores" />
                     <h3>Proveedores</h3>
@@ -62,24 +54,14 @@ const PanelAdm = () => {
                     <h3>Inventario</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/platillos')}>
-                    <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Platillos" />
-                    <h3>Platillos</h3>
+                <button className={styles.tarjetas} onClick={() => navigate('/actualizarStock')}>
+                    <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Actualizar Stock" />
+                    <h3>Actualizar Stock</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/pedidos')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Pedidos.png" alt="Pedidos" />
-                    <h3>Pedidos</h3>
-                </button>
-
-                <button className={styles.tarjetas} onClick={() => navigate('/reportes')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Reportes.png" alt="Reportes" />
-                    <h3>Reportes</h3>
-                </button>
-
-                <button className={styles.tarjetas} onClick={() => navigate('/mesas')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Mesas.png" alt="Mesas" />
-                    <h3>Mesas</h3>
+                <button className={styles.tarjetas} onClick={() => navigate('/productos')}>
+                    <img className={styles.imagenMenu} src="/imagenes/Productos.png" alt="Productos" />
+                    <h3>Productos</h3>
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
@@ -91,4 +73,4 @@ const PanelAdm = () => {
     );
 };
 
-export default PanelAdm;
+export default PanelEncargado;

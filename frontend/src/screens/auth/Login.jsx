@@ -40,11 +40,7 @@ const Login = ({setUser}) => {
                 console.log('SWITCH:', data.rol);
                 switch (data.rol){
                     case 1:
-<<<<<<< HEAD
-                        navigate('/PanelAdm');
-=======
                         navigate('/PanelGerente');
->>>>>>> endira
                         break;
                     case 2:
                         navigate('/PanelEncargado');
