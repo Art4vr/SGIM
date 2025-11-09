@@ -96,9 +96,10 @@ const VistaPlatillos = () => {
     }, [menuAbierto]);
 
     const [filtros, setFiltros] = useState({
-        nombre: '',
         categoria: '',
-        estado: ''
+        estado: '',
+        precioMin: '',
+        precioMax: ''
     });
 
     const handleFiltroChange = (e, campo) => {
@@ -109,13 +110,30 @@ const VistaPlatillos = () => {
     };
 
     const platillosFiltrados = platillos.filter((p) => {
-        const coincideNombre = p.nombre.toLowerCase().includes(filtros.nombre.toLowerCase());
         const coincideCategoria = filtros.categoria === '' || p.categoria === filtros.categoria;
         const coincideEstado = filtros.estado === '' || p.estado === filtros.estado;
-        return coincideNombre && coincideCategoria && coincideEstado;
+
+        // Lógica para el rango de precios
+        const precioPlatillo = parseFloat(p.precio);
+        const min = parseFloat(filtros.precioMin);
+        const max = parseFloat(filtros.precioMax);
+
+        // Si 'min' no es un número (isNaN) o el precio es mayor/igual, coincide
+        const coincideMin = isNaN(min) || precioPlatillo >= min;
+        // Si 'max' no es un número (isNaN) o el precio es menor/igual, coincide
+        const coincideMax = isNaN(max) || precioPlatillo <= max;
+
+        return coincideCategoria && coincideEstado && coincideMin && coincideMax;
     });
 
-
+    const limpiarFiltros = () => {
+        setFiltros ({
+            categoria: '',
+            estado: '',
+            precioMin: '',
+            precioMax: ''
+        });
+    };
 
     return (
         <div className={styles.container}>
@@ -154,14 +172,7 @@ const VistaPlatillos = () => {
 
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>
-                            <input
-                                type="text"
-                                placeholder="Filtrar por nombre"
-                                value={filtros.nombre}
-                                onChange={(e) => handleFiltroChange(e, 'nombre')}
-                                className={stylesCommon.filterInput}
-                            />
-
+                            {/* Este 'select' de categoría se queda como está */}
                             <select
                                 value={filtros.categoria}
                                 onChange={(e) => handleFiltroChange(e, 'categoria')}
@@ -169,10 +180,11 @@ const VistaPlatillos = () => {
                             >
                                 <option value="">Todas las categorías</option>
                                 {[...new Set(platillos.map((p) => p.categoria))].map((cat) => (
-                                <option key={cat} value={cat}>{cat}</option>
+                                    <option key={cat} value={cat}>{cat}</option>
                                 ))}
                             </select>
 
+                            {/* Este 'select' de estado se queda como está */}
                             <select
                                 value={filtros.estado}
                                 onChange={(e) => handleFiltroChange(e, 'estado')}
@@ -183,7 +195,27 @@ const VistaPlatillos = () => {
                                 <option value="agotado">Agotado</option>
                                 <option value="descontinuado">Descontinuado</option>
                             </select>
+
+                            {/* --- NUEVOS INPUTS DE PRECIO --- */}
+                            <input
+                                type="number"
+                                placeholder="Precio Mín."
+                                value={filtros.precioMin}
+                                onChange={(e) => handleFiltroChange(e, 'precioMin')}
+                                className={stylesCommon.filterInput}
+                                min="0"
+                            />
+                            <input
+                                type="number"
+                                placeholder="Precio Máx."
+                                value={filtros.precioMax}
+                                onChange={(e) => handleFiltroChange(e, 'precioMax')}
+                                className={stylesCommon.filterInput}
+                                min="0"
+                            />
                         </div>
+                        {/*Botón para limpiar filtros*/}
+                        <button onClick={limpiarFiltros} className={stylesCommon.registerBtn}>Limpiar Filtros</button>
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando platillos...</p>
                         ) : (
