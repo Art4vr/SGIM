@@ -7,13 +7,17 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Importa tus componentes de auth
 import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
-import Registro from './screens/usuarios/Registro';
+
+//Importa componentes de los Paneles
 import PanelChef from './screens/auth/PanelChef';
-import Menu from './screens/public/menu';
 import PanelAdm from './screens/auth/PanelAdm';
 
 
+import Menu from './screens/public/menu';
+
+
 //Importacion de vista usuarios
+import Registro from './screens/usuarios/Registro';
 import VistaUsuarios from './screens/usuarios/vistaUsuarios';
 
 //Importacion de vista productos
@@ -51,22 +55,39 @@ function App() {
   
 //revisar ruta de productos y proveedores (permisos o roles correspondientes)
   return (
-    
       <BrowserRouter>
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          
-          <Route path="/Productos" element={
-            <ProtectedRoute user={user} allowedRoles={[1,2]}>
-              <VistaProductos />
-            </ProtectedRoute>
-            } 
+
+          <Route 
+            path="/PanelChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <PanelChef />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/PanelGerente" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelAdm />
+              </ProtectedRoute>
+            }
           />
 
           <Route path="/Usuarios" element={
             <ProtectedRoute user={user} allowedRoles={[1]}>
               <VistaUsuarios />
+            </ProtectedRoute>
+            } 
+          />
+          
+          <Route path="/Productos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProductos />
             </ProtectedRoute>
             } 
           />
@@ -106,57 +127,48 @@ function App() {
             } 
           />
 
-          <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
-
           <Route 
-            path="/RegistroImprevisto" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
+            path="/RegistroImprevisto" element={
+              <ProtectedRoute user={user} allowedRoles={[3,4]}>
                 <RegistroImprevisto />
               </ProtectedRoute>
             }
           />
+
           <Route 
-            path="/PanelChef" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
-                <PanelChef />
+            path="/OrdenesMesero" element={
+              <ProtectedRoute user={user} allowedRoles={[1,4]}>
+                <OrdenesMesero />
               </ProtectedRoute>
             }
           />
+
           <Route 
-            path="/PanelGerente" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[1]}>
-                <PanelAdm />
-              </ProtectedRoute>
-            }
-          />
-          <Route 
-            path="/ordenChef" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
+            path="/ordenChef" element={
+              <ProtectedRoute user={user} allowedRoles={[1,3]}>
                 <OrdenChef />
               </ProtectedRoute>
             }
           />
-            <Route 
-            path="/platillosChef" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
+
+          <Route 
+            path="/platillosChef" element={
+              <ProtectedRoute user={user} allowedRoles={[1,3]}>
                 <PlatillosChef />
               </ProtectedRoute>
             }
           />
+
           <Route 
-            path="/NuevoUsuario" 
-            element={
+            path="/NuevoUsuario" element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <Registro />
               </ProtectedRoute>
             }
           />
+
           <Route path="/Menu" element={<Menu />} />
+
           <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
         </Routes>
       </BrowserRouter>

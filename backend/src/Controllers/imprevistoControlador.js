@@ -49,12 +49,11 @@ export const consultaImprevistoController = async (req,res) => { //crea la funci
 // Controlador para la actualización o edición de imprevistos. 
 export const evaluarImprevistoController = async (req,res) => {
     const idImprevisto = req.params.id;
-    const {estado}  = req.body;
-    console.log("idImprevisto: ", idImprevisto);
-    console.log("ESTADO: ", estado);
+    const {estado, idUsuarioAutoriza}  = req.body;
+    //console.log("req.body REVISA: ", req.body);
 
     try{
-        const resultado = await evaluarImprevisto({ idImprevisto, estado });
+        const resultado = await evaluarImprevisto({ idImprevisto, estado, idUsuarioAutoriza });
         if (resultado === 0) {
             return res.status(404).json({ mensaje: 'Imprevisto no encontrado. -imprevistoControlador' });
         }

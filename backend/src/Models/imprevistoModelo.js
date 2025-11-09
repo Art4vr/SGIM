@@ -49,17 +49,16 @@ export const eliminarImprevisto = async (idImprevisto) => {
 
 //--------------------- APROBAR -----------------------------------------
 // Funcion para aprobar algun imprevisto 
-export const evaluarImprevisto = async ({idImprevisto,estado}) => {
-    const query = 'UPDATE imprevisto SET estado = ? WHERE idImprevisto = ?';
+export const evaluarImprevisto = async ({idImprevisto,estado, idUsuarioAutoriza}) => {
+    const query = 'UPDATE imprevisto SET estado = ?, Usuario_idUsuarioAutoriza = ? WHERE idImprevisto = ?';
     try {
-        const [resultado] = await conexionDB.execute(query, [estado,idImprevisto]);
+        const [resultado] = await conexionDB.execute(query, [estado, idUsuarioAutoriza, idImprevisto]);
         return resultado.affectedRows; 
     } catch (err) {
         console.error('Error al aprobar/rechazar imprevisto.imprevistoModelo:', err);
         throw err;
     }
 };
-
 
 //--------------------- MODIFICAR -----------------------------------------
 // Funcion para modificar algun imprevisto 

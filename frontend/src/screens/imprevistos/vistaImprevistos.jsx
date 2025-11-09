@@ -17,7 +17,7 @@ import { getProductos, getUnidades } from "../../api/productoApi";
 
 
 const MostrarImprevistos = () => {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
@@ -28,7 +28,6 @@ const MostrarImprevistos = () => {
     const [imprevistoEditando, setImprevistoEditando] = useState(null);
     const [eliminandoId, setEliminandoId] = useState(null);
     const [modalAccion, setModalAccion] = useState(null);
-    const [formData, setFormData] = useState({ nombre: '' }); // Datos para la edición del imprevisto
 
     const [productos, setProductos] = useState([]);
     const [medidas, setMedidas] = useState([]);
@@ -84,7 +83,6 @@ const MostrarImprevistos = () => {
     };
 
     const manejarAccion = async ( confirmar, estado = null) => {
-        console.log("manejar accion: ", confirmar);
         if(confirmar) {
             if(modalAccion === "eliminar"){
                 await eliminarImprevisto(modalImprevisto);
@@ -112,10 +110,8 @@ const MostrarImprevistos = () => {
 
     //------------- EVALUAR -----------------------------------
     const evaluarImprevisto = async (imprevisto, nuevoEstado) => {
-        console.log("imprevistoId: ", imprevisto.idImprevisto)
         try {
-            const datos = {estado: nuevoEstado};
-            console.log("DATOS: ", datos);
+            const datos = {estado: nuevoEstado, idUsuarioAutoriza: user.id};
             await api.put(`/api/imprevistos/evaluar/${imprevisto.idImprevisto}`, datos);
             setMensaje(`Imprevisto ${nuevoEstado} correctamente`);
             await cargarDatos();
@@ -198,11 +194,12 @@ const MostrarImprevistos = () => {
         (filtros.estado === '' || i.estado === filtros.estado) &&
         (filtros.fecha ? i.fecha.startsWith(filtros.fecha) : true)
     );
-
+    
 
     //Mapeado de datos agregando a imprevistos los datos correspondientes a las llaves foraneas
 
     imprevistosFiltrados.forEach(i => {
+        //console.log("estado: ", i.estado);
         const nombreUsuarioReporta = usuarios.find(u => u.idUsuario === i.Usuario_idUsuarioReporta);
         const nombreUsuarioAutoriza = usuarios.find(u => u.idUsuario === i.Usuario_idUsuarioAutoriza);
         const idProductoInventario = inventarios.find(n => n.idInventarioProducto === i.InventarioProducto_idInventarioProducto);
@@ -341,16 +338,17 @@ const MostrarImprevistos = () => {
                                                     </td>
                                                     <td>
                                                         <div className={`${styles.estadoBar} ${imp.estado === 'autorizado' ? styles.autorizado : imp.estado === 'rechazado' ? styles.rechazado : ''}`}>
+                                                            
                                                             <label className={styles.switch}>
                                                                 <input type="checkbox"
                                                                     checked={imp.estado !== 'pendiente'}
                                                                     onChange={() => abrirModal(imp, "¿Qué acción desea realizar sobre el imprevisto?", "evaluar")}
                                                                 />
                                                                 <span className={styles.slider}></span>
-                                                                </label>
-                                                                <span className={styles.estadoText}>
+                                                            </label>
+                                                            <span className={styles.estadoText}>
                                                                     {imp.estado === 'pendiente' ? 'pendiente' : imp.estado}
-                                                                </span>
+                                                            </span>
                                                         </div>
                                                     </td>
                                                     <td className={styles.acciones}>

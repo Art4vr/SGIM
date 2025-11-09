@@ -27,18 +27,4 @@ router.put('/:id', authMiddleware, requirePermission('editar_producto'), modific
 // Eliminar producto
 router.delete('/:id', authMiddleware, requirePermission('eliminar_producto'), eliminarProductoController);
 
-/*
-//Sin autenticacion
-
-router.get('/', obtenerProductosController);
-
-// Agregar producto
-router.post('/', agregarProductoController);
-
-// Modificar producto
-router.put('/:id', modificarProductoController);
-
-// Eliminar producto
-router.delete('/:id', eliminarProductoController);
-*/
 export default router;

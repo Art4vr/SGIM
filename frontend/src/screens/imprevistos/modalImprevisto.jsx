@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/productos/producto.module.css';
+import styles from '../../styles/imprevistos/imprevistos.module.css';
 import api from '../../api/axiosConfig';
 
 const ModalEliminarImprevisto = ({ visible, mensaje, modalAccion, manejarAccion, onClose }) => {

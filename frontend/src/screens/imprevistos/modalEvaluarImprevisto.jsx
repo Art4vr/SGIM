@@ -17,8 +17,6 @@ const ModalEvaluarImprevisto = ({ visible, mensaje, imprevisto, modalAccion, man
 
     const handleSubmit = (estado) => {
         manejarAccion(true, estado);
-        console.log("accion modal: ", modalAccion);
-        console.log("estado: ", estado);
         manejarAccion(true, estado);
     };
 
