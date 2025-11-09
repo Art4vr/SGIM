@@ -44,7 +44,7 @@ const PanelMesero = () => {
             {/* Contenido principal */}
             <div className={styles.contenido}>
                 <button className={styles.tarjetas} onClick={() => navigate('/OrdenesMesero')}>
-                    <img className={styles.imagenMenu} src="/imagenes/ordenes_mesero.png" alt="Ordenes Mesero" />
+                    <img className={styles.imagenMenu} src="/imagenes/Orden_Mesero.png" alt="Ordenes Mesero" />
                     <h3>Ordenes Mesero</h3>
                 </button>
 
@@ -54,7 +54,7 @@ const PanelMesero = () => {
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/verMenu')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Ver_Menu.png" alt="Ver Menu" />
+                    <img className={styles.imagenMenu} src="/imagenes/VerM.png" alt="Ver Menu" />
                     <h3>Ver Menu</h3>
                 </button>
 

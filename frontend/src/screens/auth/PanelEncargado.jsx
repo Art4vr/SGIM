@@ -55,7 +55,7 @@ const PanelEncargado = () => {
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/actualizarStock')}>
-                    <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Actualizar Stock" />
+                    <img className={styles.imagenMenu} src="/imagenes/Actualizar_Stock.png" alt="Actualizar Stock" />
                     <h3>Actualizar Stock</h3>
                 </button>
 
