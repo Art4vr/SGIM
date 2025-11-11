@@ -10,7 +10,7 @@ import Login from './screens/auth/Login';
 import Registro from './screens/usuarios/Registro';
 import PanelChef from './screens/auth/PanelChef';
 import Menu from './screens/public/menu';
-import PanelAdm from './screens/auth/PanelAdm';
+import PanelGerente from './screens/auth/PanelAdm';
 
 
 //Importacion de vista usuarios
@@ -128,7 +128,7 @@ function App() {
             path="/PanelGerente" 
             element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
-                <PanelAdm />
+                <PanelGerente />
               </ProtectedRoute>
             }
           />

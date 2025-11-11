@@ -7,8 +7,11 @@ import {
   agregarPlatilloOrden,
   eliminarPlatilloOrden,
   getMesas,
-  modificarOrden
+  modificarOrden,
+  enviarOrdenACocina,
 } from '../../api/ordenMeseroApi';
+// Es para modificar los estados de los platillos
+import { actualizarPlatilloChef } from '../../api/chefApi';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/ordenes/orden.module.css';
 
@@ -87,7 +90,21 @@ const OrdenMesero = () => {
     }
   };
 
-  // ---------------------- AGREGAR PLATILLO ----------------------
+  //Actualizacion 4 seg 
+  useEffect(() => {
+    if (!ordenSeleccionada) return;
+    const interval = setInterval(async () => {
+      try {
+        const response = await getPlatillosOrden(ordenSeleccionada.idOrden);
+        setOrdenPlatillos(response.data);
+      } catch (error) {
+        console.error("Error actualizando platillos en tiempo real:", error);
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [ordenSeleccionada]);
+
+// ---------------------- AGREGAR PLATILLO ----------------------
 const handleAgregarPlatillo = async (platilloId) => {
   const cantidad = cantidadPlatillo[platilloId] || 1;
   if (!ordenSeleccionada) return alert('Selecciona una orden primero');
@@ -104,7 +121,7 @@ const handleAgregarPlatillo = async (platilloId) => {
 
     alert('Platillo agregado correctamente');
 
-    // 🔹 Refrescar detalle y lista de órdenes
+    //Refresh detalle y lista de órdenes
     await seleccionarOrden(ordenSeleccionada);
     await cargarOrdenes();
 
@@ -112,19 +129,19 @@ const handleAgregarPlatillo = async (platilloId) => {
     setCantidadPlatillo({ ...cantidadPlatillo, [platilloId]: 1 });
 
   } catch (err) {
-    console.error('❌ Error al agregar platillo:', err);
+    console.error('Error al agregar platillo:', err);
     alert('No se pudo agregar el platillo a la orden');
   }
 };
 
 // ---------------------- ELIMINAR PLATILLO ----------------------
-const handleEliminarPlatillo = async (platilloId) => {
+const handleEliminarPlatillo = async (idPlatilloOrden) => {
   if (!ordenSeleccionada) return;
   try {
-    await eliminarPlatilloOrden(ordenSeleccionada.idOrden, platilloId);
+    await eliminarPlatilloOrden(idPlatilloOrden);
     alert('Platillo eliminado correctamente');
 
-    // 🔹 Refrescar detalle y lista de órdenes
+    //Refrescar detalle y lista de órdenes
     await seleccionarOrden(ordenSeleccionada);
     await cargarOrdenes();
 
@@ -133,8 +150,7 @@ const handleEliminarPlatillo = async (platilloId) => {
   }
 };
 
-
-  // ---------------------- FINALIZAR ORDEN ----------------------
+// ---------------------- FINALIZAR ORDEN ----------------------
   const handleFinalizarOrden = async () => {
     if (!ordenSeleccionada) return alert('Selecciona una orden primero');
     try {
@@ -150,7 +166,39 @@ const handleEliminarPlatillo = async (platilloId) => {
     }
   };
 
-  // ---------------------- CAMBIAR CANTIDAD (+/-) ----------------------
+// ---------------------- ENVIAR A COCINA ----------------------
+const handleEnviarCocina = async () => {
+  if (!ordenSeleccionada) return alert('Selecciona una orden primero');
+  
+  try {
+    // Cambia estado general a "en cocina"
+    await enviarOrdenACocina(ordenSeleccionada.idOrden);
+    alert(`Orden #${ordenSeleccionada.idOrden} enviada a cocina`);
+    
+    // Refresca la vista
+    await cargarOrdenes();
+    setVista('ordenes');
+    setOrdenSeleccionada(null);
+  } catch (err) {
+    console.error('Error al enviar a cocina:', err);
+    alert('No se pudo enviar la orden a cocina');
+  }
+};
+
+// ---------------------- CAMBIAR ESTADO DE PLATILLO ----------------------
+const cambiarEstado = async (platillo, nuevoEstado) => {
+        try {
+        await actualizarPlatilloChef({
+            idPlatilloOrden: platillo.idPlatilloOrden,
+            estado: nuevoEstado
+        });
+        await cargarPlatillos();
+        } catch (error) {
+        console.error('Error al actualizar estado del platillo:', error);
+        }
+    };
+
+// ---------------------- CAMBIAR CANTIDAD (+/-) ----------------------
   const cambiarCantidad = (platilloId, delta) => {
     setCantidadPlatillo(prev => {
       const actual = prev[platilloId] || 1;
@@ -159,7 +207,7 @@ const handleEliminarPlatillo = async (platilloId) => {
     });
   };
 
-  // ---------------------- FILTROS ----------------------
+// ---------------------- FILTROS ----------------------
   const handleFiltroChange = (e) => {
     setFiltros({ categoria: e.target.value });
   };
@@ -169,7 +217,7 @@ const handleEliminarPlatillo = async (platilloId) => {
     (p) => filtros.categoria === '' || p.categoria === filtros.categoria
   );
 
-  // ---------------------- RENDER ----------------------
+// ---------------------- RENDER ----------------------
   return (
     <div className={styles.contenidoPrincipal}>
       <h1 className={styles.tituloPrincipal}>Gestión de Órdenes</h1>
@@ -213,18 +261,38 @@ const handleEliminarPlatillo = async (platilloId) => {
           <button onClick={() => setVista('ordenes')}>← Volver</button>
 
           <ul>
-            {ordenPlatillos.map((p) => (
-              <li key={p.Platillo_idPlatillo}>
-                <b>{p.platillo}</b> — Cant: {p.cantidad} — ${p.precioUnitario}
-                <button onClick={() => handleEliminarPlatillo(p.Platillo_idPlatillo)}>Eliminar</button>
-              </li>
-            ))}
-          </ul>
+              {ordenPlatillos.map((p) => (
+                <li key={p.Platillo_idPlatillo}>
+                  <b>{p.platillo}</b> — Cant: {p.cantidad} — ${p.precioUnitario}
+                  <br />
+                  <span>Estado: <b>{p.estado}</b></span>
+
+                  {/* Mostrar botón [entregado] solo si está "listo" el platillo*/}
+                  {p.estado === 'listo' && (
+                    <button onClick={() => cambiarEstado(p, 'entregado')} className={styles.botonAccion}>
+                      Entregado
+                    </button>
+                  )}
+
+                  {/* Eliminar solo si aún no se envió a cocina */}
+                  {p.estado === 'pendiente' && (
+                    <button
+                      onClick={() => handleEliminarPlatillo(p.idPlatilloOrden)}
+                      style={{ marginLeft: '10px' }}
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
 
           <div style={{ marginTop: '15px' }}>
             <button onClick={() => setVista('agregar')}>Agregar Platillos</button>
+            <button onClick={handleEnviarCocina}>Enviar a Cocina</button>
             <button onClick={handleFinalizarOrden}>Finalizar Orden</button>
           </div>
+
         </section>
       )}
 

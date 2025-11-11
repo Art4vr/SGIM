@@ -3,6 +3,7 @@ import {
     agregarOrdenController,
     modificarOrdenController,
     obtenerOrdenesController,
+    enviarOrdenACocinaController
 } from '../Controllers/ordenMeseroControlador.js';
 
 import {   
@@ -30,9 +31,12 @@ router.get('/:idOrden/platillos', obtenerPlatillosOrdenController);
 router.post('/:idOrden/platillos', agregarPlatilloOrdenController);
 
 // Actualizar platillo         
-router.put('/:idOrden/platillos/:idPlatillo', actualizarPlatilloOrdenController);
+router.put('/platillos/:idPlatilloOrden', actualizarPlatilloOrdenController);
 
 // Eliminar platillo
-router.delete('/:idOrden/platillos/:idPlatillo', eliminarPlatilloOrdenController); 
+router.delete('/platillos/:idPlatilloOrden', eliminarPlatilloOrdenController); 
+
+// Enviar platillos a cocina
+router.put('/enviarACocina/:idOrden', enviarOrdenACocinaController);
 
 export default router;

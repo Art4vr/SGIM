@@ -90,3 +90,19 @@ export const finalizarOrden = async (conn, idOrden, idMesa) => {
         throw new Error('Error al finalizar la orden');
     }
 };
+
+// --------------------- ENVIAR ORDEN A COCINA --------------------
+export const enviarOrdenACocina = async (conn, idOrden) => {
+    const query = `
+        UPDATE Platillo_Orden
+        SET estado = 'espera'
+        WHERE Orden_idOrden= ? AND estado = 'pendiente'
+    `;
+    try {
+        const [resultado] = await conn.execute(query, [idOrden]);
+        return resultado.affectedRows; 
+    } catch (err) {
+        console.error('Error en enviarOrdenACocina:', err);
+        throw new Error('Error al enviar la orden a cocina');
+    }
+};
