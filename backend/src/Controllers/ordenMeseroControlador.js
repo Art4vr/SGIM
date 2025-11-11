@@ -3,9 +3,6 @@
 //Este controlador funciona como la API para ordenes (mesero)
 //realiza las operaciones CRUD definidas en el modelo 
 
-//--------------------- AGREGAR ORDEN -----------------------------------------
-// Controlador para dar de alta una orden
-
 //importacion de modelos a utilizar
 //más
 // Para la orden
@@ -152,6 +149,42 @@ export const finalizarOrdenController = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ mensaje: 'Error al finalizar la orden' });
+    } finally {
+        conn.release();
+    }
+};
+
+// --------------------- ENVIAR ORDEN A COCINA --------------------------
+import { enviarOrdenACocina } from '../Models/ordenMeseroModelo.js'; // importa la función
+
+export const enviarOrdenACocinaController = async (req, res) => {
+    const conn = await conexionDB.getConnection();
+    try {
+        const { idOrden } = req.params;
+
+        if (!idOrden)
+        return res.status(400).json({ mensaje: 'El id de la orden es obligatorio' });
+
+        await conn.beginTransaction();
+
+        const filasAfectadas = await enviarOrdenACocina(conn, idOrden);
+
+        if (filasAfectadas === 0) {
+        await conn.rollback();
+        return res.status(404).json({
+            mensaje: 'No hay platillos pendientes para enviar a cocina'
+        });
+        }
+
+        await conn.commit();
+        res.json({
+        mensaje: `Orden enviada a cocina (${filasAfectadas} platillos actualizados a "espera")`
+        });
+
+    } catch (err) {
+        await conn.rollback();
+        console.error('Error al enviar orden a cocina:', err);
+        res.status(500).json({ mensaje: 'Error al enviar orden a cocina' });
     } finally {
         conn.release();
     }

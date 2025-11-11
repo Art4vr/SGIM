@@ -44,6 +44,9 @@ import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlati
 //importancion de funciones de ordenMesero
 import ordenMeseroRutas from './ordenMeseroRutas.js';
 
+//importancion de funciones de ordenChef
+import ordenChefRutas from './platillosChefRutas.js';
+
 //crear el router para definir las rutas de la app y sus controladores
 const router = express.Router();
 
@@ -96,5 +99,8 @@ router.get('/categoriasPlatillo',listaCategoriasPlatilloController);
 
 //----------------------- RUTAS DE ORDENES (MESERO)----------------
 router.use('/ordenes', ordenMeseroRutas);
+
+//----------------------- RUTAS DE ORDENES (CHEF)----------------
+router.use('/ordenesChef', ordenChefRutas);
 
 export default router;

@@ -1,0 +1,100 @@
+/* ----- Título principal de la sección ----- */
+.tituloSeccion {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    color: #990462;
+    margin-bottom: 1.5rem;
+}
+
+/* ----- Mensaje cuando no hay pedidos ----- */
+.noPedidos {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 20px;
+    border-radius: 12px;
+    width: 60%;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Contenedor de la tabla y sección */
+.seccionTabla {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+/* Tabla centrada y con ancho limitado */
+.tabla {
+    width: 90%;        
+    max-width: 1000px; 
+    margin: 0 auto;  
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.tabla th {
+    background-color: #b44a82;
+    color: #fff;
+    padding: 0.8rem;
+    font-weight: bold;
+}
+
+.tabla td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    min-width: 100px;
+}
+
+tabla th:nth-child(1), .tabla td:nth-child(1) { width: 10%; }  
+.tabla th:nth-child(2), .tabla td:nth-child(2) { width: 30%; }  
+.tabla th:nth-child(3), .tabla td:nth-child(3) { width: 10%; }  
+.tabla th:nth-child(4), .tabla td:nth-child(4) { width: 20%; } 
+.tabla th:nth-child(5), .tabla td:nth-child(5) { width: 30%; }
+
+.tabla tr:hover {
+    background-color: #f0d8e3;
+}
+
+/* Botones dentro de la tabla */
+.botonAccion {
+    background-color: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.botonAccion:hover {
+    background-color: #2e7d32;
+    transform: scale(1.05);
+}
+
+/* Estados coloreados */
+.estado_espera {
+    color: #ff9800; /* naranja */
+    font-weight: bold;
+}
+
+.estado_preparacion {
+    color: #2196f3; /* azul */
+    font-weight: bold;
+}
+
+.estado_listo {
+    color: #4caf50; /* verde */
+    font-weight: bold;
+}
