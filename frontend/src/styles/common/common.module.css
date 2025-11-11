@@ -299,4 +299,62 @@ body {
     box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
     }
 
+/* =========================================
+    RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+========================================= */
 
+@media (max-width: 768px) {
+    /* --- Ajustes del Header --- */
+    .header {
+    /* Cambiamos altura fija por automática para permitir que el texto
+        se divida en dos líneas si es necesario sin salirse */
+        height: auto;
+        min-height: 70px;
+        padding: 5px 0;
+    }
+
+    .header h1 {
+        /* Reducimos drásticamente el tamaño de la fuente para que quepa */
+        font-size: 1rem; 
+        line-height: 1.2; /* Líneas más juntas si el texto se envuelve */
+        padding: 0 5px;   /* Un poco de aire a los lados */
+    }
+
+    /* Hacemos los elementos laterales un poco más compactos */
+    .menuBoton {
+        width: 35px;
+        height: 35px;
+        margin: 0.5rem; /* Menos margen exterior */
+        padding: 4px;
+    }
+
+    .logo {
+        height: 40px; /* Logo más pequeño para dar espacio al título */
+    }
+
+    .headerRight {
+        gap: 0.5rem; /* Menos espacio entre avatar y logo MK */
+        margin-right: 0.5rem;
+    }
+
+    /* Ajustamos el avatar de usuario también */
+    .logousuario {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* --- Ajustes del Sidebar (Menú lateral) --- */
+    .sidebar {
+        /* En móviles, a veces es mejor que ocupe un % del ancho 
+        en lugar de 250px fijos, para no tapar TODA la pantalla en teléfonos muy pequeños */
+        width: 75%; 
+        max-width: 250px; /* Pero que no pase de 250px */
+    }
+}
+
+/* Para teléfonos MUY pequeños */
+@media (max-width: 380px) {
+    .header h1 {
+        font-size: 0.85rem; /* Aún más pequeño si es necesario */
+    }
+}

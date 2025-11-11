@@ -14,15 +14,6 @@ const PlatillosChef = () => {
     const menuRef = useRef(null);
     const botonRef = useRef(null);
 
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
     const toggleMenu = () => {
     setMenuAbierto(!menuAbierto);
     };
@@ -67,7 +58,6 @@ const PlatillosChef = () => {
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

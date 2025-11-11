@@ -213,15 +213,6 @@ const MostrarImprevistos = () => {
         setMenuAbierto(!menuAbierto);
     };
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate("/");
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
     //--------------- FILTROS -------------------------------
     // Justo antes del return, debajo de tus otros useState
     const [filtros, setFiltros] = useState({
@@ -310,7 +301,6 @@ const MostrarImprevistos = () => {
                     <li onClick={() => navigate("/Imprevistos")}>Ver Imprevistos</li>
                     <li onClick={() => navigate("/Inventario")}>Ver Inventario</li>
                     <li onClick={() => navigate("/NuevoUsuario")}>Nuevo Usuario</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

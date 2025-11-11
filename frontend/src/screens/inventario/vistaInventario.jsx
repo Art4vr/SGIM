@@ -1,20 +1,17 @@
 //Vista general del inventario
 //Muestra una tabla con el inventario de productos con sus respectivos lotes
 //En caso de que haya mas de un inventario por producto, ordenara primero los que tengan la fecha de ingreso (fechaIngreso) más antigua
-
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
-
 import { useAuth } from '../../context/AuthContext';
-
 import styles from '../../styles/imprevistos/imprevistos.module.css';
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
-
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
+import PerfilUsuario from '../../components/PerfilUsuario';
 
 const VistaInventario = () => {
     const menuRef = useRef(null);
@@ -88,14 +85,6 @@ const VistaInventario = () => {
 
     const toggleMenu = () => setMenuAbierto((s) => !s);
 
-    const handleLogout = async () => {
-        try {
-            await logout();
-            navigate('/');
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
@@ -153,20 +142,17 @@ const VistaInventario = () => {
 
     return (
         <div className={styles.container}>
-            {/* Header */}
+            {/* Encabezado */}
             <div className={stylesCommon.header}>
-                <button
-                    ref={botonRef}
-                    className={stylesCommon.menuBoton}
-                    onClick={toggleMenu}
-                    aria-label="Abrir menú"
-                >
+                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
-                    
-                <h1 className={stylesCommon.headerTitle}>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
-        
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                {/* Menú de usuario */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
             {/* Non-blocking alert boxes (keeps existing styles) */}
             <div style={{ padding: '0 20px' }}>
@@ -216,7 +202,6 @@ const VistaInventario = () => {
                         <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
                         <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
                         <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                        <li onClick={handleLogout}>Log Out</li>
                     </ul>
                 </div>
             {/* Main Content */}

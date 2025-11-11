@@ -70,15 +70,6 @@ const VistaProductos = () => {
         setMenuAbierto(!menuAbierto);
         };
 
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
     useEffect(() => { 
         const handleClickOutside = (event) =>{
             if(
@@ -159,7 +150,6 @@ const VistaProductos = () => {
                     <li onClick={() => navigate('/Productos')}>Productos</li>
                     <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
                     <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

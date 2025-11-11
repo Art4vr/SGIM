@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/auth/perfilUsuario.module.css'; 
 import api from '../api/axiosConfig'; 
 import stylesCommon from '../styles/common/common.module.css';
@@ -8,6 +9,7 @@ const PerfilUsuario = () => {
     const [perfilData, setPerfilData] = useState(null);
     const [cargando, setCargando] = useState(true);
     const perfilRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Cargar los datos del perfil al montar el componente
@@ -39,6 +41,15 @@ const PerfilUsuario = () => {
         };
     }, [perfilRef]);
 
+    const handleLogout = async () => {
+        try {
+            await api.post('/api/auth/logout');
+            navigate('/');
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+        }
+    };
+
     return (
         <div className={styles.perfilContainer} ref={perfilRef}>
         <button 
@@ -63,9 +74,19 @@ const PerfilUsuario = () => {
                 <p className={styles.descripcion}>
                     {perfilData.rolNombre} ({perfilData.rolDescripcion})
                 </p>
+                {/* Se muestra el botón para cerrar sesión */}
+                <button className={styles.botonlogout} onClick={handleLogout}>
+                    Cerrar Sesión
+                </button>
                 </>
             ) : (
+                <>
                 <p className={styles.error}>No se pudo cargar el perfil.</p>
+                {/* Se muestra el botón para cerrar sesión */}
+                <button className={styles.botonlogout} onClick={handleLogout}>
+                    Cerrar Sesión
+                </button>
+                </>
             )}
             </div>
         )}

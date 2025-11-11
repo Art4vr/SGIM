@@ -61,15 +61,6 @@ const RegistroImprevisto = () => {
         setMenuAbierto(!menuAbierto);
         };
 
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
     useEffect(() => { 
         const handleClickOutside = (event) =>{
             if(
@@ -234,7 +225,6 @@ const RegistroImprevisto = () => {
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
                     <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

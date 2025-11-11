@@ -12,11 +12,6 @@ const PanelAdm = () => {
     const menuRef = useRef(null);
     const botonRef = useRef(null);
 
-    const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
-    };
-
     const toggleMenu = () => {
         setMenuAbierto(!menuAbierto);
     };
@@ -48,7 +43,7 @@ useEffect(() => {
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                {/* Menú de usuario */}
                 <div className={stylesCommon.headerRight}>
                     <PerfilUsuario /> 
                     <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
@@ -66,7 +61,6 @@ useEffect(() => {
                     <li onClick={() => navigate('/reportes')}>Reportes</li>
                     <li onClick={() => navigate('/mesas')}>Mesas</li>
                     <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

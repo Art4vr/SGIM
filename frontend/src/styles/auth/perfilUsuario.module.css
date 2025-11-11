@@ -6,9 +6,11 @@
 
 /* El menú desplegable (Estilo oscuro "formulario") */
 .perfilDropdown {
+    align-items: center;
     position: absolute;
     top: calc(100% + 12px); /* 12px debajo del botón */
     right: 0; /* Alineado a la derecha del contenedor */
+    /*Ajuste para dispositivos móviles */
     width: 90vw;
     max-width: 300px;
     
@@ -45,7 +47,7 @@
     font-weight: 600;
 }
 
-/* Estilo para el username (ej. @Arturo) */
+/* Estilo para el username */
 .perfilDropdown .username {
     margin: 0 0 10px 0;
     font-size: 0.9rem;
@@ -69,4 +71,20 @@
     text-align: center;
     color: #f6c9e0; /* Texto claro */
     padding: 10px 0;
+}
+
+/* Estilos para el botón de logout */
+.botonlogout{
+    margin-top: 5px;
+    background-color: #3d2d3aef;
+    width: 100%;
+    color: white;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.botonlogout:hover{
+    background-color: #b44a82;
+    color: #fff;
 }
