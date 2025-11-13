@@ -1,0 +1,23 @@
+ALTER TABLE `makibase`.`platillo_orden` 
+DROP FOREIGN KEY `fk_Platillo_Orden_Platillo1`,
+DROP FOREIGN KEY `fk_Platillo_Orden_Orden1`;
+ALTER TABLE `makibase`.`platillo_orden` 
+ADD COLUMN `idPlatilloOrden` INT NOT NULL AUTO_INCREMENT FIRST,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`idPlatilloOrden`),
+ADD INDEX `Orden_idOrden_idx` (`Orden_idOrden` ASC) VISIBLE,
+ADD INDEX `Platillo_idPlatillo_idx` (`Platillo_idPlatillo` ASC) VISIBLE,
+DROP INDEX `fk_Platillo_Orden_Platillo1_idx` ,
+DROP INDEX `fk_Platillo_Orden_Orden1_idx` ;
+;
+ALTER TABLE `makibase`.`platillo_orden` 
+ADD CONSTRAINT `fk_idOrden`
+  FOREIGN KEY (`Orden_idOrden`)
+  REFERENCES `makibase`.`orden` (`idOrden`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_idPlatillo`
+  FOREIGN KEY (`Platillo_idPlatillo`)
+  REFERENCES `makibase`.`platillo` (`idPlatillo`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
