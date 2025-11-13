@@ -87,27 +87,40 @@ export const actualizarPlatilloOrdenController = async (req, res) => {
 export const eliminarPlatilloOrdenController = async (req, res) => {
     const conn = await conexionDB.getConnection();
     try {
-        const { idOrden, idPlatillo } = req.params;
+        const { idPlatilloOrden } = req.params;
 
-        if (!idOrden || !idPlatillo)
+        if (!idPlatilloOrden)
             return res.status(400).json({ mensaje: 'Faltan identificadores del platillo' });
 
         await conn.beginTransaction();
 
-        await eliminarPlatilloOrden(conn, { idOrden, idPlatillo });
+        const [ordenInfo] = await conn.execute(
+            'SELECT Orden_idOrden FROM Platillo_Orden WHERE idPlatilloOrden = ?',
+            [idPlatilloOrden]
+        );
+
+        if (ordenInfo.length === 0) {
+            await conn.rollback();
+            return res.status(404).json({ mensaje: 'Platillo no encontrado o ya eliminado' });
+        }
+        const idOrden = ordenInfo[0].Orden_idOrden;
+        
+        const filasAfectadas = await eliminarPlatilloOrden(conn, { idPlatilloOrden });
+
+        if (filasAfectadas === 0) {
+            await conn.rollback();
+            return res.status(404).json({ mensaje: 'Platillo no encontrado o ya eliminado' });
+        }
 
         const totalCalculado = await calcularTotalOrden(conn, idOrden);
         await actualizarOrden(conn, { idOrden, total: totalCalculado });
 
         await conn.commit();
-        res.json({
-            mensaje: 'Platillo eliminado y total actualizado',
-            total: totalCalculado
-        });
+        res.json({ mensaje: 'Platillo eliminado correctamente' });
     } catch (err) {
         await conn.rollback();
         console.error('Error al eliminar platillo:', err);
-        res.status(500).json({ mensaje: 'Error al eliminar platillo' });
+        res.status(500).json({ mensaje: 'Error al eliminar platillo de la orden' });
     } finally {
         conn.release();
     }
