@@ -2,49 +2,48 @@
 
 /* ----- CONTENIDO PRINCIPAL ----- */
 .contenidoPrincipal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  color: #ffffff;
-  padding: 30px 20px;
-  box-sizing: border-box;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: flex-start;
+ min-height: 100vh;
+ color: #ffffff;
+ padding: 30px 20px;
+ box-sizing: border-box;
 
-  background-color: rgba(255, 255, 255, 0.44); /* Blanco con transparencia */
-  border-radius: 16px; /* Bordes suaves */
-  padding: 2rem;       /* Espacio interno */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombrilla ligera */
-  width: 90%;
-  max-width: 1200px;
-  margin: 2rem auto;   /* Centrado */
+ background-color: rgba(255, 255, 255, 0.44); /* Blanco con transparencia */
+ border-radius: 16px; /* Bordes suaves */
+ padding: 2rem;    /* Espacio interno */
+ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombrilla ligera */
+ width: 90%;
+ max-width: 1200px;
+ margin: 2rem auto;  /* Centrado */
 }
 
 .tituloPrincipal {
-  font-size: 56px;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  color: #990462;
+ font-size: 56px;
+ font-weight: bold;
+ margin-bottom: 0.5rem;
+ text-align: center;
+ color: #990462;
 }
 
 /* Títulos principales */
 .contenidoPrincipal h2 {
-  color: #fac6de;
-  text-align: center;
-  margin: 20px 0 10px 0;
-  font-size: 32px;
+ color: #8a4565;
+ text-align: center;
+ margin: 20px 0 10px 0;
+ font-size: 32px;
 }
 
 /* Subtítulos */
 .contenidoPrincipal h3,
 .contenidoPrincipal h4 {
-  color: #4caf50;
-  margin-top: 15px;
+ color: #4caf50;
+ margin-top: 15px;
 }
 
-/* Select, input y botones */
-.contenidoPrincipal select,
+ .contenidoPrincipal select,
 .contenidoPrincipal input[type="number"],
 .contenidoPrincipal button {
   margin: 8px;
@@ -54,127 +53,212 @@
   outline: none;
   font-size: 15px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+} 
 
 /* Selector de mesas */
 .contenidoPrincipal select {
-  background-color: #2e2e2e;
-  color: #ffffff;
+ background-color: #2e2e2e;
+ color: #ffffff;
 }
 
 /* Botones generales */
 .contenidoPrincipal button {
-  background-color: #992b65;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
+ background-color: #992b65;
+ color: #fff;
+ cursor: pointer;
+ transition: all 0.3s ease;
 }
 
 .contenidoPrincipal button:hover {
-  background-color: #e10087;
+ background-color: #e10087;
 }
 
 /* ----- LISTA DE ÓRDENES ----- */
 .listaOrdenes {
-  list-style: none;
-  padding: 0;
-  margin-top: 15px;
-  width: 80%;
-  max-width: 700px;
+ list-style: none;
+ padding: 0;
+ margin-top: 15px;
+ width: 80%;
+ max-width: 700px;
 }
 
 .listaOrdenes li {
-  background-color: #2a2a2a;
-  margin-bottom: 12px;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+ background-color: #2a2a2a;
+ margin-bottom: 12px;
+ padding: 15px;
+ border-radius: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
 /* ----- SECCIÓN DE PLATILLOS ----- */
 .contenedorPlatillos {
-  margin-top: 25px;
-  background-color: #262626;
-  padding: 20px;
-  border-radius: 10px;
-  width: 85%;
-  max-width: 800px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+ margin-top: 25px;
+ background-color: #262626;
+ padding: 20px;
+ border-radius: 10px;
+ width: 85%;
+ max-width: 800px;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Ajuste para que el contenedor no se estire */
+  display: flex;
+  flex-direction: column;
 }
 
 .contenedorPlatillos ul {
-  list-style: none;
-  padding: 0;
+ list-style: none;
+ padding: 0;
+  margin: 0; /* Asegurarse de que la lista no tenga márgenes */
 }
 
 .contenedorPlatillos li {
-  margin-bottom: 10px;
-  background-color: #303030;
-  padding: 10px;
-  border-radius: 6px;
+ margin-bottom: 10px;
+ background-color: #303030;
+ padding: 10px;
+ border-radius: 6px;
 }
 
 .contenedorPlatillos input[type="number"] {
-  background-color: #1f1f1f;
-  color: #fff;
-  text-align: center;
-  width: 70px;
-  border: 1px solid #555;
+ background-color: #1f1f1f;
+ color: #fff;
+ text-align: center;
+ width: 70px;
+ border: 1px solid #555;
 }
 
 /* Botones dentro de la sección de platillos */
 .contenedorPlatillos button {
-  background-color: #43a047;
+ background-color: #43a047;
 }
 
 .contenedorPlatillos button:hover {
-  background-color: #2e7d32;
+ background-color: #2e7d32;
 }
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
-  .listaOrdenes,
-  .contenedorPlatillos {
-    width: 100%;
-  }
+ .listaOrdenes,
+ .contenedorPlatillos {
+  width: 100%;
+ }
 
-  .contenidoPrincipal {
-    padding: 20px 10px;
-  }
+ .contenidoPrincipal {
+  padding: 20px 10px;
+ }
 }
 
 /* ----- CONTROL DE CANTIDAD (+ / -) ----- */
 .controlCantidad {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ gap: 10px;
+ margin: 10px 0;
 }
 
 .controlCantidad button {
-  background-color: #444;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 20px;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+ background-color: #444;
+ color: #fff;
+ border: none;
+ border-radius: 6px;
+ font-size: 20px;
+ width: 36px;
+ height: 36px;
+ cursor: pointer;
+ transition: background 0.3s ease;
 }
 
 .controlCantidad button:hover {
-  background-color: #666;
+ background-color: #666;
 }
 
 .controlCantidad span {
-  font-size: 18px;
+ font-size: 18px;
+ color: #fff;
+ width: 25px;
+ text-align: center;
+}
+
+/* ======== NUEVO: Scroll para Lista de Platillos (CORREGIDO) ======== */
+.listaPlatillosScroll {
+ max-height: 400px;   /* Altura máxima, igual que tableWrapper */
+ overflow-y: auto;   /* Scroll vertical */
+ overflow-x: hidden;   /* Oculta scroll horizontal */
+  border-radius: 10px;
+  /* IMPORTANTE: Quitamos padding y borde para que no se "contraiga" */
+  /* padding: 10px; */ 
+  /* border: 1px solid #555; */ 
+}
+
+/* Estilos de scrollbar (adaptados de tableWrapper para tema oscuro) */
+.listaPlatillosScroll::-webkit-scrollbar {
+ width: 10px;
+ height: 10px;
+}
+.listaPlatillosScroll::-webkit-scrollbar-track {
+ background: #444; /* color del fondo del track oscuro */
+ border-radius: 10px;
+}
+.listaPlatillosScroll::-webkit-scrollbar-thumb {
+ background: linear-gradient(180deg, #b44a82, #8b3a65);
+ border-radius: 10px;
+ border: 2px solid #444; /* Borde del color del track */
+}
+.listaPlatillosScroll::-webkit-scrollbar-thumb:hover {
+ background: linear-gradient(180deg, #dc057b, #a04270);
+}
+
+/* Firefox */
+.listaPlatillosScroll {
+ scrollbar-width: thin;
+ scrollbar-color: #b44a82 #444; /* thumb y track oscuro */
+}
+
+/* ======== NUEVO: Notificación Personalizada (Toast) ======== */
+.notificacion {
+  position: fixed; /* Se superpone a todo */
+  top: 90px; /* Debajo del header */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 20px;
+  border-radius: 8px;
   color: #fff;
-  width: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  z-index: 2000; /* Asegura que esté por encima de todo */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: fadeInOut 1.5s ease-out;
   text-align: center;
 }
 
+/* Estilo para éxito (verde) */
+.success {
+  background-color: #43a047; /* El verde de tus botones */
+}
+
+/* Estilo para error (rosado/rojo) */
+.error {
+  background-color: #D92579; /* El rosado principal de tu app */
+}
+
+/* Animación para aparecer y desaparecer */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}

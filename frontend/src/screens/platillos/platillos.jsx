@@ -145,11 +145,10 @@ const VistaPlatillos = () => {
             {/* Menú lateral */}
             <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/Productos')}>Productos</li>
-                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
+                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
+                    <li onClick={() => navigate('/platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
+                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
                 </ul>
             </div>
             {/* Contenido Principal */}

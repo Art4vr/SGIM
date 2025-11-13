@@ -3,6 +3,7 @@ import { useState, botonRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
+import PerfilUsuario from '../../components/PerfilUsuario';
 
 
 const PanelMesero = () => {
@@ -27,7 +28,11 @@ const PanelMesero = () => {
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
 
             {/* Menú lateral */}
@@ -37,7 +42,6 @@ const PanelMesero = () => {
                     <li onClick={() => navigate('/platillos')}>Platillos</li>
                     <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
                     <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 
