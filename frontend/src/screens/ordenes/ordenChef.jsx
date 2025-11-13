@@ -102,56 +102,56 @@ const OrdenChef = () => {
             </div>
 
             {/* Contenido principal */}
-        <div className={styles.contenidoPrincipal}>
-            <h2 className={styles.tituloSeccion}>Órdenes en Cocina</h2>
+            <div className={styles.contenidoPrincipal}>
+                <h2 className={styles.tituloSeccion}>Órdenes en Cocina</h2>
 
-            {platillos.length === 0 ? (
-                <p className={styles.noPedidos}>No hay platillos pendientes en cocina</p>
-            ) : (
-                <div className={styles.seccionTabla}>
-                    <table className={styles.tabla}>
-                        <thead>
-                            <tr>
-                                <th>Orden</th>
-                                <th>Platillo</th>
-                                <th>Cantidad</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {platillos.map((p, index) => (
-                                <tr key={index}>
-                                    <td>#{p.Orden_idOrden}</td>
-                                    <td>{p.platillo}</td>
-                                    <td>{p.cantidad}</td>
-                                    <td className={styles[`estado_${p.estado}`]}>{p.estado}</td>
-                                    <td>
-                                        {p.estado === 'espera' && (
-                                            <button
-                                                onClick={() => cambiarEstado(p, 'preparacion')}
-                                                className={styles.botonAccion}
-                                            >
-                                                Iniciar Preparación
-                                            </button>
-                                        )}
-                                        {p.estado === 'preparacion' && (
-                                            <button
-                                                onClick={() => cambiarEstado(p, 'listo')}
-                                                className={styles.botonAccion}
-                                            >
-                                                Marcar Listo
-                                            </button>
-                                        )}
-                                    </td>
+                {platillos.length === 0 ? (
+                    <p className={styles.noPedidos}>No hay platillos pendientes en cocina</p>
+                ) : (
+                    <div className={styles.seccionTabla}>
+                        <table className={styles.tabla}>
+                            <thead>
+                                <tr>
+                                    <th>Orden</th>
+                                    <th>Platillo</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                            </thead>
+                            <tbody>
+                                {platillos.map((p, index) => (
+                                    <tr key={index}>
+                                        <td>#{p.Orden_idOrden}</td>
+                                        <td>{p.platillo}</td>
+                                        <td>{p.cantidad}</td>
+                                        <td className={styles[`estado_${p.estado}`]}>{p.estado}</td>
+                                        <td>
+                                            {p.estado === 'espera' && (
+                                                <button
+                                                    onClick={() => cambiarEstado(p, 'preparacion')}
+                                                    className={styles.botonAccion}
+                                                >
+                                                    Iniciar Preparación
+                                                </button>
+                                            )}
+                                            {p.estado === 'preparacion' && (
+                                                <button
+                                                    onClick={() => cambiarEstado(p, 'listo')}
+                                                    className={styles.botonAccion}
+                                                >
+                                                    Marcar Listo
+                                                </button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </div>
-    </div>
     );
 
 };
