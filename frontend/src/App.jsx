@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, {useEffect, useState} from 'react'
+//import React, {useEffect, useState} from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -9,12 +9,18 @@ import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
 import Registro from './screens/usuarios/Registro';
 import PanelChef from './screens/auth/PanelChef';
+import PanelMesero from './screens/auth/PanelMesero';
+
 import Menu from './screens/public/menu';
 import PanelGerente from './screens/auth/PanelAdm';
+import PanelAdm from './screens/auth/PanelAdm';
+import PanelEncargado from './screens/auth/PanelEncargado';
+
 
 
 //Importacion de vista usuarios
 import VistaUsuarios from './screens/usuarios/vistaUsuarios';
+
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -108,6 +114,17 @@ function App() {
 
           <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
 
+          <Route path="/PanelMesero" element={<PanelMesero />} />
+
+          <Route 
+            path="/PanelAdm" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelAdm />
+              </ProtectedRoute>
+            }
+          />
+
           <Route 
             path="/RegistroImprevisto" 
             element={
@@ -129,6 +146,14 @@ function App() {
             element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <PanelGerente />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/PanelEncargado" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[2]}>
+                <PanelEncargado/>
               </ProtectedRoute>
             }
           />

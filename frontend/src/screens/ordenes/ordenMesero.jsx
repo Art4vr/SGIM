@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPlatillos } from '../../api/platilloApi';
-import { 
+import {
   getOrdenes,
   crearOrden,
   getPlatillosOrden,
@@ -44,6 +44,7 @@ const OrdenMesero = () => {
     cargarPlatillos();
   }, []);
 
+
   const cargarMesas = async () => {
     try {
       const response = await getMesas();
@@ -56,7 +57,7 @@ const OrdenMesero = () => {
   const cargarOrdenes = async () => {
     try {
       const response = await getOrdenes();
-      setOrdenes(response.data.filter(o => o.estado === 'abierta'));
+      setOrdenes(response.data.filter((o) => o.estado === 'abierta'));
     } catch (err) {
       console.error('Error al cargar órdenes:', err);
     }
@@ -70,6 +71,7 @@ const OrdenMesero = () => {
       console.error('Error al cargar platillos:', err);
     }
   };
+
 
   // ---------------------- CREAR ORDEN ----------------------
   const handleCrearOrden = async () => {
@@ -85,6 +87,7 @@ const OrdenMesero = () => {
       alert('No se pudo crear la orden');
     }
   };
+
 
   // ---------------------- SELECCIONAR ORDEN ----------------------
   const seleccionarOrden = async (orden) => {
@@ -120,6 +123,7 @@ const handleAgregarPlatillo = async (platilloId) => {
 
   const platillo = platillos.find(p => p.idPlatillo === platilloId);
   if (!platillo) return alert('Platillo no encontrado');
+
 
   try {
     await agregarPlatilloOrden(ordenSeleccionada.idOrden, {

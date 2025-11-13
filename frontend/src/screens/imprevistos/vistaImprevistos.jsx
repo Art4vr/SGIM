@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../context/AuthContext";
 
-import ModalImprevisto from "./modalImprevisto";
+import ModalEvaluarImprevisto from "./modalEvaluarImprevisto";
+import ModalEliminarImprevisto from "./modalImprevisto";
+
 import styles from "../../styles/imprevistos/imprevistos.module.css";
 import api from "../../api/axiosConfig";
 import stylesCommon from "../../styles/common/common.module.css";
@@ -68,51 +70,30 @@ const MostrarImprevistos = () => {
     }, []);
 
 
-    //--------- MODAL PARA AUTORIZACIÓN ----------------
+    //--------- MODAL PARA ELIMINAR ----------------
     const abrirModal = (imprevisto = null, mensaje, modalAccion) => {
         setModalImprevisto(imprevisto);
         setModalVisible(true);
         setMensaje(mensaje || "");
         setModalAccion(modalAccion);
-        console.log("accion modalImprevisto:", modalAccion);
-        if(modalAccion === 'editar') {
-            setFormData({
-                usuarioReporta: imprevisto.Usuario_idUsuarioReporta,
-                usuarioAprueba: imprevisto.Usuario_idUsuarioAutoriza,
-                producto: imprevisto.InventarioProducto_idInventarioProducto,
-                cantidad: imprevisto.cantidad,
-                uMedida : imprevisto.UnidadMedida_idUnidadMedida
-            });
-        }
     };
 
     const cerrarModal = () => {
         setModalVisible(false);
         setImprevistoEditando(null);
+        setModalAccion(null);
     };
 
-    const manejarAccion = (modalAccion, confirmar) => {
-        console.log("manejarAccion - accion:", modalAccion, "confirmar:", confirmar);
+    const manejarAccion = async ( confirmar, estado = null) => {
+        console.log("manejar accion: ", confirmar);
         if(confirmar) {
-            switch(modalAccion){
-                case 'eliminar':
-                    eliminarImprevisto(modalImprevisto, formData);
-                    break;
-                case 'aprobar':
-                    aprobarImprevisto(modalImprevisto, formData);
-                    break;
-                case 'rechazar':
-                    rechazarImprevisto(modalImprevisto, formData);
-                    break;
-                case 'editar':
-                    editarImprevisto(modalImprevisto, formData);
-                    break;
-                default:
-                    console.log("Accion no reconocida");
+            if(modalAccion === "eliminar"){
+                await eliminarImprevisto(modalImprevisto);
+            }else if(modalAccion === "evaluar"){
+                await evaluarImprevisto(modalImprevisto, estado);
             }
         }
-
-        setModalVisible(false);
+        cerrarModal();
     };
 
     //------------- ELIMINAR -----------------------------------
@@ -130,63 +111,19 @@ const MostrarImprevistos = () => {
         }
     };
 
-    //------------- APROBAR -----------------------------------
-    const aprobarImprevisto = async (imprevisto) => {
+    //------------- EVALUAR -----------------------------------
+    const evaluarImprevisto = async (imprevisto, nuevoEstado) => {
         console.log("imprevistoId: ", imprevisto.idImprevisto)
-        //setEliminandoId(imprevisto);
-        const datos = {};
-        datos.estado = "autorizado";
-        //console.log("DATOS: ", datos);
         try {
+            const datos = {estado: nuevoEstado};
+            console.log("DATOS: ", datos);
             await api.put(`/api/imprevistos/evaluar/${imprevisto.idImprevisto}`, datos);
-            setMensaje("Imprevisto aprobado correctamente");
+            setMensaje(`Imprevisto ${nuevoEstado} correctamente`);
             await cargarDatos();
         } catch (err) {
             console.error(err);
-            setMensaje(err.response?.data?.mensaje || "Error al aprobar imprevisto");
-        } finally {
-            setEliminandoId(null);
+            setMensaje(err.response?.data?.mensaje || "Error al evaluar imprevisto");
         }
-    };
-
-    //------------- RECHAZAR -----------------------------------
-    const rechazarImprevisto = async (imprevisto) => {
-        //console.log("imprevistoId: ", imprevisto.idImprevisto);
-        //setEliminandoId(imprevisto);
-        const datos = {};
-        datos.estado = "rechazado";
-        try {
-            await api.put(`/api/imprevistos/evaluar/${imprevisto.idImprevisto}`, datos);
-            setMensaje("Imprevisto rechazado correctamente");
-            await cargarDatos();
-        } catch (err) {
-            console.error(err);
-            setMensaje(err.response?.data?.mensaje || "Error al rechazar imprevisto");
-        } finally {
-            setEliminandoId(null);
-        }
-    };
-
-    //------------- EDITAR -----------------------------------
-    const editarImprevisto = async (imprevisto) => {
-        const imprevistoId = imprevistos.find((i) => i.idImprevisto === imprevisto);
-        //edicion de los datos del imprevisto
-        setImprevistoEditando (imprevistoId);
-        try {
-            await api.put(`/api/imprevistos/editar/${imprevistoId}`, formData);
-            setMensaje("Imprevisto editado correctamente");
-            await cargarDatos();
-        } catch (err) {
-            console.error(err);
-            setMensaje(err.response?.data?.mensaje || "Error al editar imprevisto");
-        } finally {
-            setImprevistoEditando(null);
-        }
-    };
-
-    // Manejar cambios en los campos del formulario (solo para la acción editar)
-    const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     //--------------- MENÚ LATERAL-------------------------------
@@ -383,15 +320,25 @@ const MostrarImprevistos = () => {
                                                             ? format(new Date(imp.fecha), "dd/MM/yyyy HH:mm:ss")
                                                             : ""}
                                                     </td>
-                                                    <td>{imp.estado}</td>
+                                                    <td>
+                                                        <div className={`${styles.estadoBar} ${imp.estado === 'autorizado' ? styles.autorizado : imp.estado === 'rechazado' ? styles.rechazado : ''}`}>
+                                                            <label className={styles.switch}>
+                                                                <input type="checkbox"
+                                                                    checked={imp.estado !== 'pendiente'}
+                                                                    onChange={() => abrirModal(imp, "¿Qué acción desea realizar sobre el imprevisto?", "evaluar")}
+                                                                />
+                                                                <span className={styles.slider}></span>
+                                                                </label>
+                                                                <span className={styles.estadoText}>
+                                                                    {imp.estado === 'pendiente' ? 'pendiente' : imp.estado}
+                                                                </span>
+                                                        </div>
+                                                    </td>
                                                     <td className={styles.acciones}>
-                                                        <button onClick={() => abrirModal(imp, "¿Estás seguro de aprobar este imprevisto?", "aprobar")}>✅ Autorizar</button>
-                                                        <button onClick={() => abrirModal(imp, "¿Estás seguro de rechazar este imprevisto?", "rechazar")}>❌ Rechazar</button>
                                                         <button
                                                             onClick={() => abrirModal(imp.idImprevisto, "¿Estás seguro de eliminar este imprevisto?", "eliminar")}
                                                             disabled={eliminandoId === imp.idImprevisto}
-                                                        >
-                                                            {eliminandoId === imp.idImprevisto ? '🗑️...' : '🗑️ Eliminar'}
+                                                        >🗑️
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -415,16 +362,26 @@ const MostrarImprevistos = () => {
                     >
                         VOLVER AL INICIO
                     </button>
+                    {/* aqui quiero que se muestren los modales de acuerdo a la accion */}
                     {modalVisible && (
-                        <ModalImprevisto
+                        modalAccion === 'eliminar' ? (
+                        <ModalEliminarImprevisto
                             visible={modalVisible}
                             mensaje={mensaje}
                             modalAccion={modalAccion}
-                            formData={formData}
-                            handleInputChange={handleInputChange}
                             manejarAccion={manejarAccion}
                             onClose={cerrarModal}
                         />
+                    ) : (
+                        <ModalEvaluarImprevisto
+                            visible={modalVisible}
+                            mensaje={mensaje}
+                            modalAccion={modalAccion}
+                            manejarAccion={manejarAccion}
+                            imprevisto={modalImprevisto}
+                            onClose={cerrarModal}
+                        />
+                    )
                     )}
                 </div>
             </div>

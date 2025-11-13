@@ -71,18 +71,15 @@ useEffect(() => {
                     <h3>Usuarios</h3>
                 </button>
 
-
                 <button className={styles.tarjetas} onClick={() => navigate('/proveedores')}>
                     <img className={styles.imagenMenu} src="/imagenes/Proveedores.png" alt="Proveedores" />
                     <h3>Proveedores</h3>
                 </button>
 
-
                 <button className={styles.tarjetas} onClick={() => navigate('/inventario')}>
                     <img className={styles.imagenMenu} src="/imagenes/Inventario.png" alt="Inventario" />
                     <h3>Inventario</h3>
                 </button>
-
 
                 <button className={styles.tarjetas} onClick={() => navigate('/platillos')}>
                     <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="Platillos" />
@@ -103,7 +100,6 @@ useEffect(() => {
                     <img className={styles.imagenMenu} src="/imagenes/Mesas.png" alt="Mesas" />
                     <h3>Mesas</h3>
                 </button>
-
 
                 <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />

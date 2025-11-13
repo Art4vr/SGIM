@@ -96,8 +96,10 @@ router.use('/platillos', platilloRutas);
 //----------------------- RUTAS DE MESAS---------------------------
 router.get('/mesas', listaMesasController);
 
+
 //----------------------- RUTAS DE CATEGORIAS DE PLATILLO ----------------
 router.get('/categoriasPlatillo',listaCategoriasPlatilloController);
+
 
 //----------------------- RUTAS DE ORDENES (MESERO)----------------
 router.use('/ordenes', ordenMeseroRutas);
