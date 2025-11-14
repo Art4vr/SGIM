@@ -39,7 +39,7 @@
 /* Subtítulos */
 .contenidoPrincipal h3,
 .contenidoPrincipal h4 {
- color: #4caf50;
+ color: #D92579;
  margin-top: 15px;
 }
 
@@ -130,11 +130,11 @@
 
 /* Botones dentro de la sección de platillos */
 .contenedorPlatillos button {
- background-color: #43a047;
+ background-color: #D92579;
 }
 
 .contenedorPlatillos button:hover {
- background-color: #2e7d32;
+ background-color: #fd0076;
 }
 
 /* ----- RESPONSIVE ----- */
