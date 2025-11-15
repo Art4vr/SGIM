@@ -4,6 +4,7 @@
 // Se encarga de la lógica de negocio y manipula los datos que se enviarán o recibirán del controlador
 
 import conexionDB from '../config/db.js';
+import { eliminarRecetaPlatillo } from './productoPlatilloModelo.js';
 
 //--------------------- ALTA PLATILLO-----------------------------------------
 // Funcion para dar de alta un platillo
@@ -28,9 +29,24 @@ export const agregarPlatillo = async ({ nombre, descripcion = null, id_categoria
 //--------------------- BAJA PLATILLO -----------------------------------------
 // Funcion para dar de baja un platillo
 export const eliminarPlatillo = async (idPlatillo) => {
+    const connection = await conexionDB.getConnection()
     const query = 'DELETE FROM Platillo WHERE idPlatillo = ?';
     try {
-        const [resultado] = await conexionDB.execute(query, [idPlatillo]);
+        //se hace una transaccion para eliminar primero la receta y luego el platillo
+        await connection.beginTransaction();
+        const resultadoReceta = await eliminarRecetaPlatillo(idPlatillo);
+        console.log('Ingredientes eliminados para el platillo id:', idPlatillo);
+        console.log('Resultado receta eliminada:', resultadoReceta);
+        //validaciones necesarias antes de eliminar el platillo
+        if (resultadoReceta === 0) {
+            console.log('No se encontraron ingredientes para el platillo con id:', idPlatillo);
+        }
+        const [resultado] = await connection.execute(query, [idPlatillo]);
+        if (resultado.affectedRows === 0) {
+            await connection.rollback();
+            return 0; // No se encontró el platillo para eliminar
+        }
+        await connection.commit();
         return resultado.affectedRows; // Devuelve cuántas filas fueron afectadas (1 si se eliminó, 0 si no existía)
     } catch (err) {
         console.error('Error al eliminar platillo:', err);
@@ -84,4 +100,3 @@ export const actualizarPlatillo = async ({ idPlatillo, nombre, descripcion, id_c
         throw err;
     }
 };
-

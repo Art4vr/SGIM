@@ -31,6 +31,7 @@ import productoRutas from './productoRutas.js';
 
 //importancion de las funciones de los controladores de Platillos
 import platilloRutas from './platilloRutas.js';
+import productoPlatilloRutas from './productoPlatilloRutas.js'
 
 //importancion de controladores de categoria y medida
 import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
@@ -68,6 +69,7 @@ router.use('/imprevistos', imprevistoRouter);
 //----------------------- RUTAS DE PRODUCTO---------------------------
 //se usa un archivo donde cada ruta de definen en ./productoRutas.js
 router.use('/productos', productoRutas);
+router.use('/productosPlatillo', productoPlatilloRutas);
 
 //----------------------- RUTAS DE CATEGORIAS---------------------------
 router.get('/categorias', listaCategoriasController);

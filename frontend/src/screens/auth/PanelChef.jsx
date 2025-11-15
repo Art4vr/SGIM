@@ -63,7 +63,7 @@ const PanelChef = () => {
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
-                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
+                    <li onClick={() => navigate('/RegistroImprevistoChef')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
@@ -88,7 +88,7 @@ const PanelChef = () => {
                     </div>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevisto')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevistoChef')}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="imprevistos" />
                     </div>

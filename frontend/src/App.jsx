@@ -32,16 +32,15 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de vista de imprevistos
 import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
-
-//Importacion de platillos
-import VistaPlatillos from './screens/platillos/platillos';
+import RegistroImprevistoChef from './screens/imprevistos/registroImprevistoChef';
+import RegistroImprevistoMesero from './screens/imprevistos/registroImprevistoMesero';
 
 //Importación de ordenes de chef
 import OrdenChef from './screens/ordenes/ordenChef';
 
-//Importación de los platillos de chef
+//Importación de los platillos
 import PlatillosChef from './screens/platillos/platillosChef';
+import VistaPlatillos from './screens/platillos/platillos';
 
 //Importación de las ordenes de mesero
 import OrdenesMesero from './screens/ordenes/ordenMesero'; 
@@ -128,9 +127,17 @@ function App() {
           />
 
           <Route 
-            path="/RegistroImprevisto" element={
-              <ProtectedRoute user={user} allowedRoles={[3,4]}>
-                <RegistroImprevisto />
+            path="/RegistroImprevistoChef" element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <RegistroImprevistoChef />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/RegistroImprevistoMesero" element={
+              <ProtectedRoute user={user} allowedRoles={[4]}>
+                <RegistroImprevistoMesero />
               </ProtectedRoute>
             }
           />

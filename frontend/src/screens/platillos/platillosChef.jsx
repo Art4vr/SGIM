@@ -62,7 +62,7 @@ const PlatillosChef = () => {
                     <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
-                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
+                    <li onClick={() => navigate('/RegistroImprevistoChef')}>Imprevistos</li>
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>

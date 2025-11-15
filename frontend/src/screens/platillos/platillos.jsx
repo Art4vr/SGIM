@@ -6,8 +6,10 @@ import NuevoPlatillo from './nuevoPlatillo';
 import api from '../../api/axiosConfig';
 import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
+import IngredientesPlatillo from './ingredientes';
 
 const VistaPlatillos = () => {
+    const [refreshInterval, setRefreshInterval] = useState(5000);
     const { logout, user, loading } = useAuth();
     const navigate = useNavigate();
     const [platillos, setPlatillos] = useState([]);
@@ -17,10 +19,12 @@ const VistaPlatillos = () => {
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const [modalAccion, setModalAccion] = useState(null);
     const menuRef = useRef(null);
     const botonRef = useRef(null);
 
     const cargarPlatillos = async () => {
+        
         setCargando(true);
         try {
             const res = await getPlatillos();
@@ -36,10 +40,11 @@ const VistaPlatillos = () => {
         cargarPlatillos();
     }, []);
 
-    const abrirModal = (platillo = null) => {
+    const abrirModal = (platillo = null, modalAccion = null) => {
         setPlatilloEditando(platillo);
         setModalVisible(true);
         setMensaje('');
+        setModalAccion(modalAccion);
     };
 
     const cerrarModal = () => {
@@ -230,6 +235,7 @@ const VistaPlatillos = () => {
                                             <th>Precio</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
+                                            <th>Ingredientes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -242,13 +248,16 @@ const VistaPlatillos = () => {
                                                 <td>{p.precio}</td>
                                                 <td>{p.estado}</td>
                                                 <td className={styles.acciones}>
-                                                    <button onClick={() => abrirModal(p)}>✏️</button>
+                                                    <button onClick={() => abrirModal(p,"nuevoPlatillo")}>✏️</button>
                                                     <button
                                                         onClick={() => eliminar(p.idPlatillo)}
                                                         disabled={eliminandoId === p.idPlatillo}
                                                     >
                                                         {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
                                                     </button>
+                                                </td>
+                                                <td>
+                                                    <button onClick={() => abrirModal(p,"ingredientes")}>🍽️</button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -257,13 +266,23 @@ const VistaPlatillos = () => {
                             </div>
                         )}
 
+
                         {modalVisible && (
+                            modalAccion === 'nuevoPlatillo' ? (
                             <NuevoPlatillo
                                 platillo={platilloEditando}
                                 onClose={cerrarModal}
                                 onRefresh={cargarPlatillos}
                             />
+                        ) : (
+                            <IngredientesPlatillo
+                                platillo={platilloEditando}
+                                onClose={cerrarModal}
+                                onRefresh={cargarPlatillos}
+                            />
+                        )
                         )}
+
                         <button
                             className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
                             type="button"

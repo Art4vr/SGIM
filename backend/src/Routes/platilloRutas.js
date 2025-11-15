@@ -17,27 +17,12 @@ const router = express.Router();
 router.get('/', authMiddleware, requireRole([1,3,4]), obtenerPlatillosController);
 
 // Agregar platillos
-router.post('/', authMiddleware, requirePermission('gestionar_platillos'), agregarPlatilloController);
+router.post('/', authMiddleware, requirePermission('crear_platillos'), agregarPlatilloController);
 
 // Modificar platillos
-router.put('/:id', authMiddleware, requirePermission('gestionar_platillos'), modificarPlatilloController);
+router.put('/:id', authMiddleware, requirePermission('editar_platillo'), modificarPlatilloController);
 
 // Eliminar platillos
-router.delete('/:id', authMiddleware, requirePermission('gestionar_platillos'), eliminarPlatilloController);
+router.delete('/:id', authMiddleware, requirePermission('eliminar_platillo'), eliminarPlatilloController);
 
-
-//Sin autenticacion
-/*
-// Obtener todos los platillos
-router.get('/', obtenerPlatillosController);
-
-// Agregar platillos
-router.post('/', agregarPlatilloController);
-
-// Modificar platillos
-router.put('/:id', modificarPlatilloController);
-
-// Eliminar platillos
-router.delete('/:id', eliminarPlatilloController);
-*/
 export default router;

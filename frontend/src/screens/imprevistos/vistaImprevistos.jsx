@@ -17,6 +17,8 @@ import { getProductos, getUnidades } from "../../api/productoApi";
 
 
 const MostrarImprevistos = () => {
+    const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
+
     const { logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState("");
@@ -37,6 +39,16 @@ const MostrarImprevistos = () => {
 
     const menuRef = useRef(null);
     const botonRef = useRef(null);
+
+    // Cargar datos solo de imprevistos (lightweight)
+    const cargarImprevistos = async () => {
+        try {
+            const imprevistosRes = await api.get("/api/imprevistos/listar");
+            setImprevistos(imprevistosRes.data.resultados || []);
+        } catch (err) {
+            console.error("Error al cargar imprevistos:", err);
+        }
+    };
 
     //se carga toda la informacion de las APIs en el back
     const cargarDatos = async () => {
@@ -66,6 +78,15 @@ const MostrarImprevistos = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+
+    // Auto-refresh imprevistos every X seconds
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            cargarImprevistos();
+        }, refreshInterval);
+
+        return () => clearInterval(intervalId);
+    }, [refreshInterval]);
 
 
     //--------- MODAL PARA ELIMINAR ----------------
@@ -99,7 +120,7 @@ const MostrarImprevistos = () => {
         try {
             await api.delete(`/api/imprevistos/eliminar/${imprevisto}`);
             setMensaje("Imprevisto eliminado correctamente");
-            await cargarDatos();
+            await cargarImprevistos();
         } catch (err) {
             console.error(err);
             setMensaje(err.response?.data?.mensaje || "Error al eliminar imprevisto");
@@ -114,7 +135,7 @@ const MostrarImprevistos = () => {
             const datos = {estado: nuevoEstado, idUsuarioAutoriza: user.id};
             await api.put(`/api/imprevistos/evaluar/${imprevisto.idImprevisto}`, datos);
             setMensaje(`Imprevisto ${nuevoEstado} correctamente`);
-            await cargarDatos();
+            await cargarImprevistos();
         } catch (err) {
             console.error(err);
             setMensaje(err.response?.data?.mensaje || "Error al evaluar imprevisto");

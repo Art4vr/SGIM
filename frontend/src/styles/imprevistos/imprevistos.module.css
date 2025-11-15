@@ -277,7 +277,7 @@ input:disabled + .slider:before {
     color: #333;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .Table th {
@@ -287,6 +287,9 @@ input:disabled + .slider:before {
     padding: 12px;
     font-weight: bold;
     font-size: 0.95rem;
+    position: sticky;
+    top:0;
+    z-index: 1;
 }
 
 .Table td {
