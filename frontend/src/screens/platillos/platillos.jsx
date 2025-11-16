@@ -7,6 +7,7 @@ import api from '../../api/axiosConfig';
 import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import IngredientesPlatillo from './ingredientes';
+import PerfilUsuario from '../../components/PerfilUsuario';
 
 const VistaPlatillos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000);
