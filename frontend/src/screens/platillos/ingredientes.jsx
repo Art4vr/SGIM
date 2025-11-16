@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from "../../api/axiosConfig";
 import { getProductos, getUnidades } from '../../api/productoApi';
 import styles from '../../styles/platillos/nuevaReceta.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+//import stylesCommon from '../../styles/common/common.module.css';
 
 const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
     // UI / data states
@@ -17,7 +17,9 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
     // form states for adding new ingredient
     const [ingredienteSeleccionado, setIngredienteSeleccionado] = useState('');
     const [cantidadNueva, setCantidadNueva] = useState('');
-    const [unidadNueva, setUnidadNueva] = useState('');
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredProducts, setFilteredProducts] = useState(productos);
 
     // load products and units
     const cargarProductos = async () => {
@@ -110,7 +112,6 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
         // clear add form
         setIngredienteSeleccionado('');
         setCantidadNueva('');
-        setUnidadNueva('');
         setMensaje('');
     };
 
@@ -133,6 +134,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
             if (String(p.idProducto) !== String(idProducto)) return p;
             return { ...p, [field]: value };
         }));
+        console.log("setProductosPlatillo: ", productosPlatillo);
     };
 
     // Submit: compute adds, updates and deletes and call API accordingly
@@ -150,13 +152,15 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                 // skip invalid rows
                 return;
             }
-            console.log("toUpsert: ", p);
+            console.log("toUpsert p: ", p);
             toUpsert.push({
                 idProducto: p.idProducto,
                 cantidad: Number(p.cantidad),
                 unidadMedida: p.idUnidadMedida || null,
+                //nombreUnidadMedida: p.unidadMedida || '--',
                 original: !!p.original
             });
+            console.log("toUpsert 2: ", toUpsert);
         });
 
         setCargando?.(true); // harmless if undefined
@@ -210,13 +214,24 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
         }
     };
 
-    // filtered products for select
-    const [filtros, setFiltros] = useState({ nombre: '' });
-    const productosFiltrados = productos.filter(p =>
-        p.nombre?.toLowerCase().includes(filtros.nombre.toLowerCase())
-    );
-    const handleFiltroChange = (e) => setFiltros({ ...filtros, nombre: e.target.value });
+    //Filtrado de nombre de producto autocompletado
+    // Filtrar productos según lo que se escribe
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        
+        const filtered = productos.filter(p => p.nombre.toLowerCase().includes(value.toLowerCase()));
+        console.log("filtered: ", filtered);
+        setFilteredProducts(filtered);
+    };
 
+    // Manejar la selección de un producto
+    const handleSelect = (idProducto) => {
+        setIngredienteSeleccionado(idProducto);
+        setSearchTerm(''); // Limpiar el campo de búsqueda después de seleccionar
+    };
+
+    
     // Primero, encontramos el producto seleccionado
     console.log("ingredienteSeleccionado: ", ingredienteSeleccionado);
     const productoSeleccionado = productos.find(p => p.idProducto === Number(ingredienteSeleccionado));
@@ -239,15 +254,8 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                     <button className={styles.closeButton} onClick={onClose}>❌</button>
                 </div>
 
-                <div className={stylesCommon.filterContainer} style={{ marginTop: 8 }}>
+                <div className={styles.filterContainer}>
                     <h3>Ingredientes</h3>
-                    <input
-                        type="text"
-                        placeholder="Filtrar por nombre"
-                        value={filtros.nombre}
-                        onChange={handleFiltroChange}
-                        className={stylesCommon.filterInput}
-                    />
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ marginTop: 12 }}>
@@ -276,12 +284,10 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                                     onChange={(e) => handleChangeLocal(pp.idProducto, 'unidadMedida', e.target.value)}
                                 >
                                     <option value={pp.idUnidadMedida}>{pp.unidadMedida}</option>
-                                    {unidades.map(u => (
-                                        <option key={u.idUnidadMedida} value={u.idUnidadMedida}>{u.abreviatura ?? u.medida}</option>
-                                    ))}
+                                    
                                 </select>
 
-                                <button type="button" onClick={() => handleRemoveLocal(pp.idProducto)} style={{ background: 'transparent', border: 'none', color: '#b13960', cursor: 'pointer' }}>
+                                <button type="button" onClick={() => handleRemoveLocal(pp.idProducto)} >
                                     Eliminar
                                 </button>
                             </div>
@@ -289,27 +295,53 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                     </div>
 
                     {/* Add new ingredient controls */}
-                    <div style={{ borderTop: '1px solid #eee', paddingTop: 12, marginTop: 8 }}>
+                    <div className={styles.agregarContainer}>
                         <h4>Agregar ingrediente</h4>
                         <div  className={styles.filterContainer}>
-                            <select value={ingredienteSeleccionado} onChange={e => setIngredienteSeleccionado(e.target.value)}>
-                                <option value="">Selecciona un ingrediente</option>
-                                {productosFiltrados.map(prod => (
-                                    <option key={prod.idProducto} value={prod.idProducto}>{prod.nombre}</option>
-                                ))}
-                            </select>
+                            <div>
+                                <input
+                                    className={styles.filterInput}
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
+                                    placeholder={productos.find(p => Number(p.idProducto) === Number(ingredienteSeleccionado)) 
+                                        ? productos.find(p => Number(p.idProducto) === Number(ingredienteSeleccionado)).nombre 
+                                        : 'Ingrediente...'}
+                                    
+                                />
+                                {searchTerm && filteredProducts.length > 0 && (
+                                    <ul className={styles.filterList}>
+                                        {filteredProducts.map((p) => {
+                                            return (
+                                                <li
+                                                    key={p.idProducto}
+                                                    onClick={() => handleSelect(p.idProducto)}
+                                                    className={styles.listaProductos}
+                                                >
+                                                    {p.nombre}
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                )}
+                            </div>
 
-                            <input
-                                type="number"
-                                min="0"
-                                step="0.01"
-                                placeholder="Cantidad"
-                                value={cantidadNueva}
-                                onChange={e => setCantidadNueva(e.target.value)}
-                                style={{ width: 100 }}
-                            />
+                            <div>
+                                <input
+                                    className={styles.filterInputCant} 
+                                    type="number"
+                                    min="0"
+                                    step="1.0"
+                                    placeholder="Cantidad"
+                                    value={cantidadNueva}
+                                    onChange={e => setCantidadNueva(e.target.value)}
+                                    style={{ width: 100 }}
+                                />
+                            </div>
                             
-                            <h3>{abreviaturaUnidad}</h3>
+                            <div>
+                                <label>{abreviaturaUnidad}</label>
+                            </div>
 
                             <button type="button" onClick={handleAddIngredient} style={{ padding: '6px 12px' }}>
                                 Añadir
@@ -319,8 +351,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
 
                     <div style={{ marginTop: 12 }}>
                         <button type="submit" style={{ padding: '8px 14px' }}>Guardar Receta</button>
-                        <button type="button" onClick={onClose} style={{ marginLeft: 8, padding: '8px 14px' }}>Cancelar</button>
-                    </div>
+                        </div>
 
                     {mensaje && <div className={styles.mensaje} style={{ marginTop: 10 }}>{mensaje}</div>}
                 </form>

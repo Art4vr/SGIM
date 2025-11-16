@@ -34,7 +34,7 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de vista de imprevistos
 import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
-import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+import RegistroImprevisto from './screens/imprevistos/registroImprevistoChef';
 
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
