@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getPlatillos } from '../../api/platilloApi';
-import { 
+import {
   getOrdenes,
   crearOrden,
   getPlatillosOrden,
   agregarPlatilloOrden,
   eliminarPlatilloOrden,
   getMesas,
-  modificarOrden
+  modificarOrden,
+  enviarOrdenACocina,
 } from '../../api/ordenMeseroApi';
+// Es para modificar los estados de los platillos
+import { actualizarPlatilloChef } from '../../api/chefApi';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/ordenes/orden.module.css';
+import stylesCommon from '../../styles/common/common.module.css';
+// Para importar el usuario
+import PerfilUsuario from '../../components/PerfilUsuario';
+
 
 const OrdenMesero = () => {
   const { user } = useAuth();
@@ -24,6 +32,22 @@ const OrdenMesero = () => {
   const [cantidadPlatillo, setCantidadPlatillo] = useState({});
   const [filtros, setFiltros] = useState({ categoria: '' });
   const [vista, setVista] = useState('ordenes'); // "ordenes" | "detalle" | "agregar"
+  const navigate = useNavigate();
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const menuRef = useRef(null);
+  const botonRef = useRef(null);
+// --- 👇 1. ESTADO PARA LA NOTIFICACIÓN ---
+  const [notificacion, setNotificacion] = useState({ visible: false, mensaje: '', tipo: 'info' });
+
+  // --- 👇 2. FUNCIÓN HELPER PARA MOSTRAR NOTIFICACIÓN ---
+  const mostrarNotificacion = (mensaje, tipo = 'success') => {
+    setNotificacion({ visible: true, mensaje, tipo });
+    
+    // Ocultar después de 1.5 segundos
+    setTimeout(() => {
+        setNotificacion({ visible: false, mensaje: '', tipo: 'info' });
+    }, 1500);
+  };
 
   // ---------------------- CARGAS INICIALES ----------------------
   useEffect(() => {
@@ -31,6 +55,7 @@ const OrdenMesero = () => {
     cargarOrdenes();
     cargarPlatillos();
   }, []);
+
 
   const cargarMesas = async () => {
     try {
@@ -44,7 +69,7 @@ const OrdenMesero = () => {
   const cargarOrdenes = async () => {
     try {
       const response = await getOrdenes();
-      setOrdenes(response.data.filter(o => o.estado === 'abierta'));
+      setOrdenes(response.data.filter((o) => o.estado === 'abierta'));
     } catch (err) {
       console.error('Error al cargar órdenes:', err);
     }
@@ -59,20 +84,22 @@ const OrdenMesero = () => {
     }
   };
 
+
   // ---------------------- CREAR ORDEN ----------------------
   const handleCrearOrden = async () => {
-    if (!mesaId) return alert('Selecciona una mesa');
+    if (!mesaId) return mostrarNotificacion('Selecciona una mesa', 'error');
     try {
       await crearOrden({ idUsuario: user.id, idMesa: mesaId });
-      alert('Orden creada exitosamente');
+      mostrarNotificacion('Orden creada exitosamente', 'success');
       setMesaId('');
       cargarOrdenes();
       cargarMesas();
     } catch (err) {
       console.error('Error al crear orden:', err);
-      alert('No se pudo crear la orden');
+      mostrarNotificacion('No se pudo crear la orden', 'error');
     }
   };
+
 
   // ---------------------- SELECCIONAR ORDEN ----------------------
   const seleccionarOrden = async (orden) => {
@@ -87,13 +114,28 @@ const OrdenMesero = () => {
     }
   };
 
-  // ---------------------- AGREGAR PLATILLO ----------------------
+  //Actualizacion 4 seg 
+  useEffect(() => {
+    if (!ordenSeleccionada) return;
+    const interval = setInterval(async () => {
+      try {
+        const response = await getPlatillosOrden(ordenSeleccionada.idOrden);
+        setOrdenPlatillos(response.data);
+      } catch (error) {
+        console.error("Error actualizando platillos en tiempo real:", error);
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [ordenSeleccionada]);
+
+// ---------------------- AGREGAR PLATILLO ----------------------
 const handleAgregarPlatillo = async (platilloId) => {
   const cantidad = cantidadPlatillo[platilloId] || 1;
-  if (!ordenSeleccionada) return alert('Selecciona una orden primero');
+  if (!ordenSeleccionada) return mostrarNotificacion('Selecciona una orden primero', 'error');
 
   const platillo = platillos.find(p => p.idPlatillo === platilloId);
-  if (!platillo) return alert('Platillo no encontrado');
+  if (!platillo) return mostrarNotificacion('Platillo no encontrado', 'error');
+
 
   try {
     await agregarPlatilloOrden(ordenSeleccionada.idOrden, {
@@ -102,9 +144,9 @@ const handleAgregarPlatillo = async (platilloId) => {
       precioUnitario: platillo.precio
     });
 
-    alert('Platillo agregado correctamente');
+    mostrarNotificacion('Platillo agregado correctamente', 'success');
 
-    // 🔹 Refrescar detalle y lista de órdenes
+    //Refresh detalle y lista de órdenes
     await seleccionarOrden(ordenSeleccionada);
     await cargarOrdenes();
 
@@ -112,45 +154,77 @@ const handleAgregarPlatillo = async (platilloId) => {
     setCantidadPlatillo({ ...cantidadPlatillo, [platilloId]: 1 });
 
   } catch (err) {
-    console.error('❌ Error al agregar platillo:', err);
-    alert('No se pudo agregar el platillo a la orden');
+    console.error('Error al agregar platillo:', err);
+    mostrarNotificacion('No se pudo agregar el platillo a la orden', 'error');
   }
 };
 
 // ---------------------- ELIMINAR PLATILLO ----------------------
-const handleEliminarPlatillo = async (platilloId) => {
+const handleEliminarPlatillo = async (idPlatilloOrden) => {
   if (!ordenSeleccionada) return;
   try {
-    await eliminarPlatilloOrden(ordenSeleccionada.idOrden, platilloId);
-    alert('Platillo eliminado correctamente');
+    await eliminarPlatilloOrden(idPlatilloOrden);
+    mostrarNotificacion('Platillo eliminado correctamente', 'success');
 
-    // 🔹 Refrescar detalle y lista de órdenes
+    //Refrescar detalle y lista de órdenes
     await seleccionarOrden(ordenSeleccionada);
     await cargarOrdenes();
 
   } catch (err) {
     console.error('Error al eliminar platillo:', err);
+    mostrarNotificacion('Error al eliminar platillo', 'error');
   }
 };
 
-
-  // ---------------------- FINALIZAR ORDEN ----------------------
+// ---------------------- FINALIZAR ORDEN ----------------------
   const handleFinalizarOrden = async () => {
-    if (!ordenSeleccionada) return alert('Selecciona una orden primero');
+    if (!ordenSeleccionada) return mostrarNotificacion('Selecciona una orden primero', 'error');
     try {
       await modificarOrden(ordenSeleccionada.idOrden, { estado: 'cerrada' });
-      alert(`Orden #${ordenSeleccionada.idOrden} finalizada`);
+      mostrarNotificacion(`Orden #${ordenSeleccionada.idOrden} finalizada`, 'success');
       setOrdenSeleccionada(null);
       setVista('ordenes');
       cargarOrdenes();
       cargarMesas();
     } catch (err) {
       console.error('Error al finalizar orden:', err);
-      alert('No se pudo finalizar la orden');
+      mostrarNotificacion('No se pudo finalizar la orden', 'error');
     }
   };
 
-  // ---------------------- CAMBIAR CANTIDAD (+/-) ----------------------
+// ---------------------- ENVIAR A COCINA ----------------------
+const handleEnviarCocina = async () => {
+  if (!ordenSeleccionada) return mostrarNotificacion('Selecciona una orden primero', 'error');
+  
+  try {
+    // Cambia estado general a "en cocina"
+    await enviarOrdenACocina(ordenSeleccionada.idOrden);
+    mostrarNotificacion(`Orden #${ordenSeleccionada.idOrden} enviada a cocina`, 'success');
+    
+    // Refresca la vista
+    //await cargarOrdenes();
+    //setVista('ordenes');
+    //setOrdenSeleccionada(null);
+  } catch (err) {
+    console.error('Error al enviar a cocina:', err);
+    mostrarNotificacion('No se pudo enviar la orden a cocina', 'error');
+  }
+};
+
+// ---------------------- CAMBIAR ESTADO DE PLATILLO ----------------------
+const cambiarEstado = async (platillo, nuevoEstado) => {
+        try {
+        await actualizarPlatilloChef({
+            idPlatilloOrden: platillo.idPlatilloOrden,
+            estado: nuevoEstado
+        });
+        await cargarPlatillos();
+        } catch (error) {
+        console.error('Error al actualizar estado del platillo:', error);
+        }
+    };
+
+// ---------------------- CAMBIAR CANTIDAD (+/-) ----------------------
   const cambiarCantidad = (platilloId, delta) => {
     setCantidadPlatillo(prev => {
       const actual = prev[platilloId] || 1;
@@ -159,7 +233,7 @@ const handleEliminarPlatillo = async (platilloId) => {
     });
   };
 
-  // ---------------------- FILTROS ----------------------
+// ---------------------- FILTROS ----------------------
   const handleFiltroChange = (e) => {
     setFiltros({ categoria: e.target.value });
   };
@@ -168,98 +242,180 @@ const handleEliminarPlatillo = async (platilloId) => {
   const platillosFiltrados = platillos.filter(
     (p) => filtros.categoria === '' || p.categoria === filtros.categoria
   );
+  // --------------------- Menu y header -----------------
+    const toggleMenu = () => {
+    setMenuAbierto(!menuAbierto);
+    };
 
-  // ---------------------- RENDER ----------------------
+  useEffect(() => { 
+    const handleClickOutside = (event) =>{
+      if(
+        menuAbierto &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        botonRef.current &&
+        !botonRef.current.contains(event.target)
+      ){
+        setMenuAbierto(false);
+      }
+    }
+    document.addEventListener('mousedown',handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown',handleClickOutside);
+    };
+  }, [menuAbierto]);
+
+  
+// ---------------------- RENDER ----------------------
   return (
-    <div className={styles.contenidoPrincipal}>
-      <h1 className={styles.tituloPrincipal}>Gestión de Órdenes</h1>
 
-      {/* === VISTA PRINCIPAL === */}
-      {vista === 'ordenes' && (
-        <>
-          <section>
-            <h2>Crear Orden</h2>
-            <div>
-              <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
-                <option value="">Selecciona una mesa</option>
-                {mesas.map((mesa) => (
-                  <option key={mesa.idMesa} value={mesa.idMesa}>
-                    Mesa {mesa.numeroMesa} ({mesa.estado})
-                  </option>
+  <div className={styles.container}>
+        {/* Encabezado */}
+        <div className={stylesCommon.header}>
+          <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+            <img src="/imagenes/menu_btn.png" alt="Menú" />
+          </button>
+          <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+          {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+          <div className={stylesCommon.headerRight}>
+            <PerfilUsuario /> 
+            <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+          </div>
+        </div>
+
+      {/* --- 👇 3. DIV DE LA NOTIFICACIÓN --- */}
+      {notificacion.visible && (
+        <div className={`${styles.notificacion} ${notificacion.tipo === 'success' ? styles.success : styles.error}`}>
+            {notificacion.mensaje}
+        </div>
+      )}
+
+      <div className={styles.contenidoPrincipal}>
+              {/* Menú lateral */}
+              <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+                  <ul>
+                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
+                    <li onClick={() => navigate('/platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
+                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                  </ul>
+              </div>
+
+        <h1 className={styles.tituloPrincipal}>Gestión de Órdenes</h1>
+
+        {/* === VISTA PRINCIPAL === */}
+        {vista === 'ordenes' && (
+          <>
+            <section>
+              <h2>Crear Orden</h2>
+              <div>
+                <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
+                  <option value="">Selecciona una mesa</option>
+                  {mesas.map((mesa) => (
+                    <option key={mesa.idMesa} value={mesa.idMesa}>
+                      Mesa {mesa.numeroMesa} ({mesa.estado})
+                    </option>
+                  ))}
+                </select>
+                <button onClick={handleCrearOrden}>Crear Orden</button>
+              </div>
+            </section>
+
+            <section>
+              <h2>Órdenes Abiertas</h2>
+              <ul className={styles.listaOrdenes}>
+                {ordenes.map((orden) => (
+                  <li key={orden.idOrden}>
+                    <b>Orden #{orden.idOrden}</b> — Mesa {orden.mesa} — Total: ${orden.total}
+                    <button onClick={() => seleccionarOrden(orden)}>Ver Platillos</button>
+                  </li>
                 ))}
-              </select>
-              <button onClick={handleCrearOrden}>Crear Orden</button>
+              </ul>
+            </section>
+          </>
+        )}
+
+        {/* === DETALLE DE ORDEN === */}
+        {vista === 'detalle' && ordenSeleccionada && (
+          <section className={styles.contenedorPlatillos}>
+            <h3>Orden #{ordenSeleccionada.idOrden} — Mesa {ordenSeleccionada.mesa}</h3>
+            <button onClick={() => setVista('ordenes')}>← Volver</button>
+
+            <ul>
+                {ordenPlatillos.map((p) => (
+                  <li key={p.Platillo_idPlatillo}>
+                    <b>{p.platillo}</b> — Cant: {p.cantidad} — ${p.precioUnitario}
+                    <br />
+                    <span>Estado: <b>{p.estado}</b></span>
+
+                    {/* Mostrar botón [entregado] solo si está "listo" el platillo*/}
+                    {p.estado === 'listo' && (
+                      <button onClick={() => cambiarEstado(p, 'entregado')} className={styles.botonAccion}>
+                        Entregado
+                      </button>
+                    )}
+
+                    {/* Eliminar solo si aún no se envió a cocina */}
+                    {p.estado === 'pendiente' && (
+                      <button
+                        onClick={() => handleEliminarPlatillo(p.idPlatilloOrden)}
+                        style={{ marginLeft: '10px' }}
+                      >
+                        Eliminar
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+            <div style={{ marginTop: '15px' }}>
+              <button onClick={() => setVista('agregar')}>Agregar Platillos</button>
+              <button onClick={handleEnviarCocina}>Enviar a Cocina</button>
+              <button onClick={handleFinalizarOrden}>Finalizar Orden</button>
             </div>
+
           </section>
+        )}
 
-          <section>
-            <h2>Órdenes Abiertas</h2>
-            <ul className={styles.listaOrdenes}>
-              {ordenes.map((orden) => (
-                <li key={orden.idOrden}>
-                  <b>Orden #{orden.idOrden}</b> — Mesa {orden.mesa} — Total: ${orden.total}
-                  <button onClick={() => seleccionarOrden(orden)}>Ver Platillos</button>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </>
-      )}
+        {/* === AGREGAR PLATILLOS === */}
+        {vista === 'agregar' && (
+            <section className={styles.contenedorPlatillos}>
+              <h3>Agregar Platillos</h3>
+              <button onClick={() => setVista('detalle')}>← Volver</button>
 
-      {/* === DETALLE DE ORDEN === */}
-      {vista === 'detalle' && ordenSeleccionada && (
-        <section className={styles.contenedorPlatillos}>
-          <h3>Orden #{ordenSeleccionada.idOrden} — Mesa {ordenSeleccionada.mesa}</h3>
-          <button onClick={() => setVista('ordenes')}>← Volver</button>
+              {/* FILTRO POR CATEGORÍA */}
+              <div>
+                <label>Filtrar por categoría: </label>
+                <select value={filtros.categoria} onChange={handleFiltroChange}>
+                  <option value="">Todas</option>
+                  {categorias.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
 
-          <ul>
-            {ordenPlatillos.map((p) => (
-              <li key={p.Platillo_idPlatillo}>
-                <b>{p.platillo}</b> — Cant: {p.cantidad} — ${p.precioUnitario}
-                <button onClick={() => handleEliminarPlatillo(p.Platillo_idPlatillo)}>Eliminar</button>
-              </li>
-            ))}
-          </ul>
+              <div className={styles.listaPlatillosScroll}>
+                <ul>
+                  {platillosFiltrados.map((platillo) => (
+                    <li key={platillo.idPlatillo}>
+                      <b>{platillo.nombre}</b> — {platillo.categoria} — ${platillo.precio}
+                      <div>
+                        <button onClick={() => cambiarCantidad(platillo.idPlatillo, -1)}>−</button>
+                        <span>{cantidadPlatillo[platillo.idPlatillo] || 1}</span>
+                        <button onClick={() => cambiarCantidad(platillo.idPlatillo, 1)}>+</button>
+                      </div>
+                      <button onClick={() => handleAgregarPlatillo(platillo.idPlatillo)}>Agregar</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
 
-          <div style={{ marginTop: '15px' }}>
-            <button onClick={() => setVista('agregar')}>Agregar Platillos</button>
-            <button onClick={handleFinalizarOrden}>Finalizar Orden</button>
-          </div>
-        </section>
-      )}
-
-      {/* === AGREGAR PLATILLOS === */}
-      {vista === 'agregar' && (
-        <section className={styles.contenedorPlatillos}>
-          <h3>Agregar Platillos</h3>
-          <button onClick={() => setVista('detalle')}>← Volver</button>
-
-          {/* FILTRO POR CATEGORÍA */}
-          <div>
-            <label>Filtrar por categoría: </label>
-            <select value={filtros.categoria} onChange={handleFiltroChange}>
-              <option value="">Todas</option>
-              {categorias.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
-          </div>
-
-          <ul>
-            {platillosFiltrados.map((platillo) => (
-              <li key={platillo.idPlatillo}>
-                <b>{platillo.nombre}</b> — {platillo.categoria} — ${platillo.precio}
-                <div>
-                  <button onClick={() => cambiarCantidad(platillo.idPlatillo, -1)}>−</button>
-                  <span>{cantidadPlatillo[platillo.idPlatillo] || 1}</span>
-                  <button onClick={() => cambiarCantidad(platillo.idPlatillo, 1)}>+</button>
-                </div>
-                <button onClick={() => handleAgregarPlatillo(platillo.idPlatillo)}>Agregar</button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        )}
+      <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelMesero')}>
+        Volver al Inicio
+      </button>
+      </div>
     </div>
   );
 };

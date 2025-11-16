@@ -7,29 +7,13 @@ import conexionDB from '../config/db.js';
 
 // --------------------- AGREGAR PLATILLO A ORDEN -----------------------------
 export const agregarPlatilloOrden = async (conn, { idOrden, idPlatillo, cantidad, precioUnitario }) => {
-    try {
-        // Verificar si el platillo ya está en la orden
-        const [rows] = await conn.execute(
-            'SELECT cantidad FROM Platillo_Orden WHERE Orden_idOrden = ? AND Platillo_idPlatillo = ?',
-            [idOrden, idPlatillo]
-        );
-
-        if (rows.length > 0) {
-            // Si ya existe, actualizar la cantidad sumando la nueva
-            const nuevaCantidad = rows[0].cantidad + cantidad;
-            await conn.execute(
-                'UPDATE Platillo_Orden SET cantidad = ?, precioUnitario = ? WHERE Orden_idOrden = ? AND Platillo_idPlatillo = ?',
-                [nuevaCantidad, precioUnitario, idOrden, idPlatillo]
-            );
-        } else {
-            // Si no existe, insertar normalmente
-            await conn.execute(
+    try { 
+            // Se insertan los platillos por separados 
+            const [resultado] = await conn.execute(
                 'INSERT INTO Platillo_Orden (Orden_idOrden, Platillo_idPlatillo, cantidad, precioUnitario) VALUES (?, ?, ?, ?)',
                 [idOrden, idPlatillo, cantidad, precioUnitario]
             );
-        }
-
-        return { idOrden, idPlatillo };
+        return { idPlatilloOrden: resultado.insertId };
     } catch (err) {
         console.error('Error en agregarPlatilloOrden:', err);
         throw new Error('Error al agregar el platillo a la orden');
@@ -37,17 +21,17 @@ export const agregarPlatilloOrden = async (conn, { idOrden, idPlatillo, cantidad
 };
 
 // --------------------- ACTUALIZAR PLATILLO DE ORDEN -------------------------
-export const actualizarPlatilloOrden = async (conn, { idOrden, idPlatillo, cantidad, precioUnitario, estado }) => {
+export const actualizarPlatilloOrden = async (conn, { idPlatilloOrden, cantidad, precioUnitario, estado }) => {
     const query = `
         UPDATE Platillo_Orden
         SET 
             cantidad = COALESCE(?, cantidad),
             precioUnitario = COALESCE(?, precioUnitario),
             estado = COALESCE(?, estado)
-        WHERE Orden_idOrden = ? AND Platillo_idPlatillo = ?
+        WHERE idPlatilloOrden = ?
     `;
     try {
-        const [resultado] = await conn.execute(query, [cantidad, precioUnitario, estado, idOrden, idPlatillo]);
+        const [resultado] = await conn.execute(query, [cantidad, precioUnitario, estado, idPlatilloOrden]);
         return resultado.affectedRows;
     } catch (err) {
         console.error('Error en actualizarPlatilloOrden:', err);
@@ -56,13 +40,13 @@ export const actualizarPlatilloOrden = async (conn, { idOrden, idPlatillo, canti
 };
 
 // --------------------- ELIMINAR PLATILLO DE ORDEN ---------------------------
-export const eliminarPlatilloOrden = async (conn, { idOrden, idPlatillo }) => {
+export const eliminarPlatilloOrden = async (conn, { idPlatilloOrden }) => {
     const query = `
         DELETE FROM Platillo_Orden
-        WHERE Orden_idOrden = ? AND Platillo_idPlatillo = ?
+        WHERE idPlatilloOrden = ?
     `;
     try {
-        const [resultado] = await conn.execute(query, [idOrden, idPlatillo]);
+        const [resultado] = await conn.execute(query, [idPlatilloOrden]);
         return resultado.affectedRows;
     } catch (err) {
         console.error('Error en eliminarPlatilloOrden:', err);
@@ -73,7 +57,8 @@ export const eliminarPlatilloOrden = async (conn, { idOrden, idPlatillo }) => {
 // --------------------- OBTENER PLATILLOS DE UNA ORDEN -----------------------
 export const obtenerPlatillosOrden = async (conn, idOrden) => {
     const query = `
-        SELECT 
+        SELECT
+            po.idPlatilloOrden, 
             po.Orden_idOrden, 
             po.Platillo_idPlatillo, 
             p.nombre AS platillo,

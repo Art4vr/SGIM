@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, {useEffect, useState} from 'react'
+//import React, {useEffect, useState} from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -7,18 +7,20 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Importa tus componentes de auth
 import Home from './screens/auth/Home';
 import Login from './screens/auth/Login';
-
-//Importa componentes de los Paneles
+import Registro from './screens/usuarios/Registro';
 import PanelChef from './screens/auth/PanelChef';
-import PanelAdm from './screens/auth/PanelAdm';
-
+import PanelMesero from './screens/auth/PanelMesero';
 
 import Menu from './screens/public/menu';
+import PanelGerente from './screens/auth/PanelAdm';
+import PanelAdm from './screens/auth/PanelAdm';
+import PanelEncargado from './screens/auth/PanelEncargado';
+
 
 
 //Importacion de vista usuarios
-import Registro from './screens/usuarios/Registro';
 import VistaUsuarios from './screens/usuarios/vistaUsuarios';
+
 
 //Importacion de vista productos
 import VistaProductos from './screens/productos/vistaProducto';
@@ -32,15 +34,16 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 
 //Importacion de vista de imprevistos
 import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
-import RegistroImprevistoChef from './screens/imprevistos/registroImprevistoChef';
-import RegistroImprevistoMesero from './screens/imprevistos/registroImprevistoMesero';
+import RegistroImprevisto from './screens/imprevistos/registroImprevisto';
+
+//Importacion de platillos
+import VistaPlatillos from './screens/platillos/platillos';
 
 //Importación de ordenes de chef
 import OrdenChef from './screens/ordenes/ordenChef';
 
-//Importación de los platillos
+//Importación de los platillos de chef
 import PlatillosChef from './screens/platillos/platillosChef';
-import VistaPlatillos from './screens/platillos/platillos';
 
 //Importación de las ordenes de mesero
 import OrdenesMesero from './screens/ordenes/ordenMesero'; 
@@ -54,39 +57,22 @@ function App() {
   
 //revisar ruta de productos y proveedores (permisos o roles correspondientes)
   return (
+    
       <BrowserRouter>
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/" element={<Home />} />
-
-          <Route 
-            path="/PanelChef" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
-                <PanelChef />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route 
-            path="/PanelGerente" 
-            element={
-              <ProtectedRoute user={user} allowedRoles={[1]}>
-                <PanelAdm />
-              </ProtectedRoute>
-            }
+          
+          <Route path="/Productos" element={
+            <ProtectedRoute user={user} allowedRoles={[1,2]}>
+              <VistaProductos />
+            </ProtectedRoute>
+            } 
           />
 
           <Route path="/Usuarios" element={
             <ProtectedRoute user={user} allowedRoles={[1]}>
               <VistaUsuarios />
-            </ProtectedRoute>
-            } 
-          />
-          
-          <Route path="/Productos" element={
-            <ProtectedRoute user={user} allowedRoles={[1,2]}>
-              <VistaProductos />
             </ProtectedRoute>
             } 
           />
@@ -126,56 +112,76 @@ function App() {
             } 
           />
 
+          <Route path="/OrdenesMesero" element={<OrdenesMesero />} />
+
+          <Route path="/PanelMesero" element={<PanelMesero />} />
+
           <Route 
-            path="/RegistroImprevistoChef" element={
+            path="/PanelAdm" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelAdm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route 
+            path="/RegistroImprevisto" 
+            element={
               <ProtectedRoute user={user} allowedRoles={[3]}>
-                <RegistroImprevistoChef />
+                <RegistroImprevisto />
               </ProtectedRoute>
             }
           />
-
           <Route 
-            path="/RegistroImprevistoMesero" element={
-              <ProtectedRoute user={user} allowedRoles={[4]}>
-                <RegistroImprevistoMesero />
+            path="/PanelChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
+                <PanelChef />
               </ProtectedRoute>
             }
           />
-
           <Route 
-            path="/OrdenesMesero" element={
-              <ProtectedRoute user={user} allowedRoles={[1,4]}>
-                <OrdenesMesero />
+            path="/PanelGerente" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1]}>
+                <PanelGerente />
               </ProtectedRoute>
             }
           />
-
           <Route 
-            path="/ordenChef" element={
-              <ProtectedRoute user={user} allowedRoles={[1,3]}>
+            path="/PanelEncargado" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[2]}>
+                <PanelEncargado/>
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/ordenChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
                 <OrdenChef />
               </ProtectedRoute>
             }
           />
-
-          <Route 
-            path="/platillosChef" element={
-              <ProtectedRoute user={user} allowedRoles={[1,3]}>
+            <Route 
+            path="/platillosChef" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[3]}>
                 <PlatillosChef />
               </ProtectedRoute>
             }
           />
-
           <Route 
-            path="/NuevoUsuario" element={
+            path="/NuevoUsuario" 
+            element={
               <ProtectedRoute user={user} allowedRoles={[1]}>
                 <Registro />
               </ProtectedRoute>
             }
           />
-
           <Route path="/Menu" element={<Menu />} />
-
           <Route path="*" element={<h2 style={{ textAlign: 'center', marginTop: '50px' }}>Página no encontrada</h2>} />
         </Routes>
       </BrowserRouter>

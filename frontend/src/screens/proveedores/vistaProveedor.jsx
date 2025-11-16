@@ -7,6 +7,7 @@ import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
+import PerfilUsuario from '../../components/PerfilUsuario';
 
 const VistaProveedores = () => {
     const { logout, user, loading } = useAuth();
@@ -69,15 +70,6 @@ const VistaProveedores = () => {
         setMenuAbierto(!menuAbierto);
         };
 
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
     useEffect(() => { 
         const handleClickOutside = (event) =>{
             if(
@@ -120,19 +112,21 @@ const VistaProveedores = () => {
                     <img src="/imagenes/menu_btn.png" alt="Menú" />
                 </button>
                 <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+                <div className={stylesCommon.headerRight}>
+                    <PerfilUsuario /> 
+                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                </div>
             </div>
 
             {/* Menú lateral */}
             <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
                     <li onClick={() => navigate('/Platillos')}>Platillos</li>
                     <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
                     <li onClick={() => navigate('/Productos')}>Productos</li>
                     <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
                     <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                    <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
 

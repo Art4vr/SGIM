@@ -1,0 +1,170 @@
+/* ======== Contenedor Principal (Estilo Tarjeta Clara) ======== */
+.contenidoPrincipal {
+    background-color: #d5c3cfbd;
+    border-radius: 12px;
+    border: 2px solid #9f8a9ac6;
+    box-shadow: 0px 4px 8px #b90464b6;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* ----- Título principal de la sección ----- */
+.tituloSeccion {
+    color: #000000ef;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ----- Mensaje cuando no hay pedidos ----- */
+.noPedidos {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    background-color: rgba(247, 238, 244, 0.8); /* Fondo rosa pálido */
+    padding: 20px;
+    border-radius: 12px;
+    width: 80%;
+    margin: 2rem auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Contenedor de la tabla (Wrapper con scroll) */
+.seccionTabla {
+    max-height: 400px; /* Altura visible */
+    overflow-y: auto;   /* Scroll vertical */
+    overflow-x: auto;   /* Scroll horizontal */
+    border-radius: 10px;
+    background: #f7eef4d8;
+    scrollbar-width: thin;
+    scrollbar-color: #b44a82 #e3cadb;
+}
+
+/* ===== Scrollbar personalizado (Chrome, Edge, Safari) ===== */
+.seccionTabla::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.seccionTabla::-webkit-scrollbar-thumb {
+    background-color: #b44a82;
+    border-radius: 10px;
+    border: 2px solid #e3cadb;
+}
+.seccionTabla::-webkit-scrollbar-thumb:hover {
+    background-color: #d15b98;
+}
+.seccionTabla::-webkit-scrollbar-track {
+    background-color: #e3cadb;
+    border-radius: 10px;
+}
+
+/* Estilo de la tabla (basado en .platilloTable) */
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f7eef4;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 600px; /* Para forzar scroll horizontal si es muy angosto */
+}
+
+.tabla thead th {
+    position: sticky; /* Encabezado fijo */
+    top: 0;
+    background-color: #b44a82;
+    color: white;
+    z-index: 2;
+    padding: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabla td {
+    padding: 0.8rem;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #ccc;
+}
+
+.tabla tr:hover {
+    background-color: #f0d8e3;
+}
+
+/* Botones dentro de la tabla (Estilo .registerBtn) */
+.botonAccion {
+    background-color: #b44a82;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Evita que el texto del botón se parta */
+}
+
+.botonAccion:hover {
+    background-color: #dc057b;
+    transform: scale(1.05);
+}
+
+.botonAccion:active {
+    transform: scale(0.97);
+}
+
+
+/* Estados coloreados (Estos ya estaban bien) */
+.estado_espera {
+    color: #ff9800; /* naranja */
+    font-weight: bold;
+}
+
+.estado_preparacion {
+    color: #2196f3; /* azul */
+    font-weight: bold;
+}
+
+.estado_listo {
+    color: #4caf50; /* verde */
+    font-weight: bold;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (MÓVILES)
+   ========================================= */
+
+@media (max-width: 768px) {
+    .contenidoPrincipal {
+        width: 95%;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .tituloSeccion {
+        font-size: 1.5rem;
+    }
+
+    .noPedidos {
+        width: 100%;
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .tabla th,
+    .tabla td {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .botonAccion {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+}
