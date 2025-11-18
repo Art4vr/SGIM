@@ -9,12 +9,6 @@ import rateLimit from 'express-rate-limit';
 //importacion de las funciones de los controladores
 import { authMiddleware } from '../Middleware/authMiddleware.js';
 
-//importancion de controlador de mesa
-import { listaMesasController } from '../Controllers/mesaControlador.js';
-
-//importacion de controlador correspondienre al rol del usuario
-import { listaRolesController } from '../Controllers/rolControlador.js';
-
 //importacion de las funciones de los controladores de imprevistos
 import imprevistoRouter from './imprevistosRutas.js';
 
@@ -33,14 +27,11 @@ import productoRutas from './productoRutas.js';
 import platilloRutas from './platilloRutas.js';
 import productoPlatilloRutas from './productoPlatilloRutas.js'
 
-//importancion de controladores de categoria y medida
-import { listaCategoriasController } from '../Controllers/categoriaControlador.js';
-import { listaMedidasController } from '../Controllers/medidaControlador.js';
+//importancion de controladores de categoria, categoriaPlatillo, mesa, roles y medida
+import catalogoRutas from './catalogoRutas.js';
 
 //importancion de las funciones de los controladores de proveedores 
 import proveedorRutas from './proveedorRutas.js';
-//importancion de controladores de categoria de platillos
-import { listaCategoriasPlatilloController } from '../Controllers/categoriaPlatilloControlador.js';
 
 //importancion de funciones de ordenMesero
 import ordenMeseroRutas from './ordenMeseroRutas.js';
@@ -66,8 +57,6 @@ router.use('/usuarios', usuarioRutas);
 router.post('/auth/logout', logoutController);
 router.get('/auth/me',authMiddleware,meController)
 
-router.get('/roles', listaRolesController);
-
 //----------------------- RUTAS DE IMPREVISTO---------------------------
 router.use('/imprevistos', imprevistoRouter);
 
@@ -75,16 +64,6 @@ router.use('/imprevistos', imprevistoRouter);
 //se usa un archivo donde cada ruta de definen en ./productoRutas.js
 router.use('/productos', productoRutas);
 router.use('/productosPlatillo', productoPlatilloRutas);
-
-//----------------------- RUTAS DE CATEGORIAS---------------------------
-router.get('/categorias', listaCategoriasController);
-
-
-//----------------------- RUTAS DE CATEGORIAS PLATILLOS---------------------------
-router.get('/categoriasPlatillo', listaCategoriasPlatilloController);
-
-//----------------------- RUTAS DE UNIDADES---------------------------
-router.get('/unidades', listaMedidasController);
 
 //----------------------- RUTAS DE PROVEEDORES---------------------------
 router.use('/proveedores', proveedorRutas);
@@ -95,13 +74,8 @@ router.use('/inventario', inventarioRutas);
 //----------------------- RUTAS DE PLATILLOS---------------------------
 router.use('/platillos', platilloRutas);
 
-//----------------------- RUTAS DE MESAS---------------------------
-router.get('/mesas', listaMesasController);
-
-
-//----------------------- RUTAS DE CATEGORIAS DE PLATILLO ----------------
-router.get('/categoriasPlatillo',listaCategoriasPlatilloController);
-
+//----------------------- RUTAS DE CATALOGO---------------------------
+router.use(catalogoRutas);
 
 //----------------------- RUTAS DE ORDENES (MESERO)----------------
 router.use('/ordenes', ordenMeseroRutas);

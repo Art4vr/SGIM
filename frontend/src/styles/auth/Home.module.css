@@ -64,17 +64,45 @@
     background-color: #D92579; /* Color de fondo del botón */
     color: white; /* Color del texto */
     border: none; /* Sin bordes */
-    border-radius: 5px; /* Bordes redondeados */
+    border-radius: 9px; /* Bordes redondeados */
     padding: 10px 20px; /* Espaciado interno */
     font-size: 18px; /* Tamaño del texto */
     cursor: pointer; /* Cursor tipo puntero */
     margin: 10px; /* Márgenes entre botones */
     transition: background 0.3s; /* Transición suave en el cambio de color */
+    box-shadow: 2px 2px 2px 2px rgba(138, 89, 121, 0.616);
+    display: flex;
+    justify-self: center;
+    align-content:center;
 }
 
 /* Efecto al pasar el mouse sobre los botones */
 .homeContainer .loginBtn:hover,
-.homeContainer .registerBtn:hover {
+.homeContainer .registerBtn:hover{
     background-color: #400C24; /* Color más oscuro al hacer hover */
+    scale: 1.05;
+    box-shadow: 2px 2px 2px 2px rgba(131, 43, 100, 0.616);
+    color: #e4e4e4;
 }
 
+.homeContainer .logoutBtn:hover{
+    background-color: #5f5d5e; /* Color más oscuro al hacer hover */
+    scale: 1.05;
+    box-shadow: 2px 2px 2px 2px rgba(120, 99, 112, 0.616);
+    color: #e4e4e4;
+}
+
+.logoutBtn{
+    display: flex;
+    justify-self: center;
+    background-color: #e4e4e4; /* Color de fondo del botón */
+    color: rgb(51, 50, 50); /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 19px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 18px; /* Tamaño del texto */
+    cursor: pointer; /* Cursor tipo puntero */
+    margin: 15px; /* Márgenes entre botones */
+    transition: background 0.3s; /* Transición suave en el cambio de color */
+    box-shadow: 2px 2px 2px 2px rgba(138, 89, 121, 0.616);
+}

@@ -273,7 +273,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                                 <input
                                     type="number"
                                     min="0"
-                                    step="0.01"
+                                    step="1.0"
                                     value={pp.cantidad}
                                     onChange={(e) => handleChangeLocal(pp.idProducto, 'cantidad', e.target.value)}
                                     style={{ width: 100 }}
@@ -287,7 +287,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                                     
                                 </select>
 
-                                <button type="button" onClick={() => handleRemoveLocal(pp.idProducto)} >
+                                <button className={styles.botonGral} type="button" onClick={() => handleRemoveLocal(pp.idProducto)} >
                                     Eliminar
                                 </button>
                             </div>
@@ -296,7 +296,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
 
                     {/* Add new ingredient controls */}
                     <div className={styles.agregarContainer}>
-                        <h4>Agregar ingrediente</h4>
+                        <h4 className={styles.subtitulos}>Agregar ingrediente</h4>
                         <div  className={styles.filterContainer}>
                             <div>
                                 <input
@@ -343,14 +343,14 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                                 <label>{abreviaturaUnidad}</label>
                             </div>
 
-                            <button type="button" onClick={handleAddIngredient} style={{ padding: '6px 12px' }}>
+                            <button className={styles.botonGral} type="button" onClick={handleAddIngredient} style={{ padding: '6px 12px' }}>
                                 Añadir
                             </button>
                         </div>
                     </div>
 
                     <div style={{ marginTop: 12 }}>
-                        <button type="submit" style={{ padding: '8px 14px' }}>Guardar Receta</button>
+                        <button className={styles.botonGral} type="submit" style={{ padding: '8px 14px' }}>Guardar Receta</button>
                         </div>
 
                     {mensaje && <div className={styles.mensaje} style={{ marginTop: 10 }}>{mensaje}</div>}

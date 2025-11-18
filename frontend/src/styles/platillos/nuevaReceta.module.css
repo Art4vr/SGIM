@@ -1,17 +1,17 @@
-h4{
+.subtitulos{
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1.3rem;
     color: #a41e5c;
     text-shadow:1px 1px 3px #d26899;
 }
-button {
+.botonGral {
     background-color: #d92579;
     color: #fff;
     text-shadow:1px 1px 3px #282426;
     margin-right: 1vw;
 }
 
-button:not(.closeButton):hover {
+.botonGral:not(.closeButton):hover {
     transform: scale(1.05);
     background-color: #400C24;
     color: #fff;

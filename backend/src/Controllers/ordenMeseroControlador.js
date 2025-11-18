@@ -7,7 +7,7 @@
 //más
 // Para la orden
 import { agregarOrden, actualizarOrden,finalizarOrden } from '../Models/ordenMeseroModelo.js';
-import { actualizarMesa } from '../Models/mesaModelo.js';
+import { actualizarMesa } from '../Models/catalogoModelo.js';
 import { obtenerPlatillosOrden } from '../Models/ordenPlatilloModelo.js';
 
 import conexionDB from '../config/db.js';
