@@ -86,19 +86,9 @@ useEffect(() => {
                     <h3>Platillos</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/pedidos')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Pedidos.png" alt="Pedidos" />
-                    <h3>Pedidos</h3>
-                </button>
-
                 <button className={styles.tarjetas} onClick={() => navigate('/reportes')}>
                     <img className={styles.imagenMenu} src="/imagenes/Reportes.png" alt="Reportes" />
                     <h3>Reportes</h3>
-                </button>
-
-                <button className={styles.tarjetas} onClick={() => navigate('/mesas')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Mesas.png" alt="Mesas" />
-                    <h3>Mesas</h3>
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
