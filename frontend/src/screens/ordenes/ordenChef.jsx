@@ -96,8 +96,7 @@ const OrdenChef = () => {
                 <ul>
                     <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                     <li onClick={() => navigate('/platillosChef')}>Platillos</li>
-                    <li onClick={() => navigate('/RegistroImprevistoChef')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
+                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                 </ul>
             </div>
 
@@ -129,13 +128,13 @@ const OrdenChef = () => {
                                         <td>
                                             {p.estado === 'espera' && (
                                                 <button
-                                                    onClick={() => cambiarEstado(p, 'preparacion')}
+                                                    onClick={() => cambiarEstado(p, 'preparación')}
                                                     className={styles.botonAccion}
                                                 >
                                                     Iniciar Preparación
                                                 </button>
                                             )}
-                                            {p.estado === 'preparacion' && (
+                                            {p.estado === 'preparación' && (
                                                 <button
                                                     onClick={() => cambiarEstado(p, 'listo')}
                                                     className={styles.botonAccion}
@@ -150,6 +149,9 @@ const OrdenChef = () => {
                         </table>
                     </div>
                 )}
+                <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelChef')}>
+                    Volver al Inicio
+                </button>
             </div>
         </div>
     );
