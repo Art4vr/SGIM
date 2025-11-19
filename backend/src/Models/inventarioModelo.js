@@ -21,7 +21,8 @@ export const listarInventario = async (filtro,busqueda)=>{ //recibe el filtro y 
                                 'fechaIngreso',
                                 'Proveedor_idProveedor', 
                                 'Usuario_idUsuario',
-                                'UnidadMedida_idUnidadMedida'
+                                'UnidadMedida_idUnidadMedida',
+                                'estado'
                             ]
     // Validar filtro para evitar inyección
     if (filtro && !columnasPermitidas.includes(filtro)){
@@ -36,6 +37,7 @@ export const listarInventario = async (filtro,busqueda)=>{ //recibe el filtro y 
         query += ` AND ${filtro} LIKE ?`;
         params.push(`%${busqueda}%`);
     }
+    query += ` ORDER BY 11`;
     try{
         const[resultados] = await conexionDB.execute(query,params);//ejecuta la consulta
         //console.log("Resultados inventario: -modelo: ", resultados);
@@ -66,8 +68,10 @@ export const ingresarInventario = async ({Producto_idProducto, cantidadMaxima, c
 // Funcion para dar de baja el inventario (lote) de un producto
 export const eliminarInventario = async (idInventarioProducto) => {
     const query = 'DELETE FROM inventarioproducto WHERE idInventarioProducto = ?';
+    //console.log("id que pasa al MODELO: ", idInventarioProducto);
     try {
         const [resultado] = await conexionDB.execute(query, [idInventarioProducto]);
+        
         return resultado.affectedRows; // Devuelve cuántas filas fueron afectadas (1 si se eliminó, 0 si no existía)
     } catch (err) {
         console.error('Error al eliminar lote del producto-inventarioModelo:', err);
@@ -77,7 +81,7 @@ export const eliminarInventario = async (idInventarioProducto) => {
 
 //--------------------- MODIFICAR O ACTUALIZAR -----------------------------------------
 // Funcion para modificar o actualizar algun producto del inventario, ya sea actualizar cantidades, o correcciones
-export const actualizarInventario = async ({ idInventarioProducto, Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida }) => {
+export const actualizarInventario = async ({ idInventarioProducto, Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida, estado }) => {
     let query = 'UPDATE inventarioproducto SET ';
     const params = [];
     const cambios = [];
@@ -108,6 +112,10 @@ export const actualizarInventario = async ({ idInventarioProducto, Producto_idPr
     if (UnidadMedida_idUnidadMedida) {
         cambios.push('UnidadMedida_idUnidadMedida = ?');
         params.push(UnidadMedida_idUnidadMedida);
+    }
+    if (estado) {
+        cambios.push('estado = ?');
+        params.push(estado);
     }
     // Si no hay campos para actualizar
     if (cambios.length === 0) return 0;
