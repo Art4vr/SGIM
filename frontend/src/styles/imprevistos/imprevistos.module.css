@@ -84,7 +84,7 @@
     justify-content: center;
     align-content: center;
     width: auto;
-    max-width: 7vw;
+    max-width: 14vw;
     padding: 0;
     flex-wrap: wrap; /*permite que bajen de línea si no caben */
 }
@@ -144,6 +144,7 @@
     color: white;
     font-weight: bold;
     font-size: 0.7rem;
+    cursor:context-menu;
 }
 
 /* Toggle Switch */
@@ -185,11 +186,11 @@
 }
 
 input:checked + .slider {
-    background-color: rgba(0, 128, 0, 0);
+    background-color: rgba(254, 230, 10, 0);
 }
 
 input:checked + .slider:before {
-  transform: translateX(5.4vw); /* Lo mueve a la derecha */
+    transform: translateX(5.3vw); /* Lo mueve a la derecha */
 }
 
 input:disabled + .slider {
@@ -278,7 +279,7 @@ input:disabled + .slider:before {
     color: #333;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .Table th {
@@ -287,10 +288,17 @@ input:disabled + .slider:before {
     text-align: left;
     padding: 12px;
     font-weight: bold;
+<<<<<<< HEAD
     font-family: "Yeseva One", serif;
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
+=======
+    font-size: 0.95rem;
+    position: sticky;
+    top:0;
+    z-index: 1;
+>>>>>>> origin/endira
 }
 
 .Table td {

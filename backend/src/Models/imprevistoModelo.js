@@ -11,7 +11,6 @@ export const listarImprevisto = async ()=>{ //recibe el filtro y el criterio de 
     const query = 'SELECT * FROM imprevisto';//consulta sql
     try{
         const[resultados] = await conexionDB.execute(query);//ejecuta la consulta
-        //console.log("Resultados imprevistos: -modelo: ", resultados);
         return resultados; //devuelve los resultados de la consulta
     }catch(err){
         console.error('Error al ejecutar la consulta (listarImprevisto): ', err); //manejo de errores
@@ -26,7 +25,6 @@ export const crearImprevisto = async ({idUsuarioReporta,idInventarioProducto,des
     const query = 'INSERT INTO imprevisto (Usuario_idUsuarioReporta, InventarioProducto_idInventarioProducto, descripcion, fecha, cantidad, UnidadMedida_idUnidadMedida, estado, Usuario_idUsuarioAutoriza) VALUES (?, ?, ?, NOW(), ?, ?, ?, NULL)';//consulta sql
     try{
         const [resultado] = await conexionDB.execute(query,[idUsuarioReporta,idInventarioProducto,descripcion,cantidad,idUnidadMedida,'pendiente']);//ejecuta la consulta, los ? se remplazan por los valores del array (parametros)
-        //console.log('Modelo',resultado);
         return resultado.insertId; // Devuelve el ID del nuevo imprevisto
     }catch(err){
         console.error('Error con la base de datos (crearImprevisto): ', err);//manejo de errores
@@ -49,17 +47,16 @@ export const eliminarImprevisto = async (idImprevisto) => {
 
 //--------------------- APROBAR -----------------------------------------
 // Funcion para aprobar algun imprevisto 
-export const evaluarImprevisto = async ({idImprevisto,estado}) => {
-    const query = 'UPDATE imprevisto SET estado = ? WHERE idImprevisto = ?';
+export const evaluarImprevisto = async ({idImprevisto,estado, idUsuarioAutoriza}) => {
+    const query = 'UPDATE imprevisto SET estado = ?, Usuario_idUsuarioAutoriza = ? WHERE idImprevisto = ?';
     try {
-        const [resultado] = await conexionDB.execute(query, [estado,idImprevisto]);
+        const [resultado] = await conexionDB.execute(query, [estado, idUsuarioAutoriza, idImprevisto]);
         return resultado.affectedRows; 
     } catch (err) {
         console.error('Error al aprobar/rechazar imprevisto.imprevistoModelo:', err);
         throw err;
     }
 };
-
 
 //--------------------- MODIFICAR -----------------------------------------
 // Funcion para modificar algun imprevisto 

@@ -6,14 +6,23 @@ import { format } from 'date-fns';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import styles from '../../styles/imprevistos/imprevistos.module.css';
+import styles from '../../styles/inventario/inventario.module.css';
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
 import PerfilUsuario from '../../components/PerfilUsuario';
+import ModalEliminarInventario from './modalInventario';
+import AlertasInventario from './AlertasInventario';
+
 
 const VistaInventario = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalInventario, setModalInventario] = useState(null);
+    const [modalAccion, setModalAccion] = useState(null);
+    const [inventarioEditando, setInventarioEditando] = useState(null);
+    const [eliminandoId, setEliminandoId] = useState(null);
+
     const menuRef = useRef(null);
     const botonRef = useRef(null);
     const { logout, loading, user } = useAuth();
@@ -68,12 +77,17 @@ const VistaInventario = () => {
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario
     useEffect(() => {
         const lista = inventarios.map((inventario) => {
+            evaluarEstado(inventario); 
+            //const estado = evaluarEstado(inventario); 
+            //console.log("INVENTARIO EVALUADO: ", inventario);
+            //console.log("ESTADO EVALUADO: ", estado);
             const producto = productos.find((p) => p.idProducto === inventario.Producto_idProducto);
             const unidadMedida = medidas.find((m) => m.idUnidadMedida === inventario.UnidadMedida_idUnidadMedida);// aqui se busca la unidad de medida del producto
             const proveedor = proveedores.find((pr) => pr.idProveedor === inventario.Proveedor_idProveedor); // aqui se busca el proveedor del inventario
             const usuario = usuarios.find((u) => u.idUsuario === inventario.Usuario_idUsuario); // aqui se busca el usuario que registro el inventario
             return {// se devuelve un nuevo objeto con los datos del inventario y los nombres de producto y unidad
                 ...inventario,
+                //estado: estado,
                 nombreProducto: producto ? producto.nombre : 'Desconocido',
                 nombreUnidad: unidadMedida ? unidadMedida.abreviatura : 'Desconocida',
                 nombreProveedor: proveedor ? proveedor.nombre : 'Desconocido',
@@ -104,7 +118,7 @@ const VistaInventario = () => {
 
     //Ahora se va a hacer una especie de alerta o modal para cuando un inventario de producto sea igual a su cantidad minima se muestre en pantalla
     //Igual si la fecha de caducidad esta cerca (por ejemplo 2 dias) se lanza una alerta pero de caducidad
-    useEffect(() => {
+    /*useEffect(() => {
         if (!listaInventario || listaInventario.length === 0) {
             setLowStockAlerts([]);
             setExpiringAlerts([]);
@@ -132,80 +146,162 @@ const VistaInventario = () => {
         setExpiringAlerts(exp);
         setShowLowStockAlert(low.length > 0);
         setShowExpiringAlert(exp.length > 0);
-    }, [listaInventario]);
+    }, [listaInventario]);*/
+
+    //--------- MODAL PARA ELIMINAR ----------------
+    const abrirModal = (inventario = null, mensaje, modalAccion) => {
+        setModalInventario(inventario);
+        setModalVisible(true);
+        setMensaje(mensaje || "");
+        setModalAccion(modalAccion);
+    };
+
+    const cerrarModal = () => {
+        setModalVisible(false);
+        setInventarioEditando(null);
+        setModalAccion(null);
+    };
+
+    const manejarAccion = async ( confirmar, estado = null) => {
+        if(confirmar) {
+            if(modalAccion === "eliminar"){
+                await eliminarInventario(modalInventario);
+            }
+        }
+        cerrarModal();
+    };
+
+    //------------- ELIMINAR -----------------------------------
+    const eliminarInventario = async (inventario) => {
+        setEliminandoId(inventario);// es el id
+        try {
+            await api.delete(`/api/inventario/${inventario}`);
+            setMensaje("inventario eliminado correctamente");
+            await cargarDatos();
+        } catch (err) {
+            console.error(err);
+            setMensaje("Error al eliminar Inventario: Valor ya usado en otra tabla"|| err.response?.data?.mensaje); //err.response?.data?.mensaje + 
+        } finally {
+            setEliminandoId(null);
+        }
+    };
+
 
     if (loading) {
         return <div className={styles.loading}><ClipLoader /></div>;
     }
 
+    //funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
+    //fecha actual <=  fecha de caducidad -> 'caducado'
+    //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
+    //cantidad actual <= cantidad minima -> 'bajo stock'
+    //cantidad actual > cantidad minima -> 'en stock'
+    //cantidad actual == 0 -> 'finalizado'
+    const evaluarEstado = async (item) => {
+        const hoy = new Date();
+        //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
+        if (Number(item.cantidadActual) === 0) {
+            await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'finalizado' });
+        } else if (item.fechaCaducidad) {
+            const fechaCad = new Date(item.fechaCaducidad);
+            if (hoy >= fechaCad) {
+                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'caducado' });
+            } else {
+                const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));   
+                if (diffDays <= 2) {
+                    await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'pronto_a_caducar' });
+                }
+            }
+        }else if (item.cantidadActual != null && item.cantidadMinima != null) {
+            if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
+                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'bajo_stock' });
+            } else {
+                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'en_stock' });
+            }
+        }
+    };
+
+    //console.log("LISTA INVENTARIO FINAL: ", listaInventario);
+
+
 
 
     return (
-        <div className={styles.container}>
-            {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* Menú de usuario */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+            <div className={styles.container}>
+                {/* Encabezado */}
+                <div className={stylesCommon.header}>
+                    <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+                        <img src="/imagenes/menu_btn.png" alt="Menú" />
+                    </button>
+                    <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+                    {/* Menú de usuario */}
+                    <div className={stylesCommon.headerRight}>
+                        <PerfilUsuario /> 
+                        <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
+                    </div>
                 </div>
-            </div>
-            {/* Non-blocking alert boxes (keeps existing styles) */}
-            <div style={{ padding: '0 20px' }}>
-                {showLowStockAlert && lowStockAlerts.length > 0 && (
-                    <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
-                        <strong>Productos con bajo stock ({lowStockAlerts.length}):</strong>
-                        <ul style={{ margin: '8px 0 0 16px' }}>
-                            {lowStockAlerts.map(item => (
-                                <li key={item.idInventarioProducto}>
-                                    {item.nombreProducto} — {item.cantidadActual} (mín {item.cantidadMinima})
-                                </li>
-                            ))}
-                        </ul>
-                        <button onClick={() => setShowLowStockAlert(false)} style={{ marginLeft: 8 }}>
-                            Cerrar
-                        </button>
-                    </div>
-                )}
+                {/* Non-blocking alert boxes (keeps existing styles) */}
+                <div style={{ padding: '0 20px' }}>
+                    {showLowStockAlert && lowStockAlerts.length > 0 && (
+                        <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                            <strong>Productos con bajo stock ({lowStockAlerts.length}):</strong>
+                            <ul style={{ margin: '8px 0 0 16px' }}>
+                                {lowStockAlerts.map(item => (
+                                    <li key={item.idInventarioProducto}>
+                                        {item.nombreProducto} — {item.cantidadActual} (mín {item.cantidadMinima})
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={() => setShowLowStockAlert(false)} style={{ marginLeft: 8 }}>
+                                Cerrar
+                            </button>
+                        </div>
+                    )}
 
-                {showExpiringAlert && expiringAlerts.length > 0 && (
-                    <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
-                        <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
-                        <ul style={{ margin: '8px 0 0 16px' }}>
-                            {expiringAlerts.map(item => (
-                                <li key={item.idInventarioProducto}>
-                                    {item.nombreProducto} — caduca: {item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : 'N/A'}
-                                </li>
-                            ))}
-                        </ul>
-                        <button onClick={() => setShowExpiringAlert(false)} style={{ marginLeft: 8 }}>
-                            Cerrar
-                        </button>
-                    </div>
-                )}
-            </div>
+                    {showExpiringAlert && expiringAlerts.length > 0 && (
+                        <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                            <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
+                            <ul style={{ margin: '8px 0 0 16px' }}>
+                                {expiringAlerts.map(item => (
+                                    <li key={item.idInventarioProducto}>
+                                        {item.nombreProducto} — caduca: {item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : 'N/A'}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={() => setShowExpiringAlert(false)} style={{ marginLeft: 8 }}>
+                                Cerrar
+                            </button>
+                        </div>
+                    )}
+                </div>
 
-            {/* Sidebar */}
+                {/* Sidebar */}
                 <div
                     ref={menuRef}
                     className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
                 >
-                    <ul>
-                        <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                        <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                        <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                        <li onClick={() => navigate('/Productos')}>Productos</li>
-                        <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                        <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
-                        <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                    </ul>
-                </div>
+                <ul>
+                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
+                    <li onClick={() => navigate('/Productos')}>Productos</li>
+                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
+                    <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
+                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
+                </ul>
+            </div>
+
             {/* Main Content */}
             <div className={styles.content}>
+                <div className={styles.encabezadoTabla}>
+                    <h2 className={styles.tituloSeccion}>Inventario Actual</h2>   
+                    <button 
+                        className={styles.botonAgregar} 
+                        onClick={() => navigate('/actualizarstock')}
+                    >
+                        <span>+</span> Actualizar Stock
+                    </button>
+                </div>
                 {mensaje && <div className={styles.mensaje}>{mensaje}</div>}
                 
                 {cargando ? (
@@ -223,6 +319,8 @@ const VistaInventario = () => {
                                 <th>Fecha de Ingreso</th>
                                 <th>Fecha de Caducidad</th>
                                 <th>Usuario que Registró</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -237,11 +335,37 @@ const VistaInventario = () => {
                                     <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
                                     <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
                                     <td>{item.username}</td>
+                                    <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
+                                    <td className={styles.acciones}>
+                                        <button
+                                            onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
+                                            disabled={eliminandoId === item.idInventarioProducto}
+                                        >🗑️
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
+                {/*Botón de volver al panel*/}
+                <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
+                    Volver al Inicio
+                </button>
+                {modalVisible && (
+                        modalAccion === 'eliminar' ? (
+                        <ModalEliminarInventario
+                            visible={modalVisible}
+                            mensaje={mensaje}
+                            modalAccion={modalAccion}
+                            manejarAccion={manejarAccion}
+                            onClose={cerrarModal}
+                        />
+                    ) : null
+                    )}
+            </div>
+            <div>
+                <AlertasInventario listaInventario={listaInventario}/>
             </div>
         </div>
     );
