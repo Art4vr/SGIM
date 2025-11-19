@@ -11,6 +11,7 @@ import {
   modificarOrden,
   enviarOrdenACocina,
 } from '../../api/ordenMeseroApi';
+import api from "../../api/axiosConfig";
 // Es para modificar los estados de los platillos
 import { actualizarPlatilloChef } from '../../api/chefApi';
 import { useAuth } from '../../context/AuthContext';
@@ -18,7 +19,7 @@ import styles from '../../styles/ordenes/orden.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 // Para importar el usuario
 import PerfilUsuario from '../../components/PerfilUsuario';
-
+import ModalProductos from './modalProductos';
 
 const OrdenMesero = () => {
   const { user } = useAuth();
@@ -48,6 +49,12 @@ const OrdenMesero = () => {
         setNotificacion({ visible: false, mensaje: '', tipo: 'info' });
     }, 1500);
   };
+
+// --- Editar platillo (por si cliente lo solicita) ---
+const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
+const [platilloEditando, setPlatilloEditando] = useState(null);
+//Ingredientes de platillo
+const [ingredientes, setIngredientes] = useState([]);
 
   // ---------------------- CARGAS INICIALES ----------------------
   useEffect(() => {
@@ -233,6 +240,31 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
     });
   };
 
+
+//Funciones de Modal para editar platillos
+const abrirModalEditar = async (platillo) => {
+  setPlatilloEditando(platillo);
+  setModalEditarAbierto(true);
+
+  try {
+    const response = await api.get(
+      `/producto-platillo/obtener/${platillo.Platillo_idPlatillo}`
+    );
+
+    setIngredientes(response.data);
+  } catch (err) {
+    console.error("Error al obtener ingredientes:", err);
+    setIngredientes([]);
+  }
+};
+
+
+const cerrarModalEditar = () => {
+  setModalEditarAbierto(false);
+  setPlatilloEditando(null);
+};
+
+
 // ---------------------- FILTROS ----------------------
   const handleFiltroChange = (e) => {
     setFiltros({ categoria: e.target.value });
@@ -265,7 +297,6 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
     };
   }, [menuAbierto]);
 
-  
 // ---------------------- RENDER ----------------------
   return (
 
@@ -355,6 +386,17 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
                       </button>
                     )}
 
+                    {/*Editar platillo antes de enviar a cocina */}
+                    {p.estado === 'pendiente' && (
+                      <button
+                        onClick={() => abrirModalEditar(p)}
+                        className={styles.botonAccion}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Editar
+                      </button>
+                    )}
+
                     {/* Eliminar solo si aún no se envió a cocina */}
                     {p.estado === 'pendiente' && (
                       <button
@@ -415,6 +457,14 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
       <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelMesero')}>
         Volver al Inicio
       </button>
+      {modalEditarAbierto && (
+        <ModalProductos
+          platillo={platilloEditando}
+          ingredientes={ingredientes}
+          onClose={cerrarModalEditar}
+          onRefresh={() => seleccionarOrden(ordenSeleccionada)}
+        />
+      )}
       </div>
     </div>
   );
