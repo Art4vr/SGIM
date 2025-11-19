@@ -62,7 +62,6 @@ export const listarUsuariosController = async (req, res) => {
 // Controlador para eliminar a un usuario
 export const eliminarUsuarioController = async (req, res) => {
     const idUsuario = req.params.id;
-    console.log("ID Usuario a eliminar:", idUsuario);
     try {
         const eliminado = await eliminarUsuario(idUsuario);
         if (eliminado) {
@@ -85,14 +84,11 @@ export const modificarUsuarioController = async (req, res) => {
     //considerar que no se actualizan todos los campos
     try {
         const idUsuario = req.params.id;
-        console.log("req.body:", req.body);
         const { nombre, username, rolId, estado } = req.body;
-        console.log("Datos a modificar:", { nombre, username, rolId, estado });
-
+        
         if(username){
             // Verificar si el nombre de usuario ya está en uso
             const usuarioExistente = await obtenerUsuario(username);
-            console.log("Usuario existente para verificación:", usuarioExistente);
             if (usuarioExistente && usuarioExistente.idUsuario === parseInt(idUsuario)) {
                 return res.status(400).json({ mensaje: 'El nombre de usuario ya está en uso' });
             }

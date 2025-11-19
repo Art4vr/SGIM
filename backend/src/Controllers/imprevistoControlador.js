@@ -32,7 +32,6 @@ export const consultaImprevistoController = async (req,res) => { //crea la funci
 
     try{ // ejecuta el bloque de codigo y captura errores
         const resultados = await listarImprevisto(); //llama a la funcion del modelo para obtener el imprevisto solicitado
-        //console.log("Resultados imprevistos: -controlador: ", resultados);
         if (resultados.length === 0) { //si no se encuentra hay error
             return res.status(404).json({ mensaje: 'No se encontraron imprevistos.' });
         }
@@ -49,12 +48,10 @@ export const consultaImprevistoController = async (req,res) => { //crea la funci
 // Controlador para la actualización o edición de imprevistos. 
 export const evaluarImprevistoController = async (req,res) => {
     const idImprevisto = req.params.id;
-    const {estado}  = req.body;
-    console.log("idImprevisto: ", idImprevisto);
-    console.log("ESTADO: ", estado);
+    const {estado, idUsuarioAutoriza}  = req.body;
 
     try{
-        const resultado = await evaluarImprevisto({ idImprevisto, estado });
+        const resultado = await evaluarImprevisto({ idImprevisto, estado, idUsuarioAutoriza });
         if (resultado === 0) {
             return res.status(404).json({ mensaje: 'Imprevisto no encontrado. -imprevistoControlador' });
         }

@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Home.module.css';
+import { MdOutlineLogin } from "react-icons/md";
+import { BiLogOut } from "react-icons/bi";
 import api from '../../api/axiosConfig';
+import { RiUserAddFill } from "react-icons/ri";
 
 /**
  * Componente de pagina de inicio de la aplicación
@@ -35,11 +38,11 @@ const Home = () => {
                 </div>
                 <h1 className={styles.title}>MAKIMANAGE</h1>
                 <h2 className={styles.subtitle}>BIENVENIDO</h2>
-                <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR</button>
-                <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>REGISTRAR</button>
+                <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR <MdOutlineLogin /></button>
+                <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>REGISTRAR <RiUserAddFill /></button>
                 <footer>
                     
-                    <button onClick={handleLogout}>Log Out</button>
+                    <button className={styles.logoutBtn} onClick={handleLogout}>Log Out <BiLogOut /></button>
                 </footer>
             </div>
         </div>

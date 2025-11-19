@@ -25,7 +25,7 @@ export const crearUsuario = async ({nombre,username,passwordHash,rolId})=>{ //re
     const query = 'INSERT INTO usuario (nombre, username, password, Rol_idRol) VALUES (?, ?, ?, ?)';//consulta sql
     try{
         const [resultado] = await conexionDB.execute(query,[nombre,username,passwordHash,rolId]);//ejecuta la consulta, los ? se remplazan por los valores del array (parametros)
-        console.log('Modelo',resultado);
+        //console.log('Modelo',resultado);
         return resultado.insertId; // Devuelve el ID del nuevo usuario
     }catch(err){
         console.error('Error con la base de datos (crearUsuario): ', err);//manejo de errores

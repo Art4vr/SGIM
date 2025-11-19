@@ -1,0 +1,264 @@
+.subtitulos{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.3rem;
+    color: #a41e5c;
+    text-shadow:1px 1px 3px #d26899;
+}
+.botonGral {
+    background-color: #d92579;
+    color: #fff;
+    text-shadow:1px 1px 3px #282426;
+    margin-right: 1vw;
+}
+
+.botonGral:not(.closeButton):hover {
+    transform: scale(1.05);
+    background-color: #400C24;
+    color: #fff;
+    box-shadow: 0 0 6px #d92579;
+    text-shadow:1px 1px 3px #282426;
+    margin-right: 1vw;
+}
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(4px);
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Input de búsqueda */
+.filterInput {
+    flex: 1;
+    width: auto;
+    max-width: 250px;
+    padding: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterInputCant {
+    width: 10px;
+    padding: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+}
+
+.filterInput:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+}
+
+.filterList{
+    background-color: #8a8484;
+    list-style-type: none;
+    width: 22.5vw;
+    max-width: 170px;
+    cursor: pointer;
+    z-index: 999;
+    position: absolute;
+    margin-left: 0.8em;
+    overflow-y: auto;
+    border-radius: 6px;
+    max-height: 18vh;  /* Limita la altura de la lista */
+}
+
+.filterContainer{
+    margin-top: 3vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.filterContainer h3{
+    font-size: 1.8rem;
+    color: #a41e5c;
+    text-shadow:1px 1px 3px #d26899;
+}
+
+
+.filterContainer label{
+    font-weight: bold; 
+
+}
+
+.listaProductos{
+    border: 1px solid #928e8e;
+    color: #fff8ee;
+    background-color: #605959;
+}
+
+.listaProductos:hover{
+    background-color: #e2dfdf;
+    color: #444;
+}
+
+/* Estilo cuando el elemento es seleccionado */
+.listaProductos:active {
+    background-color: #d15991;  /* Color de fondo al hacer clic */
+    color: white;  /* Cambiar el color del texto cuando se selecciona */
+}
+
+.modalHeader{
+    padding: 1rem;
+    background-color:#d15991;
+    background: linear-gradient(to right, #d92579e0, #d92579b6);
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding-bottom: 0;
+}
+
+.closeButton{
+    max-width: 2rem;
+    max-height: 2rem;
+    background-color: #fff8ee;
+    padding: 3px;
+    margin: 3px;
+}
+
+/* Tarjeta del modal */
+.modalCard {
+    background: rgba(218,216,217,0.9);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    border: 0.1rem solid #d9257991;
+    padding-bottom: 1em;
+}
+
+.agregarContainer{
+    margin-inline: 2vw;
+    margin-bottom: 3vw;
+}
+
+/* Título del modal */
+.modalTitle {
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-family: 'Brush Script MT', cursive;
+    color:#000;
+    text-shadow:1px 1px 3px #fff8eecf;
+}
+
+/* Mensajes */
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.exito {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+/* Inputs y selects */
+/* ======== Input de descripción ======== */
+.inputContainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    overflow-y: auto;
+    max-height: 25vh;
+}
+
+
+.modalOverlay::-webkit-scrollbar {
+    width: 10px;               /* ancho del scroll vertical */
+    height: 10px;              /* alto del scroll horizontal */
+}
+
+.modalOverlay::-webkit-scrollbar-track {
+    background: #e8d9e2;        /* color del fondo del track */
+    border-radius: 10px;
+}
+
+.modalOverlay::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #b44a82, #8b3a65);
+    border-radius: 10px;
+    border: 2px solid #e8d9e2;  /* hace que se vea con relieve */
+}
+
+.modalOverlay::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #dc057b, #a04270);
+    cursor: pointer;
+}
+
+/* Firefox */
+.modalOverlay {
+    scrollbar-width: thin;             /* grosor */
+    scrollbar-color: #b44a82 #e8d9e2;  /* color del thumb y del track */
+}
+
+.inputContainer strong {
+    display: flex;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+    margin-left: 2vw;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.inputContainer select{
+    width: auto;
+    padding: 8px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.inputContainer input {
+    width: auto;
+    padding: 8px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: #333;
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus,
+.inputContainer textarea:focus {
+    border: 2px solid #262523;
+}
+
+.inputContainer select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #444;
+    border: 1px solid #262523;
+}
+
+.inputContainer select:hover {
+    background-color: #555;
+}
