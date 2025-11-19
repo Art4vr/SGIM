@@ -110,8 +110,10 @@ body{
 }
 
 .nombreMenu{
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
     text-align: center;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-size: large;
     margin-bottom: 1rem;
 }
@@ -175,12 +177,14 @@ body{
 
 /* Título grande del panel */
 .panelTitulo {
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
     text-align: center;
     font-size: 2rem;
     color: #333;
     margin-top: 1rem;
     margin-bottom: 2rem;
-    font-weight: 600;
 }
 
 /* Botón regresar al inicio */
@@ -192,6 +196,9 @@ body{
 }
 
 .botonInicio {
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
     background-color: #d32f2f;
     color: white;
     padding: 12px 24px;
