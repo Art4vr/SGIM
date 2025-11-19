@@ -16,7 +16,7 @@ const PanelAdm = () => {
         setMenuAbierto(!menuAbierto);
     };
 
-useEffect(() => { 
+    useEffect(() => { 
         const handleClickOutside = (event) =>{
             if(
                 menuAbierto &&

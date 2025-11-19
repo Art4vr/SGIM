@@ -30,7 +30,7 @@ export const listarProductosInventarioController = async (req, res) => {
 // Controlador para crear o registrar un nuevo lote de algún producto y registrar en inventario
 export const registrarInventarioController = async (req,res) => {
     try{
-        console.log("req.body: ", req.body);
+        //console.log("req.body: ", req.body);
         const {Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida} = req.body;
         const nuevoInventarioId = await ingresarInventario({Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor, Usuario_idUsuario,UnidadMedida_idUnidadMedida});
         res.status(201).json({mensaje:'Producto registrado en inventario con éxito',nuevoInventarioId});
@@ -48,7 +48,8 @@ export const registrarInventarioController = async (req,res) => {
 export const eliminarInventarioController = async (req,res) => {
 
     try{
-        const { idInventarioProducto } = req.params;
+        const idInventarioProducto = req.params.id;
+        //console.log("idInventarioProducto a eliminar: ", idInventarioProducto);
         const resultado =  await eliminarInventario(idInventarioProducto);
         if(!resultado){
             return res.status(404).json({ mensaje: 'Producto no encontrado en inventario. -inventarioController' });
@@ -67,15 +68,17 @@ export const eliminarInventarioController = async (req,res) => {
 // ya sea para editar datos por error de dedo o para actualizar la cantidad actual en base al uso de productos
 export const actualizarInventarioController = async (req,res) => {
 
-    const { id } = req.params;
+    const id  = req.params.id;
+    //console.log("ID a actualizar en inventarioController: ", id);
     //validaciones o restricciones al momento de editar
     if (!id) {
         return res.status(400).json({ mensaje: 'ID de inventario es requerido. -inventarioController' });
     }
 
     try{
-        const {Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida} = req.body;
-        const resultado = await actualizarInventario({ idInventarioProducto: id, Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida });
+        //console.log("req.body a actualizar: ", req.body);
+        const {Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida, estado} = req.body;
+        const resultado = await actualizarInventario({ idInventarioProducto: id, Producto_idProducto, cantidadMaxima, cantidadMinima, cantidadActual, fechaCaducidad, Proveedor_idProveedor,UnidadMedida_idUnidadMedida, estado });
         if(!resultado){
             return res.status(404).json({ mensaje: 'Producto no encontrado en inventario. -inventarioController' });
         }

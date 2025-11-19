@@ -52,7 +52,6 @@ function App() {
   
   const {user,loading} = useAuth();
 
-  console.log('USER APP.JSX', user);
   if (loading) return <div>Cargando sesión...</div>;
   
 //revisar ruta de productos y proveedores (permisos o roles correspondientes)

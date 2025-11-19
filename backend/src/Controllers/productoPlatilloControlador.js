@@ -10,10 +10,8 @@ import { agregarProductoPlatillo, actualizarProductoPlatillo,eliminarProductoPla
 // Controlador para el registro de ingredientes en los platillos. Valida que el id sea unico y que los campos no esten vacios
 
 export const nuevaRecetaController = async (req,res)=>{//crea la funcion asincrona que maneja la solicitud y la respuesta del registro
-    console.log("Entró al controlador_");
     try{
         const {idPlatillo, idProducto, unidadMedida, cantidad} = req.body;//extrae los datos del imprevisto del cuerpo de la solicitud
-        console.log("req.body: ", req.body);
 
         if(!idPlatillo || !idProducto || !cantidad || !unidadMedida){//valida que los campos no queden vacios
             return res.status(400).json({mensaje: 'Faltan datos-Controller'});
@@ -32,13 +30,8 @@ export const nuevaRecetaController = async (req,res)=>{//crea la funcion asincro
 // Controlador para la busqueda o consulta de imprevistos. 
 export const consultaRecetaController = async (req,res) => { //crea la funcion asincrona que maneja la solicitud y la respuesta
     const idPlatillo = req.params.id;
-    console.log("Resultados idPlatillo: -controlador: ", idPlatillo);
     try{ // ejecuta el bloque de codigo y captura errores
         const resultados = await obtenerProductoPlatillo(idPlatillo); //llama a la funcion del modelo para obtener el imprevisto solicitado
-        console.log("Resultados ingredientes: -controlador: ", resultados);
-        //if (resultados.length === 0) { //si no se encuentra hay error
-        //    return res.status(404).json({ mensaje: 'No se encontraron recetas.' });
-        //}
         res.status(200).json({mensaje:'Recetas disponibles',resultados});
     } catch(err){//manejo de errores
         console.error('Error al consultar recetas:',err);
@@ -53,7 +46,6 @@ export const consultaRecetaController = async (req,res) => { //crea la funcion a
 export const editarRecetaController = async (req,res) => {
     const idPlatillo = req.params.id;
     const { idProducto, unidadMedida, cantidad} = req.body;
-    console.log("req.body: ", req.body);
 
     try{
         const resultado = await actualizarProductoPlatillo({idPlatillo, idProducto, unidadMedida, cantidad });
