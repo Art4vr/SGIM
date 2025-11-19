@@ -1,6 +1,5 @@
 /* Estilos generales del contenedor principal de la página */
 .bodyContainer {
-    font-family: 'Arial'; /* Fuente utilizada en la página */
     /*background-image: url('/imagenes/FondoMK.PNG'); /* Imagen de fondo */
     background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
     background-position: center; /* Centra la imagen de fondo */
@@ -45,13 +44,25 @@
 
 /* Estilos para el título principal */
 .title {
-    font-size: 48px; /* Tamaño grande para el título */
-    font-family: 'Brush Script MT', cursive; /* Fuente decorativa */
+    font-family: "Kalam", cursive;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 75px;                            /* Tamaño grande para el título */
     margin: 0;
 }
 
 /* Estilos para el subtítulo */
 .subtitle {
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px; /* Tamaño del subtítulo */
+    color: #520221; /* Color del texto */
+    margin: 5px 0 20px; /* Márgenes superior e inferior */
+}
+
+/* Estilos para el subtítulo */
+.welcome {
     font-size: 24px; /* Tamaño del subtítulo */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
     font-family: 'Courier New', monospace; /* Fuente monoespaciada */

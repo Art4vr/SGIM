@@ -36,14 +36,10 @@ const Home = () => {
                 <div className={styles.avatar}>
                     <img src="/imagenes/MKSF.png" alt="Avatar" />
                 </div>
-                <h1 className={styles.title}>MAKIMANAGE</h1>
-                <h2 className={styles.subtitle}>BIENVENIDO</h2>
+                <h1 className={styles.title}>SGIM</h1>
+                <h2 className={styles.subtitle}>Sistema de Gestión de Inventarios y Menú para Restaurantes</h2>
+                <h3 className={styles.welcome}>BIENVENIDO</h3>
                 <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR <MdOutlineLogin /></button>
-                <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>REGISTRAR <RiUserAddFill /></button>
-                <footer>
-                    
-                    <button className={styles.logoutBtn} onClick={handleLogout}>Log Out <BiLogOut /></button>
-                </footer>
             </div>
         </div>
     );
