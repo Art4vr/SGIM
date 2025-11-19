@@ -57,7 +57,6 @@ const PanelAdm = () => {
                     <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                     <li onClick={() => navigate('/inventario')}>Inventario</li>
                     <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/pedidos')}>Pedidos</li>
                     <li onClick={() => navigate('/reportes')}>Reportes</li>
                     <li onClick={() => navigate('/mesas')}>Mesas</li>
                     <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>

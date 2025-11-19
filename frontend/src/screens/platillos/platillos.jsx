@@ -142,13 +142,31 @@ const VistaPlatillos = () => {
                 </div>
             </div>
         
-            {/* Menú lateral */}
+            {/* Menú lateral Dinámico */}
             <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
                 <ul>
-                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                    {/* === OPCIONES PARA GERENTE (ROL 1) === */}
+                    {user?.rol === 1 && (
+                        <>
+                            <li onClick={() => navigate('/usuarios')}>Usuarios</li>
+                            <li onClick={() => navigate('/proveedores')}>Proveedores</li>
+                            <li onClick={() => navigate('/inventario')}>Inventario</li>
+                            <li onClick={() => navigate('/platillos')}>Platillos</li>
+                            <li onClick={() => navigate('/reportes')}>Reportes</li>
+                            <li onClick={() => navigate('/mesas')}>Mesas</li>
+                            <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                        </>
+                    )}
+
+                    {/* === OPCIONES PARA MESERO (ROL 4) === */}
+                    {user?.rol === 4 && (
+                        <>
+                            <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
+                            <li onClick={() => navigate('/platillos')}>Platillos</li>
+                            <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
+                            <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                        </>
+                    )}
                 </ul>
             </div>
             {/* Contenido Principal */}
