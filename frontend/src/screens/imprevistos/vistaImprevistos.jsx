@@ -244,7 +244,7 @@ const MostrarImprevistos = () => {
             {/* Contenedor principal */}
             <div className={styles.registerContainer}>
                 <div className={styles.registerCard}>
-                    <h2 className={styles.title}>Lista de Imprevistos</h2>
+                    <h2 className={styles.title}>LISTA DE IMPREVISTOS</h2>
 
                     {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
 

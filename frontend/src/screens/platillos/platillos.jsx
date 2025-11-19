@@ -155,13 +155,15 @@ const VistaPlatillos = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Platillos</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PLATILLOS</h1>
 
+                        <h2 className={styles.subtitle}>Añadir Platillo al Menú</h2>
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
                             Agregar Platillo
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        <h2 className={styles.subtitle}>Búsqueda de Elementos</h2>
 
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>

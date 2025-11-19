@@ -19,7 +19,6 @@ import stylesCommon from '../../styles/common/common.module.css';
 // Para importar el usuario
 import PerfilUsuario from '../../components/PerfilUsuario';
 
-
 const OrdenMesero = () => {
   const { user } = useAuth();
 
@@ -301,26 +300,28 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
                   </ul>
               </div>
 
-        <h1 className={styles.tituloPrincipal}>Gestión de Órdenes</h1>
+        <h1 className={styles.tituloPrincipal}>GESTIÓN DE ÓRDENES</h1>
 
         {/* === VISTA PRINCIPAL === */}
         {vista === 'ordenes' && (
           <>
-            <section>
-              <h2>Crear Orden</h2>
-              <div>
-                <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
-                  <option value="">Selecciona una mesa</option>
-                  {mesas.map((mesa) => (
-                    <option key={mesa.idMesa} value={mesa.idMesa}>
-                      Mesa {mesa.numeroMesa} ({mesa.estado})
-                    </option>
-                  ))}
-                </select>
-                <button onClick={handleCrearOrden}>Crear Orden</button>
-              </div>
-            </section>
-
+            <div className={styles.contenidoOrdenes}>
+              <section>
+                <h2>Crear Orden</h2>
+                <div>
+                  <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
+                    <option value="">Selecciona una mesa</option>
+                    {mesas.map((mesa) => (
+                      <option key={mesa.idMesa} value={mesa.idMesa}>
+                        Mesa {mesa.numeroMesa} ({mesa.estado})
+                      </option>
+                    ))}
+                  </select>
+                  <button onClick={handleCrearOrden}>Crear Orden</button>
+                </div>
+              </section>
+            </div>
+    
             <section>
               <h2>Órdenes Abiertas</h2>
               <ul className={styles.listaOrdenes}>

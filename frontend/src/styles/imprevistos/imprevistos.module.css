@@ -7,6 +7,7 @@
     min-height: calc(100vh - 13vh); /* deja espacio para el header */
     padding: 20px;
 }
+
 /*************************************************/
 /* Overlay del modal */
 .modalOverlay {
@@ -45,17 +46,16 @@
 
 /* Título del modal */
 .modalTitle {
-    font-size: 28px;
     padding-left: 20%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     background: linear-gradient(to right, #b44a82, #992f53, #b44a82);
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     max-width: 100%;
     margin: auto;
-    color:#fff8ee
+    color:#fff8ee;
 }
 
 /* Botones del modal */
@@ -219,14 +219,16 @@ input:disabled + .slider:before {
 }
 
 
-/* ======== TÍTULO PRINCIPAL ======== */
+/* --------- Textos y estilos decorativos --------- */
 .title {
-    font-size: 2rem;
-    color: #400C24;
+    font-family: "Bowlby One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 56px;
     font-weight: bold;
-    margin-bottom: 25px;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-    }
+    text-align: center;
+    color: #61053f;
+}
 
 /* ======== FILTROS Y BUSCADOR ======== */
 .filterRow {
@@ -285,13 +287,21 @@ input:disabled + .slider:before {
     text-align: left;
     padding: 12px;
     font-weight: bold;
-    font-size: 0.95rem;
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
 }
 
 .Table td {
     padding: 10px 12px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    font-size: 0.9rem;
+    
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 15px;
 }
 
 .Table tr:hover {

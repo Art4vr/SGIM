@@ -157,7 +157,7 @@ const VistaProductos = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Productos</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PRODUCTOS</h1>
 
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
                             Agregar Producto
