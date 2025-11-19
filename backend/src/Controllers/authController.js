@@ -27,9 +27,7 @@ export const loginController = async (req,res) => { //crea la funcion asincrona 
     }
 
     try{ // ejecuta el bloque de codigo y captura errores
-        //const {username,password} = req.body;
         const resultados = await obtenerUsuario(username); //llama a la funcion del modelo para obtener el usuario
-        console.log("Resultados de obtenerUsuario:", resultados);
         if (resultados.length === 0) { //si no se encuentra al usuario hay error
             await crearRegistroAcceso({ ip, ruta: '/api/auth/login', metodo: 'POST', username_proporcionado: username, motivo: 'Login fallido', detalle: 'Usuario no encontrado' });
             return res.status(401).json({ mensaje: 'Credenciales incorrectas' });

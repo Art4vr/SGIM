@@ -35,11 +35,11 @@ export const eliminarPlatillo = async (idPlatillo) => {
         //se hace una transaccion para eliminar primero la receta y luego el platillo
         await connection.beginTransaction();
         const resultadoReceta = await eliminarRecetaPlatillo(idPlatillo);
-        console.log('Ingredientes eliminados para el platillo id:', idPlatillo);
-        console.log('Resultado receta eliminada:', resultadoReceta);
+        //console.log('Ingredientes eliminados para el platillo id:', idPlatillo);
+        //console.log('Resultado receta eliminada:', resultadoReceta);
         //validaciones necesarias antes de eliminar el platillo
         if (resultadoReceta === 0) {
-            console.log('No se encontraron ingredientes para el platillo con id:', idPlatillo);
+            //console.log('No se encontraron ingredientes para el platillo con id:', idPlatillo);
         }
         const [resultado] = await connection.execute(query, [idPlatillo]);
         if (resultado.affectedRows === 0) {

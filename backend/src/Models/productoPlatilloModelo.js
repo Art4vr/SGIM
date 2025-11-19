@@ -10,7 +10,7 @@ export const agregarProductoPlatillo = async ({ idPlatillo, idProducto, unidadMe
     const query = 'INSERT INTO producto_platillo (Platillo_idPlatillo, Producto_idProducto, UnidadMedida_idUnidadMedida, cantidad) VALUES (?,?,?,?)';//consulta sql
     try {
         const [resultado] = await conexionDB.execute(query,[idPlatillo, idProducto, unidadMedida, cantidad]);//ejecuta la consulta, los ? se remplazan por los valores del array (parametros)
-        console.log('Modelo',resultado);
+        //console.log('Modelo',resultado);
         return resultado; // Devuelve los IDs 
 
     } catch (err) {
@@ -22,7 +22,7 @@ export const agregarProductoPlatillo = async ({ idPlatillo, idProducto, unidadMe
 // --------------------- ACTUALIZAR RECETA DE PLATILLO -------------------------
 export const actualizarProductoPlatillo = async ({ idPlatillo, idProducto, unidadMedida, cantidad }) => {
     //en caso de que no haya unidad de medida se controla con COALESCE
-    console.log("Modelo - actualizarProductoPlatillo - datos recibidos: ", { idPlatillo, idProducto, unidadMedida, cantidad });
+    //console.log("Modelo - actualizarProductoPlatillo - datos recibidos: ", { idPlatillo, idProducto, unidadMedida, cantidad });
     const query = `
         UPDATE producto_platillo
         SET 

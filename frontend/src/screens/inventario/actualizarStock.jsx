@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../context/AuthContext';
 
-import styles from '../../styles/imprevistos/imprevistos.module.css';
+import styles from '../../styles/inventario/inventario.module.css';
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 
@@ -89,12 +89,14 @@ const ActualizarStock = () => {
         }
     };
     return (
-        <div className={styles.container}>
-            <h2>Actualizar Stock de Producto</h2>
+        <div className={styles.registerContainer}>
+            <div className={styles.modalCard}>
+            <h2 className={styles.modalTitle}>Actualizar Stock de Producto</h2>
             {cargando ? (
                 <ClipLoader />
             ) : (
-                <form onSubmit={manejarActualizarStock} className={styles.form}>
+                <form onSubmit={manejarActualizarStock} className={styles.searchForm}>
+                    <div className={styles.filterRow}>
                     <label>
                         Producto:
                         <select value={idProductoSeleccionado} onChange={(e) => setIdProductoSeleccionado(e.target.value)} required>
@@ -106,22 +108,32 @@ const ActualizarStock = () => {
                             ))}
                         </select>
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Cantidad a Agregar:
                         <input type="number" value={cantidadAgregar} onChange={(e) => setCantidadAgregar(e.target.value)} required />
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Cantidad Máxima:
                         <input type="number" value={cantidadMaxima} onChange={(e) => setCantidadMaxima(e.target.value)} required />
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Cantidad Mínima:
                         <input type="number" value={cantidadMinima} onChange={(e) => setCantidadMinima(e.target.value)} required />
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Fecha de Caducidad:
                         <input type="date" value={fechaCaducidad} onChange={(e) => setFechaCaducidad(e.target.value)} required />
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Proveedor:
                         <select value={idProveedorSeleccionado} onChange={(e) => setIdProveedorSeleccionado(e.target.value)} required>
@@ -133,6 +145,8 @@ const ActualizarStock = () => {
                             ))}
                         </select>
                     </label>
+                    </div>
+                    <div className={styles.filterRow}>
                     <label>
                         Unidad de Medida:
                         <select value={idUnidadMedidaSeleccionada} onChange={(e) => setIdUnidadMedidaSeleccionada(e.target.value)} required>
@@ -144,9 +158,12 @@ const ActualizarStock = () => {
                             ))}
                         </select>
                     </label>
+                    </div>
+                    
                     <button type="submit">Actualizar Stock</button>
                 </form>
             )}
+            </div>
         </div>
     );
 };

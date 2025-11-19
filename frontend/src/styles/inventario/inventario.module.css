@@ -1,0 +1,312 @@
+/* ======== CONTENEDOR PRINCIPAL ======== */
+.registerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 13vh); /* deja espacio para el header */
+    padding: 20px;
+}
+/*************************************************/
+
+
+/* Tarjeta del modal */
+.modalCard {
+    background: radial-gradient(ellipse,#6f6d6d, #939393);
+    border-radius: 12px;
+    width: auto;
+    max-width: 80vw;
+    max-height: 75vw;
+    padding-bottom: 1em;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Título del modal */
+.modalTitle {
+    font-size: 28px;
+    display: flex;
+    justify-content:space-around;
+    padding: 1em;
+    background: linear-gradient(to right, #b44a82, #992f53, #b44a82);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    max-width: 100%;
+    margin: auto;
+    color:#fff8ee
+}
+
+/* Botones del modal */
+.modalButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-inline: 35px;
+}
+
+.modalButtons button{
+    background-color: #b44a82;
+    color: #ffeef6;
+}
+
+.closeButton{
+    background-color: #fff8ee;
+    padding: 3px;
+    margin: 3px;
+}
+
+
+/* ===== Botones de acciones ===== */
+.acciones {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: auto;
+    max-width: 14vw;
+    padding: 0;
+    flex-wrap: wrap; /*permite que bajen de línea si no caben */
+}
+
+.acciones button {
+    background: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+    padding: 4px;
+    max-width: 50%;
+    display: flex;
+
+}
+
+.acciones button:hover {
+    transform: scale(1.2);
+}
+
+/* Botón eliminar */
+.acciones button:last-child {
+    background-color: #992f53;
+    color: white;
+}
+
+.acciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
+}
+
+/* Barra de estado */
+.estadoBar {
+    height: 25px;
+    width: 7vw;
+    border-radius: 15px;
+    position: relative;
+    background-color: grey;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.estadoBar.autorizado {
+    background-color: green;
+}
+
+.estadoBar.rechazado {
+    background-color: red;
+}
+
+.estadoText {
+    position:absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.7rem;
+    cursor:context-menu;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    border-radius: 50px;
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: rgba(254, 230, 10, 0);
+}
+
+input:checked + .slider:before {
+    transform: translateX(5.3vw); /* Lo mueve a la derecha */
+}
+
+input:disabled + .slider {
+  background-color: #ccc; /* Gris cuando está deshabilitado */
+}
+
+input:disabled + .slider:before {
+  transform: translateX(0); /* Lo mantiene a la izquierda cuando está deshabilitado */
+}
+
+
+
+/* ======== TARJETA CENTRAL ======== */
+.registerCard {
+    width: 90%;                     /* ocupa el 90% del ancho del contenedor */
+    max-width: 100%;              /* límite máximo para pantallas grandes */
+    margin: 0 auto;                 /* centra horizontalmente */
+    padding: 40px;
+    border-radius: 12px;
+    background: rgba(218, 216, 217, 0.9);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #000;
+    text-align: center;
+}
+
+
+/* ======== TÍTULO PRINCIPAL ======== */
+.title {
+    font-size: 2rem;
+    color: #400C24;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+
+/* ======== FILTROS Y BUSCADOR ======== */
+.filterRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.filterRow label{
+    color: #1c1c1c;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.busqueda,
+.searchForm input[type="text"],
+.filterRow select,
+.filterRow input {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: rgba(35, 34, 34, 0.719);
+    color: #fff;
+    font-size: 1rem;
+    min-width: 180px;
+    box-shadow: 0 4px 10px rgba(201, 131, 164, 0.596);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.busqueda::placeholder {
+    color: #ccc;
+}
+
+.busqueda:focus {
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(1.02);
+}
+
+/* ======== FORMULARIO DE BÚSQUEDA ======== */
+.searchForm {
+    display: block;
+    justify-content:left;
+    align-content: center;
+    gap: 2em;
+    margin-inline: 2em;
+    margin-top: 5vh;
+}
+
+/* === ALERTAS ====*/
+.mensaje {
+    background: linear-gradient(90deg, rgba(135, 131, 133, 0.95) 0%, rgba(97, 88, 92, 0.95) 100%);
+    color: #fff;
+    border:2px solid #d01a7b;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(64,12,36,0.15);
+    display: block;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    width: 40%;
+}
+
+/* list inside message (for multiple alerts) */
+.mensaje ul {
+    margin: 8px 0 0 18px;
+    padding: 0;
+    list-style: disc;
+    color: #ffeef6; /* softer list color on top of the gradient */
+}
+
+/* small auxiliary text inside message */
+.mensaje small {
+    display: block;
+    color: rgba(255,255,255,0.9);
+    margin-top: 6px;
+}
+
+/* dismiss button inside message — subtle, matches palette */
+.mensaje button {
+    background: transparent;
+    border: 1px solid rgba(38, 36, 36, 0.579);
+    color: #fff;
+    background-color: #d01a7b;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 12px;
+    font-size: 0.85rem;
+}
+
+.mensaje button:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.28);
+}
+
