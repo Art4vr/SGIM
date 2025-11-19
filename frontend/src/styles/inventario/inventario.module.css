@@ -1,312 +1,227 @@
-/* ======== CONTENEDOR PRINCIPAL ======== */
-.registerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    min-height: calc(100vh - 13vh); /* deja espacio para el header */
-    padding: 20px;
-}
-/*************************************************/
-
-
-/* Tarjeta del modal */
-.modalCard {
-    background: radial-gradient(ellipse,#6f6d6d, #939393);
-    border-radius: 12px;
-    width: auto;
-    max-width: 80vw;
-    max-height: 75vw;
-    padding-bottom: 1em;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    text-align: center;
-    font-family: 'Arial', sans-serif;
+/* ======== Layout Principal ======== */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  /* El fondo se hereda del body, pero aseguramos que cubra todo */
 }
 
-/* Título del modal */
-.modalTitle {
-    font-size: 28px;
-    display: flex;
-    justify-content:space-around;
-    padding: 1em;
-    background: linear-gradient(to right, #b44a82, #992f53, #b44a82);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    max-width: 100%;
-    margin: auto;
-    color:#fff8ee
+/* ======== CONTENIDO PRINCIPAL (Estilo Tarjeta) ======== */
+.contenidoPrincipal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  
+  /* Estilo de tarjeta translúcida igual a Ordenes */
+  background-color: rgba(255, 255, 255, 0.44);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  
+  /* Para que el texto base sea legible */
+  color: #333; 
 }
 
-/* Botones del modal */
-.modalButtons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    margin-inline: 35px;
-}
-
-.modalButtons button{
-    background-color: #b44a82;
-    color: #ffeef6;
-}
-
-.closeButton{
-    background-color: #fff8ee;
-    padding: 3px;
-    margin: 3px;
-}
-
-
-/* ===== Botones de acciones ===== */
-.acciones {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    width: auto;
-    max-width: 14vw;
-    padding: 0;
-    flex-wrap: wrap; /*permite que bajen de línea si no caben */
-}
-
-.acciones button {
-    background: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin: 0 0.3rem;
-    margin-top: 1rem;
-    padding: 4px;
-    max-width: 50%;
-    display: flex;
-
-}
-
-.acciones button:hover {
-    transform: scale(1.2);
-}
-
-/* Botón eliminar */
-.acciones button:last-child {
-    background-color: #992f53;
-    color: white;
-}
-
-.acciones button:last-child:hover {
-    background-color: #e94a6a;
-    transform: scale(1.1);
-}
-
-/* Barra de estado */
-.estadoBar {
-    height: 25px;
-    width: 7vw;
-    border-radius: 15px;
-    position: relative;
-    background-color: grey;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
-}
-
-.estadoBar.autorizado {
-    background-color: green;
-}
-
-.estadoBar.rechazado {
-    background-color: red;
-}
-
-.estadoText {
-    position:absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-weight: bold;
-    font-size: 0.7rem;
-    cursor:context-menu;
-}
-
-/* Toggle Switch */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 20px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: grey;
-    transition: 0.4s;
-    border-radius: 50px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 17px;
-    width: 17px;
-    border-radius: 50px;
-    left: 4px;
-    bottom: 2px;
-    background-color: white;
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: rgba(254, 230, 10, 0);
-}
-
-input:checked + .slider:before {
-    transform: translateX(5.3vw); /* Lo mueve a la derecha */
-}
-
-input:disabled + .slider {
-  background-color: #ccc; /* Gris cuando está deshabilitado */
-}
-
-input:disabled + .slider:before {
-  transform: translateX(0); /* Lo mantiene a la izquierda cuando está deshabilitado */
-}
-
-
-
-/* ======== TARJETA CENTRAL ======== */
-.registerCard {
-    width: 90%;                     /* ocupa el 90% del ancho del contenedor */
-    max-width: 100%;              /* límite máximo para pantallas grandes */
-    margin: 0 auto;                 /* centra horizontalmente */
-    padding: 40px;
-    border-radius: 12px;
-    background: rgba(218, 216, 217, 0.9);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    color: #000;
-    text-align: center;
-}
-
-
-/* ======== TÍTULO PRINCIPAL ======== */
-.title {
-    font-size: 2rem;
-    color: #400C24;
-    font-weight: bold;
-    margin-bottom: 25px;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-    }
-
-/* ======== FILTROS Y BUSCADOR ======== */
-.filterRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-}
-
-.filterRow label{
-    color: #1c1c1c;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    font-size: 1.4rem;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-}
-
-.busqueda,
-.searchForm input[type="text"],
-.filterRow select,
-.filterRow input {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background: rgba(35, 34, 34, 0.719);
-    color: #fff;
-    font-size: 1rem;
-    min-width: 180px;
-    box-shadow: 0 4px 10px rgba(201, 131, 164, 0.596);
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.busqueda::placeholder {
-    color: #ccc;
-}
-
-.busqueda:focus {
-    background: rgba(0, 0, 0, 0.6);
-    transform: scale(1.02);
-}
-
-/* ======== FORMULARIO DE BÚSQUEDA ======== */
-.searchForm {
-    display: block;
-    justify-content:left;
-    align-content: center;
-    gap: 2em;
-    margin-inline: 2em;
-    margin-top: 5vh;
-}
-
-/* === ALERTAS ====*/
+/* ======== ALERTAS Y MENSAJES ======== */
 .mensaje {
-    background: linear-gradient(90deg, rgba(135, 131, 133, 0.95) 0%, rgba(97, 88, 92, 0.95) 100%);
-    color: #fff;
-    border:2px solid #d01a7b;
-    padding: 12px 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(64,12,36,0.15);
-    display: block;
-    font-size: 0.95rem;
-    line-height: 1.3;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    width: 40%;
+  background: linear-gradient(90deg, rgba(135, 131, 133, 0.95) 0%, rgba(97, 88, 92, 0.95) 100%);
+  color: #fff;
+  border: 2px solid #d01a7b;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(64,12,36,0.15);
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 100%;
+  text-align: left;
 }
 
-/* list inside message (for multiple alerts) */
+.mensaje strong {
+  color: #fac6de; /* Un tono rosado claro para resaltar títulos */
+}
+
 .mensaje ul {
-    margin: 8px 0 0 18px;
-    padding: 0;
-    list-style: disc;
-    color: #ffeef6; /* softer list color on top of the gradient */
+  list-style: disc;
+  color: #fff;
 }
 
-/* small auxiliary text inside message */
-.mensaje small {
-    display: block;
-    color: rgba(255,255,255,0.9);
-    margin-top: 6px;
-}
-
-/* dismiss button inside message — subtle, matches palette */
 .mensaje button {
-    background: transparent;
-    border: 1px solid rgba(38, 36, 36, 0.579);
-    color: #fff;
-    background-color: #d01a7b;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-left: 12px;
-    font-size: 0.85rem;
+  background-color: #d01a7b;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  transition: background 0.2s;
 }
 
 .mensaje button:hover {
-    background: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.28);
+  background-color: #990462;
 }
 
+/* ======== WRAPPER DE LA TABLA (Con Scrollbar) ======== */
+.content {
+  width: 100%;
+  margin-top: 20px;
+  
+  /* Propiedades para el scroll */
+  max-height: 500px;      /* Altura máxima visible */
+  overflow-y: auto;       /* Scroll vertical */
+  overflow-x: auto;       /* Scroll horizontal si la tabla es muy ancha */
+  
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6); /* Fondo ligero para la tabla */
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+  padding: 10px;
+}
+
+/* ----- Personalización del Scrollbar (Estilo Rosado) ----- */
+.content::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #e8d9e2;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b44a82, #8b3a65);
+  border-radius: 10px;
+  border: 2px solid #e8d9e2;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #dc057b, #a04270);
+  cursor: pointer;
+}
+
+/* Firefox Scrollbar */
+.content {
+  scrollbar-width: thin;
+  scrollbar-color: #b44a82 #e8d9e2;
+}
+
+/* ======== TABLA DE INVENTARIO ======== */
+.Table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px; /* Fuerza scroll horizontal en móviles */
+}
+
+.Table th {
+  background-color: #b44a82;
+  color: #fff;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: bold;
+  position: sticky; /* Encabezado fijo al hacer scroll */
+  top: 0;
+  z-index: 1;
+}
+
+.Table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.Table tr:nth-child(even) {
+  background-color: rgba(180, 74, 130, 0.05); /* Filas alternas rosadas muy suaves */
+}
+
+.Table tr:hover {
+  background-color: rgba(180, 74, 130, 0.15); /* Hover */
+}
+
+/* ======== LOADING ======== */
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  .contenidoPrincipal {
+    padding: 1rem;
+    width: 95%;
+  }
+  
+  .mensaje {
+    width: 100%;
+  }
+  
+  /* Ajustes de fuente para móviles */
+  .Table th, .Table td {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+   .botonAgregar {
+    width: 100%; /* Botón ancho completo en móvil para fácil toque */
+    justify-content: center;
+  }
+}
+
+.tituloSeccion {
+  font-size: 1.8rem;
+  color: #990462;
+  font-weight: bold;
+  margin: 0;
+}
+/* ======== CABECERA DE LA TABLA (Título + Botón) ======== */
+.encabezadoTabla {
+  display: flex;
+  justify-content: space-between; /* Separa los elementos a los extremos */
+  align-items: center; /* Los centra verticalmente */
+  width: 100%;
+  margin-bottom: 15px; /* Espacio antes de la tabla */
+  padding: 0 10px; /* Un poco de aire a los lados */
+}
+
+/* Título específico de la sección (opcional, si quieres diferenciarlo del h1) */
+.tituloSeccion {
+  font-size: 1.8rem;
+  color: #990462;
+  font-weight: bold;
+  margin: 0;
+}
+/* Botón de acción principal (Estilo consistente) */
+.botonAgregar {
+  background-color: #b44a82; /* Color principal */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio si decides ponerle un ícono */
+}
+
+.botonAgregar:hover {
+  background-color: #d92579;
+  transform: translateY(-2px); /* Pequeño efecto de elevación */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.botonAgregar:active {
+  transform: translateY(0);
+}
