@@ -354,7 +354,6 @@ const cerrarModalEditar = () => {
     };
   }, [menuAbierto]);
 
-  
 // ---------------------- RENDER ----------------------
   return (
 
