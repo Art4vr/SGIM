@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../styles/auth/perfilUsuario.module.css'; 
+import styles from '../../styles/inventario/alertasInventario.module.css'; 
 import stylesCommon from '../../styles/common/common.module.css';
 import { format } from 'date-fns'; // Si estás formateando fechas
 import { LuTriangleAlert } from "react-icons/lu";
@@ -11,7 +11,7 @@ const AlertasInventario = ({ listaInventario }) => {
     const [expiringAlerts, setExpiringAlerts] = useState([]);
     const [showLowStockAlert, setShowLowStockAlert] = useState(true);
     const [showExpiringAlert, setShowExpiringAlert] = useState(true);
-    const [perfilAbierto, setPerfilAbierto] = useState(false);
+    const [alertasAbiertas, setAlertasAbiertas] = useState(false);
 
     const navigate = useNavigate();
 
@@ -46,33 +46,20 @@ const AlertasInventario = ({ listaInventario }) => {
     }, [listaInventario]);
 
     return (
-        <div className={styles.perfilContainer}>
+        <div className={styles.alertasContainer}>
             
             {/* Botón de alerta */}
             <button 
                 className={styles.logoalerta} 
-                onClick={() => setPerfilAbierto(!perfilAbierto)}
+                onClick={() => setAlertasAbiertas(!alertasAbiertas)}
             >
                 <LuTriangleAlert />
             </button>
 
             {/* Menú lateral de alertas */}
-            {perfilAbierto && (
-                <div style={{
-                    position: 'fixed',
-                    bottom: '0',
-                    left: '0',
-                    width: '300px',
-                    maxWidth: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(193, 191, 191, 0.85)', // Cambié a un fondo semitransparente
-                    backdropFilter: 'blur(5px)',  // Aplica el desenfoque
-                    zIndex: 999,
-                    boxShadow: '2px 0 10px rgba(0,0,0,0.2)',
-                    padding: '20px',
-                    overflowY: 'auto',
-                    transform: perfilAbierto ? 'translateX(0)' : 'translateX(-100%)',
-                    transition: 'transform 0.3s ease-out',
+            {alertasAbiertas && (
+                <div className={styles.panelAlertas}  style={{
+                    transform: alertasAbiertas ? 'translateX(0)' : 'translateX(-100%)',
                 }}>
                     <div style={{ marginBottom: '20px' }}>
                         <strong>Alertas</strong>

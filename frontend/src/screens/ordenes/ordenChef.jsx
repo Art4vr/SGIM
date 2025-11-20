@@ -124,17 +124,19 @@ const OrdenChef = () => {
                                         <td>#{p.Orden_idOrden}</td>
                                         <td>{p.platillo}</td>
                                         <td>{p.cantidad}</td>
-                                        <td className={styles[`estado_${p.estado}`]}>{p.estado}</td>
+                                        <td className={styles[`estado_${p.estado}`]}>
+                                            {p.estado === 'preparacion' ? 'preparación' : p.estado}
+                                        </td>
                                         <td>
                                             {p.estado === 'espera' && (
                                                 <button
-                                                    onClick={() => cambiarEstado(p, 'preparación')}
+                                                    onClick={() => cambiarEstado(p, 'preparacion')}
                                                     className={styles.botonAccion}
                                                 >
                                                     Iniciar Preparación
                                                 </button>
                                             )}
-                                            {p.estado === 'preparación' && (
+                                            {p.estado === 'preparacion' && (
                                                 <button
                                                     onClick={() => cambiarEstado(p, 'listo')}
                                                     className={styles.botonAccion}
