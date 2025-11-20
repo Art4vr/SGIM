@@ -145,6 +145,30 @@ const handleAgregarPlatillo = async (platilloId) => {
 
 
   try {
+    //Verificacion de stock
+    const response = await api.get(`/api/productosPlatillo/obtener/${platilloId}`);
+    const ingredientes = response.data.resultados || [];
+    const productosAVerificar = ingredientes.map(ing => ({
+      Producto_idProducto: ing.Producto_idProducto,
+      cantidad: ing.cantidad * cantidad
+    }));
+      const verificar = await api.post('/api/inventario/verificar-stock', {
+      productos: productosAVerificar
+    });
+      const sinStock = verificar.data.sinStock || [];
+
+    if (sinStock.length > 0) {
+      // Sin stock -> Bloqueamos el agregado
+      const faltantes = sinStock
+        .map(s => `Producto ${s.Producto_idProducto}: Requerido ${s.requerido}, Disponible ${s.stockActual}`)
+        .join("\n");
+
+      console.warn("Faltante de stock:", sinStock);
+      mostrarNotificacion(`Platillo no disponible por falta de Stock`,"error");
+      return; //no se agrega
+    }
+
+    //con stock
     await agregarPlatilloOrden(ordenSeleccionada.idOrden, {
       idPlatillo: platilloId,
       cantidad,

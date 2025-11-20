@@ -62,3 +62,17 @@ export const actualizarStock = async (productos) => {
         throw error;
     }
 };
+
+// Obtener stock actual sin modificarlo
+export const obtenerStock = async (idProducto) => {
+    const [rows] = await conexionDB.execute(
+        `SELECT 
+             COALESCE(SUM(cantidadActual), 0) AS stock
+         FROM inventarioproducto
+         WHERE Producto_idProducto = ?`,
+        [idProducto]
+    );
+
+    // Aseguramos que stock nunca sea undefined
+    return { stock: rows[0].stock };
+};
