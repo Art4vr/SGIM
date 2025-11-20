@@ -137,7 +137,7 @@ function App() {
           <Route 
             path="/RegistroImprevistoMesero" 
             element={
-              <ProtectedRoute user={user} allowedRoles={[4]}>
+              <ProtectedRoute user={user} allowedRoles={[1,4]}>
                 <RegistroImprevistoMesero />
               </ProtectedRoute>
             }
