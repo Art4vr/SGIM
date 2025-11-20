@@ -1,0 +1,100 @@
+/*************************************************/
+/* Overlay del modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    padding: 10px;
+}
+
+/*************************************************/
+/* Tarjeta del modal */
+.modalCard {
+    background: rgba(218,216,217,0.95);
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    animation: fadeIn 0.3s ease;
+    color: #000; /* Texto negro para todo el contenido del modal */
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/*************************************************/
+/* Título del modal */
+.modalTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: #400C24;
+    margin-bottom: 20px;
+}
+
+/*************************************************/
+/* Tabla de ingredientes */
+.ingredientesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.ingredientesTable th,
+.ingredientesTable td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    color: #000; /* Texto negro */
+}
+
+.ingredientesTable th {
+    background-color: #e0dcdc;
+    font-weight: bold;
+}
+
+/*************************************************/
+/* Botones del modal */
+.closeButton,
+.btnGuardar {
+    background-color: #D92579;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.closeButton:hover,
+.btnGuardar:hover {
+    background-color: #400C24;
+    transform: scale(1.05);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .modalCard { padding: 20px; width: 95%; }
+    .modalTitle { font-size: 24px; }
+    .ingredientesTable th,
+    .ingredientesTable td { font-size: 14px; padding: 6px; }
+}
