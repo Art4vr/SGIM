@@ -11,12 +11,15 @@ import {
   modificarOrden,
   enviarOrdenACocina,
 } from '../../api/ordenMeseroApi';
+import api from "../../api/axiosConfig";
 // Es para modificar los estados de los platillos
 import { actualizarPlatilloChef } from '../../api/chefApi';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/ordenes/orden.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
-import Encabezado from '../../components/Encabezado';
+// Para importar el usuario
+import PerfilUsuario from '../../components/PerfilUsuario';
+import ModalProductos from './modalProductos';
 
 const OrdenMesero = () => {
   const { user } = useAuth();
@@ -31,6 +34,9 @@ const OrdenMesero = () => {
   const [filtros, setFiltros] = useState({ categoria: '' });
   const [vista, setVista] = useState('ordenes'); // "ordenes" | "detalle" | "agregar"
   const navigate = useNavigate();
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const menuRef = useRef(null);
+  const botonRef = useRef(null);
 // --- 👇 1. ESTADO PARA LA NOTIFICACIÓN ---
   const [notificacion, setNotificacion] = useState({ visible: false, mensaje: '', tipo: 'info' });
 
@@ -43,6 +49,12 @@ const OrdenMesero = () => {
         setNotificacion({ visible: false, mensaje: '', tipo: 'info' });
     }, 1500);
   };
+
+// --- Editar platillo (por si cliente lo solicita) ---
+const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
+const [platilloEditando, setPlatilloEditando] = useState(null);
+//Ingredientes de platillo
+const [ingredientes, setIngredientes] = useState([]);
 
   // ---------------------- CARGAS INICIALES ----------------------
   useEffect(() => {
@@ -133,6 +145,30 @@ const handleAgregarPlatillo = async (platilloId) => {
 
 
   try {
+    //Verificacion de stock
+    const response = await api.get(`/api/productosPlatillo/obtener/${platilloId}`);
+    const ingredientes = response.data.resultados || [];
+    const productosAVerificar = ingredientes.map(ing => ({
+      Producto_idProducto: ing.Producto_idProducto,
+      cantidad: ing.cantidad * cantidad
+    }));
+      const verificar = await api.post('/api/inventario/verificar-stock', {
+      productos: productosAVerificar
+    });
+      const sinStock = verificar.data.sinStock || [];
+
+    if (sinStock.length > 0) {
+      // Sin stock -> Bloqueamos el agregado
+      const faltantes = sinStock
+        .map(s => `Producto ${s.Producto_idProducto}: Requerido ${s.requerido}, Disponible ${s.stockActual}`)
+        .join("\n");
+
+      console.warn("Faltante de stock:", sinStock);
+      mostrarNotificacion(`Platillo no disponible por falta de Stock`,"error");
+      return; //no se agrega
+    }
+
+    //con stock
     await agregarPlatilloOrden(ordenSeleccionada.idOrden, {
       idPlatillo: platilloId,
       cantidad,
@@ -192,6 +228,36 @@ const handleEnviarCocina = async () => {
   if (!ordenSeleccionada) return mostrarNotificacion('Selecciona una orden primero', 'error');
   
   try {
+    //Obtener todos los ingredientes de los platillos de la orden
+    const ingredientesPromises = ordenPlatillos.map(async (platillo) => {
+    const response = await api.get(`/api/productosPlatillo/obtener/${platillo.Platillo_idPlatillo}`);
+    const ingredientes = response.data.resultados || []; // <-- asegurarse que sea array
+    return ingredientes.map((ing) => ({
+      Producto_idProducto: ing.Producto_idProducto,
+      cantidad: ing.cantidad * platillo.cantidad
+    }));
+  });
+
+    const ingredientesArrays = await Promise.all(ingredientesPromises);
+
+    //Aplanar el array de arrays en un solo array
+    const todosIngredientes = ingredientesArrays.flat();
+
+    //Agrupar por Producto_idProducto para evitar duplicados
+    const ingredientesAgrupados = todosIngredientes.reduce((acc, item) => {
+      const existente = acc.find((i) => i.Producto_idProducto === item.Producto_idProducto);
+      if (existente) {
+        existente.cantidad += item.cantidad;
+      } else {
+        acc.push({ ...item });
+      }
+      return acc;
+    }, []);
+    console.log("Ingredientes agrupados para actualizar stock:", ingredientesAgrupados);
+
+    //Llamar al backend para descontar stock
+    await api.post('/api/inventario/actualizar-stock', { productos: ingredientesAgrupados });
+
     // Cambia estado general a "en cocina"
     await enviarOrdenACocina(ordenSeleccionada.idOrden);
     mostrarNotificacion(`Orden #${ordenSeleccionada.idOrden} enviada a cocina`, 'success');
@@ -228,6 +294,31 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
     });
   };
 
+
+//Funciones de Modal para editar platillos
+const abrirModalEditar = async (platillo) => {
+  setPlatilloEditando(platillo);
+  setModalEditarAbierto(true);
+
+  try {
+    const response = await api.get(
+      `/producto-platillo/obtener/${platillo.Platillo_idPlatillo}`
+    );
+
+    setIngredientes(response.data);
+  } catch (err) {
+    console.error("Error al obtener ingredientes:", err);
+    setIngredientes([]);
+  }
+};
+
+
+const cerrarModalEditar = () => {
+  setModalEditarAbierto(false);
+  setPlatilloEditando(null);
+};
+
+
 // ---------------------- FILTROS ----------------------
   const handleFiltroChange = (e) => {
     setFiltros({ categoria: e.target.value });
@@ -237,14 +328,45 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
   const platillosFiltrados = platillos.filter(
     (p) => filtros.categoria === '' || p.categoria === filtros.categoria
   );
+  // --------------------- Menu y header -----------------
+    const toggleMenu = () => {
+    setMenuAbierto(!menuAbierto);
+    };
 
-  
+  useEffect(() => { 
+    const handleClickOutside = (event) =>{
+      if(
+        menuAbierto &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        botonRef.current &&
+        !botonRef.current.contains(event.target)
+      ){
+        setMenuAbierto(false);
+      }
+    }
+    document.addEventListener('mousedown',handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown',handleClickOutside);
+    };
+  }, [menuAbierto]);
+
 // ---------------------- RENDER ----------------------
   return (
 
   <div className={styles.container}>
         {/* Encabezado */}
-        <Encabezado/>
+        <div className={stylesCommon.header}>
+          <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
+            <img src="/imagenes/menu_btn.png" alt="Menú" />
+          </button>
+          <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
+          {/* ESTA ES LA PARTE CLAVE (Derecha) */}
+          <div className={stylesCommon.headerRight}>
+            <PerfilUsuario /> 
+            <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
+          </div>
+        </div>
 
       {/* --- 👇 3. DIV DE LA NOTIFICACIÓN --- */}
       {notificacion.visible && (
@@ -254,28 +376,36 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
       )}
 
       <div className={styles.contenidoPrincipal}>
-        <h1 className={styles.tituloPrincipal}>GESTIÓN DE ÓRDENES</h1>
+              {/* Menú lateral */}
+              <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
+                  <ul>
+                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
+                    <li onClick={() => navigate('/platillos')}>Platillos</li>
+                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
+                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                  </ul>
+              </div>
+
+        <h1 className={styles.tituloPrincipal}>Gestión de Órdenes</h1>
 
         {/* === VISTA PRINCIPAL === */}
         {vista === 'ordenes' && (
           <>
-            <div className={styles.contenidoOrdenes}>
-              <section>
-                <h2>Crear Orden</h2>
-                <div>
-                  <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
-                    <option value="">Selecciona una mesa</option>
-                    {mesas.map((mesa) => (
-                      <option key={mesa.idMesa} value={mesa.idMesa}>
-                        Mesa {mesa.numeroMesa} ({mesa.estado})
-                      </option>
-                    ))}
-                  </select>
-                  <button onClick={handleCrearOrden}>Crear Orden</button>
-                </div>
-              </section>
-            </div>
-    
+            <section>
+              <h2>Crear Orden</h2>
+              <div>
+                <select value={mesaId} onChange={(e) => setMesaId(e.target.value)}>
+                  <option value="">Selecciona una mesa</option>
+                  {mesas.map((mesa) => (
+                    <option key={mesa.idMesa} value={mesa.idMesa}>
+                      Mesa {mesa.numeroMesa} ({mesa.estado})
+                    </option>
+                  ))}
+                </select>
+                <button onClick={handleCrearOrden}>Crear Orden</button>
+              </div>
+            </section>
+
             <section>
               <h2>Órdenes Abiertas</h2>
               <ul className={styles.listaOrdenes}>
@@ -307,6 +437,17 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
                     {p.estado === 'listo' && (
                       <button onClick={() => cambiarEstado(p, 'entregado')} className={styles.botonAccion}>
                         Entregado
+                      </button>
+                    )}
+
+                    {/*Editar platillo antes de enviar a cocina */}
+                    {p.estado === 'pendiente' && (
+                      <button
+                        onClick={() => abrirModalEditar(p)}
+                        className={styles.botonAccion}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Editar
                       </button>
                     )}
 
@@ -370,6 +511,14 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
       <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelMesero')}>
         Volver al Inicio
       </button>
+      {modalEditarAbierto && (
+        <ModalProductos
+          platillo={platilloEditando}
+          ingredientes={ingredientes}
+          onClose={cerrarModalEditar}
+          onRefresh={() => seleccionarOrden(ordenSeleccionada)}
+        />
+      )}
       </div>
     </div>
   );
