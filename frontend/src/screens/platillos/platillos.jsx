@@ -219,7 +219,6 @@ const VistaPlatillos = () => {
                             </div>
                         )}
 
-
                         {modalVisible && (
                             modalAccion === 'nuevoPlatillo' ? (
                             <NuevoPlatillo
@@ -236,6 +235,7 @@ const VistaPlatillos = () => {
                         )
                         )}
 
+                        {user?.rol=== 1 && (
                         <button
                             className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
                             type="button"
@@ -243,6 +243,16 @@ const VistaPlatillos = () => {
                             >
                             VOLVER AL INICIO
                         </button>
+                        )}
+                        {user?.rol=== 4 &&(
+                        <button
+                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            type="button"
+                            onClick={() => navigate('/PanelMesero')}
+                            >
+                            VOLVER AL INICIO
+                        </button>
+                        )}
                     </div>
                 </div>
             </div>

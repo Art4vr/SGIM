@@ -152,17 +152,6 @@ const AlertasInventario = ({ listaInventario }) => {
                             </button>
                         </div>
                     )}
-                    <button title='Pedir a proveedores' onClick={() => navigate('/Proveedores')} style={{
-                                marginTop: '12px',
-                                backgroundColor: '#c612c3d4',
-                                color: 'white',
-                                border: 'none',
-                                padding: '6px 12px',
-                                borderRadius: '4px',
-                                cursor: 'pointer'
-                            }}>
-                                Realizar Pedido
-                            </button>
                 </div>
             )}
         </div>

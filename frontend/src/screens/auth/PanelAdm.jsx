@@ -2,9 +2,8 @@ import api from '../../api/axiosConfig';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
-import PerfilUsuario from '../../components/PerfilUsuario.jsx';
 import Encabezado from '../../components/Encabezado.jsx';
+
 
 const PanelAdm = () => {
     const navigate = useNavigate();
