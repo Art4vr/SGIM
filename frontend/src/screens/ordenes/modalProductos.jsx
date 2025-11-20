@@ -31,9 +31,7 @@ const ModalProductos = ({ platillo, onClose }) => {
     const cargarIngredientes = async () => {
       try {
         const resp = await api.get(
-          `/api/productosPlatillo/obtener/${platillo.Platillo_idPlatillo}`,
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-        );
+          `/api/productosPlatillo/obtener/${platillo.Platillo_idPlatillo}`);
 
         const data = Array.isArray(resp.data.resultados) ? resp.data.resultados : [];
 

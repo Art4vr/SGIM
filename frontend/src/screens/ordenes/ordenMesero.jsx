@@ -204,6 +204,36 @@ const handleEnviarCocina = async () => {
   if (!ordenSeleccionada) return mostrarNotificacion('Selecciona una orden primero', 'error');
   
   try {
+    //Obtener todos los ingredientes de los platillos de la orden
+    const ingredientesPromises = ordenPlatillos.map(async (platillo) => {
+    const response = await api.get(`/api/productosPlatillo/obtener/${platillo.Platillo_idPlatillo}`);
+    const ingredientes = response.data.resultados || []; // <-- asegurarse que sea array
+    return ingredientes.map((ing) => ({
+      Producto_idProducto: ing.Producto_idProducto,
+      cantidad: ing.cantidad * platillo.cantidad
+    }));
+  });
+
+    const ingredientesArrays = await Promise.all(ingredientesPromises);
+
+    //Aplanar el array de arrays en un solo array
+    const todosIngredientes = ingredientesArrays.flat();
+
+    //Agrupar por Producto_idProducto para evitar duplicados
+    const ingredientesAgrupados = todosIngredientes.reduce((acc, item) => {
+      const existente = acc.find((i) => i.Producto_idProducto === item.Producto_idProducto);
+      if (existente) {
+        existente.cantidad += item.cantidad;
+      } else {
+        acc.push({ ...item });
+      }
+      return acc;
+    }, []);
+    console.log("Ingredientes agrupados para actualizar stock:", ingredientesAgrupados);
+
+    //Llamar al backend para descontar stock
+    await api.post('/api/inventario/actualizar-stock', { productos: ingredientesAgrupados });
+
     // Cambia estado general a "en cocina"
     await enviarOrdenACocina(ordenSeleccionada.idOrden);
     mostrarNotificacion(`Orden #${ordenSeleccionada.idOrden} enviada a cocina`, 'success');
