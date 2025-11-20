@@ -16,8 +16,7 @@ import { actualizarPlatilloChef } from '../../api/chefApi';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/ordenes/orden.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
-// Para importar el usuario
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const OrdenMesero = () => {
   const { user } = useAuth();
@@ -32,9 +31,6 @@ const OrdenMesero = () => {
   const [filtros, setFiltros] = useState({ categoria: '' });
   const [vista, setVista] = useState('ordenes'); // "ordenes" | "detalle" | "agregar"
   const navigate = useNavigate();
-  const [menuAbierto, setMenuAbierto] = useState(false);
-  const menuRef = useRef(null);
-  const botonRef = useRef(null);
 // --- 👇 1. ESTADO PARA LA NOTIFICACIÓN ---
   const [notificacion, setNotificacion] = useState({ visible: false, mensaje: '', tipo: 'info' });
 
@@ -241,28 +237,6 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
   const platillosFiltrados = platillos.filter(
     (p) => filtros.categoria === '' || p.categoria === filtros.categoria
   );
-  // --------------------- Menu y header -----------------
-    const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
-    };
-
-  useEffect(() => { 
-    const handleClickOutside = (event) =>{
-      if(
-        menuAbierto &&
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        botonRef.current &&
-        !botonRef.current.contains(event.target)
-      ){
-        setMenuAbierto(false);
-      }
-    }
-    document.addEventListener('mousedown',handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown',handleClickOutside);
-    };
-  }, [menuAbierto]);
 
   
 // ---------------------- RENDER ----------------------
@@ -270,17 +244,7 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
 
   <div className={styles.container}>
         {/* Encabezado */}
-        <div className={stylesCommon.header}>
-          <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-            <img src="/imagenes/menu_btn.png" alt="Menú" />
-          </button>
-          <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-          {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-          <div className={stylesCommon.headerRight}>
-            <PerfilUsuario /> 
-            <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-          </div>
-        </div>
+        <Encabezado/>
 
       {/* --- 👇 3. DIV DE LA NOTIFICACIÓN --- */}
       {notificacion.visible && (
@@ -290,16 +254,6 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
       )}
 
       <div className={styles.contenidoPrincipal}>
-              {/* Menú lateral */}
-              <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                  <ul>
-                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                  </ul>
-              </div>
-
         <h1 className={styles.tituloPrincipal}>GESTIÓN DE ÓRDENES</h1>
 
         {/* === VISTA PRINCIPAL === */}

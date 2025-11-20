@@ -15,7 +15,7 @@ import stylesCommon from "../../styles/common/common.module.css";
 
 import { getProductos, getUnidades } from "../../api/productoApi";
 
-import PerfilUsuario from "../../components/PerfilUsuario";
+import Encabezado from "../../components/Encabezado";
 
 const MostrarImprevistos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
@@ -24,7 +24,6 @@ const MostrarImprevistos = () => {
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const navigate = useNavigate();
-    const [menuAbierto, setMenuAbierto] = useState(false);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalImprevisto, setModalImprevisto] = useState(null);
@@ -37,9 +36,6 @@ const MostrarImprevistos = () => {
     const [inventarios, setInventarios] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [imprevistos, setImprevistos] = useState([]);
-
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
 
     // Cargar datos solo de imprevistos (lightweight)
     const cargarImprevistos = async () => {
@@ -143,30 +139,6 @@ const MostrarImprevistos = () => {
         }
     };
 
-    //--------------- MENÚ LATERAL-------------------------------
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ) {
-                setMenuAbierto(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [menuAbierto]);
-
-    //if (loading) return <div>Cargando usuario...</div>;
-
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-    };
-
     //--------------- FILTROS -------------------------------
     // Justo antes del return, debajo de tus otros useState
     const [filtros, setFiltros] = useState({
@@ -231,33 +203,7 @@ const MostrarImprevistos = () => {
     return (
         <div className={stylesCommon.bodyContainer}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                </div>
-            </div>
-
-            {/* Sidebar */}
-            <div
-                ref={menuRef}
-                className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ""
-                    }`}
-            >
-                <ul>
-                    <li onClick={() => navigate("/Platillos")}>Platillos</li>
-                    <li onClick={() => navigate("/Proveedores")}>Proveedores</li>
-                    <li onClick={() => navigate("/Productos")}>Productos</li>
-                    <li onClick={() => navigate("/Imprevistos")}>Ver Imprevistos</li>
-                    <li onClick={() => navigate("/Inventario")}>Ver Inventario</li>
-                    <li onClick={() => navigate("/NuevoUsuario")}>Nuevo Usuario</li>
-                </ul>
-            </div>
+            <Encabezado/>
 
             {/* Contenedor principal */}
             <div className={styles.registerContainer}>

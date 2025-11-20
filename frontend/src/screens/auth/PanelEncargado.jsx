@@ -2,45 +2,16 @@ import api from '../../api/axiosConfig';
 import { useState, botonRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import Encabezado from '../../components/Encabezado';
 
 
 const PanelEncargado = () => {
     const navigate = useNavigate();
 
-    const [menuAbierto, setMenuAbierto] = useState(false);
-
-    const handleLogout = async () => {
-        await api.post('/api/auth/logout');
-        navigate('/');
-    };
-
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-    };
-
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-            </div>
-
-            {/* Menú lateral */}
-            <div className={`${styles.sidebar} ${menuAbierto ? styles.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/inventario')}>Inventario</li>
-                    <li onClick={() => navigate('/actualizarStock')}>Actualizar Stock</li>
-                    <li onClick={() => navigate('/productos')}>Productos</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                    <li onClick={handleLogout}>Log Out</li>
-                </ul>
-            </div>
+            <Encabezado/>
 
             {/* Contenido principal */}
             <div className={styles.contenido}>
