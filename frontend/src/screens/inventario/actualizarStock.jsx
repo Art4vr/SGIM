@@ -18,7 +18,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const ActualizarStock = () => {
     const { logout, loading, user } = useAuth();
@@ -107,44 +107,11 @@ const ActualizarStock = () => {
             setCargando(false);
         }
     };
-    
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-    };
-
-    useEffect(() => { 
-        const handleClickOutside = (event) =>{
-            if(
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ){
-                setMenuAbierto(false);
-            }
-        }
-
-        document.addEventListener('mousedown',handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown',handleClickOutside);
-        };
-    }, [menuAbierto]);
 
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* Menú de usuario */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-                </div>
-            </div>
+            <Encabezado/>
 
             {/* 4. Renderizado de la notificación flotante */}
             {notificacion.visible && (
@@ -152,20 +119,6 @@ const ActualizarStock = () => {
                     {notificacion.mensaje}
                 </div>
             )}
-
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/usuarios')}>Usuarios</li>
-                    <li onClick={() => navigate('/proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/inventario')}>Inventario</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/pedidos')}>Pedidos</li>
-                    <li onClick={() => navigate('/reportes')}>Reportes</li>
-                    <li onClick={() => navigate('/mesas')}>Mesas</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                </ul>
-            </div>
 
             {/* Contenido Principal Centrado */}
             <div className={styles.bodyContainer}>
@@ -175,10 +128,10 @@ const ActualizarStock = () => {
                     {/* Ya no renderizamos el div.mensaje antiguo aquí */}
 
                     {cargando && !productos.length ? (
-                         <div className={styles.spinnerContainer}>
+                        <div className={styles.spinnerContainer}>
                             {/* Loader simple CSS */}
                             <div className={styles.simpleLoader}>Cargando...</div>
-                         </div>
+                        </div>
                     ) : (
                         <form onSubmit={manejarActualizarStock} className={styles.form}>
                             {/* Producto */}

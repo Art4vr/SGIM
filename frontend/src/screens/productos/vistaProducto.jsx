@@ -6,7 +6,7 @@ import styles from '../../styles/productos/producto.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const VistaProductos = () => {
     const { logout, user, loading } = useAuth();
@@ -17,9 +17,6 @@ const VistaProductos = () => {
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
-    const [menuAbierto, setMenuAbierto] = useState(false);
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
 
     const cargarProductos = async () => {
         setCargando(true);
@@ -66,29 +63,6 @@ const VistaProductos = () => {
         }
     };
 
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-        };
-
-    useEffect(() => { 
-        const handleClickOutside = (event) =>{
-            if(
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ){
-                setMenuAbierto(false);
-            }
-        }
-
-        document.addEventListener('mousedown',handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown',handleClickOutside);
-        };
-    }, [menuAbierto]);
-
     // Justo antes del return, debajo de tus otros useState
         const [filtros, setFiltros] = useState({
         nombre: '',
@@ -130,34 +104,13 @@ const VistaProductos = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                </div>
-            </div>
-        
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/Productos')}>Productos</li>
-                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                </ul>
-            </div>
-
+            <Encabezado/>
+            
             {/*Contenido principal*/}
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Productos</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PRODUCTOS</h1>
 
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
                             Agregar Producto

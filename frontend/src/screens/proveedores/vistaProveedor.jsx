@@ -7,7 +7,7 @@ import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const VistaProveedores = () => {
     const { logout, user, loading } = useAuth();
@@ -18,10 +18,6 @@ const VistaProveedores = () => {
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
-    const [menuAbierto, setMenuAbierto] = useState(false);
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
-
 
     const cargarProveedores = async () => {
         setCargando(true);
@@ -66,29 +62,6 @@ const VistaProveedores = () => {
         }
     };
 
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-        };
-
-    useEffect(() => { 
-        const handleClickOutside = (event) =>{
-            if(
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ){
-                setMenuAbierto(false);
-            }
-        }
-
-        document.addEventListener('mousedown',handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown',handleClickOutside);
-        };
-    }, [menuAbierto]);
-
     //Filtrar los resultados
     const [filtroEstado, setFiltroEstado] = useState('todos');
 
@@ -107,28 +80,7 @@ const VistaProveedores = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                </div>
-            </div>
-
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/Productos')}>Productos</li>
-                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                </ul>
-            </div>
+            <Encabezado/>
 
             {/*Contenido principal */}
             <div className={styles.bodyContainer}>

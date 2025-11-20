@@ -56,11 +56,25 @@
 
 /* ======== TÍTULOS ======== */
 .title {
-    color: #000000ef;
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-family: "Bowlby One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 56px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: #61053f;
 }
 
+.subtitle {
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #8a4565;
+    text-align: center;
+    margin: 20px 0 10px 0;
+    font-size: 42px;
+}
 
 /* Botón principal */
 .registerBtn {
@@ -129,13 +143,24 @@
     background-color: #b44a82;
     color: white;
     padding: 0.8rem;
+    
     font-weight: bold;
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
 }
 
 .platilloTable td {
     padding: 0.8rem;
     text-align: center;
     border-bottom: 1px solid #ccc;
+
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 15px;
 }
 
 /* ===== Botones de acciones ===== */
@@ -242,7 +267,10 @@
 
 .nombreMenu{
     text-align: center;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
     font-size: large;
     margin-bottom: 1rem;
 }

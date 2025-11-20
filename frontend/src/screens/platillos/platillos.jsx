@@ -7,7 +7,7 @@ import api from '../../api/axiosConfig';
 import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import IngredientesPlatillo from './ingredientes';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const VistaPlatillos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000);
@@ -69,38 +69,6 @@ const VistaPlatillos = () => {
         }
     };
 
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-        };
-
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
-
-    useEffect(() => { 
-        const handleClickOutside = (event) =>{
-            if(
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ){
-                setMenuAbierto(false);
-            }
-        }
-
-        document.addEventListener('mousedown',handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown',handleClickOutside);
-        };
-    }, [menuAbierto]);
-
     const [filtros, setFiltros] = useState({
         categoria: '',
         estado: '',
@@ -144,38 +112,21 @@ const VistaPlatillos = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                </div>
-            </div>
-        
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                </ul>
-            </div>
+            <Encabezado/>
+            
             {/* Contenido Principal */}
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Platillos</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PLATILLOS</h1>
 
+                        <h2 className={styles.subtitle}>Añadir Platillo al Menú</h2>
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
                             Agregar Platillo
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        <h2 className={styles.subtitle}>Búsqueda de Elementos</h2>
 
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>
