@@ -89,6 +89,8 @@ export const obtenerPlatillosMesero = async (idMesero) => {
         JOIN Orden o ON po.Orden_idOrden = o.idOrden
         JOIN Platillo pl ON po.Platillo_idPlatillo = pl.idPlatillo
         WHERE o.Usuario_idUsuario = ?
+        AND o.estado = 'abierta'
+        AND po.estado = 'listo'
     `;
     try {
         const [rows] = await conexionDB.execute(query, [idMesero]);

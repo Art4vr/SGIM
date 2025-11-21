@@ -7,6 +7,7 @@ import { getProductos, getUnidades } from '../../api/productoApi'; // Aquí llam
 import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
+import { getPlatillosChef, actualizarPlatilloChef } from '../../api/chefApi';
 
 import PerfilUsuario from '../../components/PerfilUsuario';
 
@@ -52,7 +53,7 @@ const RegistroImprevistoMesero = () => {
                 api.get(`/api/ordenes/mesero/${user?.id}/platillos`)
             ]);
             setPlatillosOrden(platillosOrdenRes.data || []);
-            console.log("platillos orden cargados: ", platillosOrdenRes.data);
+            //console.log("platillos orden cargados: ", platillosOrdenRes.data);
             setProductos(productosRes.data || []);
             setPlatillos(platillosRes.data || []);
             setMedidas(medidasRes.data || []);
@@ -107,12 +108,12 @@ const RegistroImprevistoMesero = () => {
         
         // Recibe el id del platillo seleccionado
         const idPlatilloSeleccionado = platillosOrden.find(pl => pl.idPlatilloOrden === Number(e.target.value))?.idPlatillo;
-        console.log("resultado del select: ", e.target.value);
-        console.log("platillosOrden: ", platillosOrden);
-        console.log("idPlatilloSeleccionado: ", idPlatilloSeleccionado);
+        //console.log("resultado del select: ", e.target.value);
+        //console.log("platillosOrden: ", platillosOrden);
+        //console.log("idPlatilloSeleccionado: ", idPlatilloSeleccionado);
         const platilloSel = platillosOrden.find(pl => pl.idPlatilloOrden === Number(e.target.value));
         setSelectedDishId(Number(e.target.value)); // Set the selected product ID
-        console.log("setSelectedDishId: ", Number(e.target.value))
+        //console.log("setSelectedDishId: ", Number(e.target.value))
         setSelectedDish(platilloSel); // Set the selected product object
         setErrors({});
         
@@ -120,8 +121,8 @@ const RegistroImprevistoMesero = () => {
         //idPlatillo, idProducto, idUnidadMedida, cantidad
     
         const ingredientesPlatillo = productosPlatilloRes.data.resultados;
-        console.log("ingredientes platillo seleccionado: ", ingredientesPlatillo);
-        console.log("platillo seleccionado: ", platilloSel);
+        //console.log("ingredientes platillo seleccionado: ", ingredientesPlatillo);
+        //console.log("platillo seleccionado: ", platilloSel);
 
         //hacer un foreach para que el proceso de descuento de inventario se haga por cada ingrediente que forma parte del platillo
         setProductosPlatillo(ingredientesPlatillo || []);
@@ -164,9 +165,10 @@ const RegistroImprevistoMesero = () => {
 
     // Cantidad de platillos involucrados en el imprevisto
     const handleCantidadChange = (e) => {
+        //console.log("selectedDish: ", selectedDish);
         const value = e.target.value;
         setCantidadPlatillo(value);
-        console.log("Dentro de candidad change - value cantidad platillo", value);
+        //console.log("Dentro de candidad change - value cantidad platillo", value);
 
         if (!value) {
             setCantidadConvertida([]);
@@ -175,19 +177,19 @@ const RegistroImprevistoMesero = () => {
         //console.log("selectedDish ID: ", selectedDishId);
         //console.log("selectedDish: ", selectedDish);
         if ( selectedDish.cantidad !== null && Number(value) > Number(selectedDish.cantidad)) {
-            console.log("if de cantidades");
+            //console.log("if de cantidades");
             setErrors({
                 ...errors,
                 cantidad: `La cantidad no puede ser mayor a los platillos ordenados (${selectedDish.cantidad})`
             });
         } else if (Number(value) <= 0) {
-            console.log("else if de cantidades");
+            //console.log("else if de cantidades");
             setErrors({
                 ...errors,
                 cantidad: 'La cantidad debe ser mayor a 0'
             });
         } else {
-            console.log("else de cantidades");
+            //console.log("else de cantidades");
             setErrors({
                 ...errors,
                 cantidad: null
@@ -211,6 +213,21 @@ const RegistroImprevistoMesero = () => {
             setErrors(newErrors);
             return;
         }
+        
+        //establecer el estado del platillo en la orden a 'preparacion'
+        try {
+            const response = await actualizarPlatilloChef({
+                idPlatilloOrden: selectedDish.idPlatilloOrden,
+                estado: 'preparacion'
+            });
+            //console.log("response: ", response);
+            //console.log("Estado del platillo en la orden actualizado a 'preparacion'");
+        }catch (err) {
+            console.error('Error al actualizar estado del platillo en la orden:', err);
+        }
+        
+
+
         //hacer una insercion de imprevistos por cada producto del platillo usando selectedDish, la descripcion será la misma para todos los ingredientes
         
         setCargando(true);
@@ -219,10 +236,10 @@ const RegistroImprevistoMesero = () => {
                 
                 try {
                     const cantidadNecesaria = productoPlatillo.cantidad * Number(cantidadPlatillo);
-                    console.log("cantidad enviada a imprevistos: ", cantidadNecesaria);
-                    console.log("cantidad enviada a inventario: ", inventario[index].cantidadActual, " - ", cantidadNecesaria);
-                    
-                    console.log("cantidad necesaria del producto para el imprevisto: ", cantidadNecesaria);
+                    //console.log("cantidad enviada a imprevistos: ", cantidadNecesaria);
+                    //console.log("cantidad enviada a inventario: ", inventario[index].cantidadActual, " - ", cantidadNecesaria);
+                    //
+                    //console.log("cantidad necesaria del producto para el imprevisto: ", cantidadNecesaria);
                     const response = await api.post('/api/imprevistos/crear', {
                         idUsuarioReporta: user.id,
                         idInventarioProducto: inventarios.find(i => i.Producto_idProducto === productoPlatillo.Producto_idProducto)?.idInventarioProducto,
@@ -234,7 +251,7 @@ const RegistroImprevistoMesero = () => {
                     setMessage('Imprevisto registrado con éxito');
                     // Actualizar el inventario después de registrar el imprevisto
                     await api.put(`/api/inventario/${inventario[index].idInventarioProducto}`, {
-                        cantidadActual: (inventario[index].cantidadActual ?? 0) - Number(cantidadNecesaria) * Number(medidaProducto[index].factorConversion)
+                        cantidadActual: (inventario[index].cantidadActual ?? 0) - Number(cantidadNecesaria)
                     });
                     setTimeout(() => navigate('/PanelGerente'), 750);
                 } catch (err) {

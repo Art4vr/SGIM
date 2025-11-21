@@ -84,18 +84,22 @@ const ActualizarStock = () => {
         e.preventDefault();
         setCargando(true);
         setMensaje('');
-        console.log("Unidades de medida2: ",  unidades);
+        //console.log("Unidades de medida2: ",  unidades);
+        const unidadM = unidades.find(u => u.idUnidadMedida === parseInt(idUnidadMedidaSeleccionada));
+        const unidadEquivalente = unidades.find(u => u.medida === unidadM.medidaEquivalente);
+        //console.log("Unidad de medida seleccionada: ", unidadM);
+        //console.log("Unidad de medida equivalente: ", unidadEquivalente);
         try {
-            console.log("DATOS PARA QUERY: idProducto", idProductoSeleccionado, " cantidadActual: ", cantidadAgregar, " cantidadMaxima: ", cantidadMaxima, " cantidadMinima: ", cantidadMinima, " fechaCaducidad: ", fechaCaducidad, " idProveedor: ", idProveedorSeleccionado, "idUsuario", user.id, " idUnidadMedida: ", idUnidadMedidaSeleccionada);
+            //console.log("DATOS PARA QUERY: idProducto", idProductoSeleccionado, " cantidadActual: ", cantidadAgregar * unidadM.factorConversion, " cantidadMaxima: ", cantidadMaxima * unidadM.factorConversion, " cantidadMinima: ", cantidadMinima * unidadM.factorConversion, " fechaCaducidad: ", fechaCaducidad, " idProveedor: ", idProveedorSeleccionado, "idUsuario", user.id, " idUnidadMedida: ", unidadEquivalente.idUnidadMedida);
             const response = await api.post('/api/inventario/crear', {
                 Producto_idProducto: idProductoSeleccionado,
-                cantidadMaxima,
-                cantidadMinima,
-                cantidadActual: cantidadAgregar,
+                cantidadMaxima: cantidadMaxima * unidadM.factorConversion,
+                cantidadMinima: cantidadMinima * unidadM.factorConversion,
+                cantidadActual: cantidadAgregar * unidadM.factorConversion,
                 fechaCaducidad,
                 Proveedor_idProveedor: idProveedorSeleccionado,
                 Usuario_idUsuario: user.id,
-                UnidadMedida_idUnidadMedida: idUnidadMedidaSeleccionada
+                UnidadMedida_idUnidadMedida: unidadEquivalente.idUnidadMedida
             });
             mostrarNotificacion('Stock actualizado correctamente', 'success');
             //setMensaje('Stock actualizado correctamente');
