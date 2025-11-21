@@ -19,10 +19,7 @@ import styles from '../../styles/ordenes/orden.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 // Para importar el usuario
 import PerfilUsuario from '../../components/PerfilUsuario';
-<<<<<<< HEAD
-=======
 import ModalProductos from './modalProductos';
->>>>>>> andrea
 
 const OrdenMesero = () => {
   const { user } = useAuth();

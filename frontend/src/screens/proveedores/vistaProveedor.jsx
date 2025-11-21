@@ -134,10 +134,10 @@ const VistaProveedores = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Proveedores</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PROVEEDORES</h1>
 
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
-                            Agregar Proveedor
+                            AGREGAR PROVEEDOR
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}

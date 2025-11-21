@@ -249,12 +249,12 @@ const ActualizarStock = () => {
                     <div>
                         {/*Botón para volver al inventario*/}
                         <button className={stylesCommon.backBtn} onClick={() => navigate('/inventario')}>
-                            Volver atras 
+                            VOLVER ATRÁS
                         </button>
 
                         {/*Botón de volver al panel*/}
                         <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
-                            Volver al Inicio
+                            VOLVER AL INICIO
                         </button>
                     </div>
                 </div>

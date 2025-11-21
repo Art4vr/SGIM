@@ -168,10 +168,10 @@ const VistaUsuarios = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Usuarios</h1>
+                        <h1 className={styles.title}>GESTIÓN DE USUARIOS</h1>
 
                         <button className={stylesCommon.registerBtn} onClick={() => navigate('/NuevoUsuario')}>
-                            Agregar usuario
+                            AGREGAR USUARIO
                         </button>
 
                         {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}

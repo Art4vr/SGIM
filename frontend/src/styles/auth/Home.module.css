@@ -18,7 +18,7 @@
     border-radius: 20px; /* Bordes redondeados */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra alrededor del contenedor */
     width: 100%;
-    max-width: 350px; /* Ancho máximo del contenedor */
+    max-width: 450px; /* Ancho máximo del contenedor */
     text-align: center; /* Alineación del texto */
     color: #000; /* Color del texto */
     transition: all 0.3s ease; /* Transición suave en los cambios de estilo */
@@ -47,26 +47,28 @@
     font-family: "Kalam", cursive;
     font-weight: 700;
     font-style: normal;
-    font-size: 75px;                            /* Tamaño grande para el título */
+    font-size: 85px;                            /* Tamaño grande para el título */
     margin: 0;
 }
 
 /* Estilos para el subtítulo */
 .subtitle {
-    font-family: "Yeseva One", serif;
+    font-family: "Courgette", cursive;
     font-weight: 400;
     font-style: normal;
-    font-size: 24px; /* Tamaño del subtítulo */
+    font-size: 36px; /* Tamaño del subtítulo */
     color: #520221; /* Color del texto */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
 }
 
 /* Estilos para el subtítulo */
 .welcome {
-    font-size: 24px; /* Tamaño del subtítulo */
+    font-family: "Playball", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px; /* Tamaño del subtítulo */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
-    font-family: 'Courier New', monospace; /* Fuente monoespaciada */
-    color: #000; /* Color del texto */
+    color: #D92579; /* Color del texto */
 }
 
 /* Estilos para los botones de login y registro */

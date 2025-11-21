@@ -105,11 +105,11 @@ const Registro = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Registro</h1>
+                        <h1 className={styles.title}>REGISTRO</h1>
 
                         <form onSubmit={handleRegister}>
                             <div className={styles.inputContainer}>
-                                <label>Nombre</label>
+                                <label>Nombre:</label>
                                 <input
                                     type="text"
                                     value={nombre}
@@ -119,7 +119,7 @@ const Registro = () => {
                             </div>
 
                             <div className={styles.inputContainer}>
-                                <label>Usuario</label>
+                                <label>Usuario:</label>
                                 <input
                                     type="text"
                                     value={username}
@@ -129,25 +129,18 @@ const Registro = () => {
                             </div>
 
                             <div className={styles.inputContainer}>
-                                <label>Contraseña</label>
+                                <label>Contraseña:</label>
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
-                                <div className={styles.showPasswordContainer}>
-                                    <label>Mostrar Contraseña</label>
-                                    <input
-                                        type="checkbox"
-                                        checked={showPassword}
-                                        onChange={() => setShowPassword(!showPassword)}
-                                    />
-                                </div>
+                                <div className={styles.showPasswordContainer}></div>
                             </div>
 
                             <div className={styles.inputContainer}>
-                                <label>Cargo</label>
+                                <label>Cargo:</label>
                                 <select
                                     value={rolId}
                                     onChange={(e) => setRol(e.target.value)}

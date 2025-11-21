@@ -38,7 +38,7 @@ const Home = () => {
                 </div>
                 <h1 className={styles.title}>SGIM</h1>
                 <h2 className={styles.subtitle}>Sistema de Gestión de Inventarios y Menú para Restaurantes</h2>
-                <h3 className={styles.welcome}>BIENVENIDO</h3>
+                <h3 className={styles.welcome}>Bienvenido</h3>
                 <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR <MdOutlineLogin /></button>
             </div>
         </div>
