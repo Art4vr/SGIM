@@ -78,7 +78,7 @@ const VistaInventario = () => {
     const [inventarioEditando, setInventarioEditando] = useState(null);
     const [eliminandoId, setEliminandoId] = useState(null);
 
-    const { loading } = useAuth();
+    const { loading, logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
@@ -94,6 +94,7 @@ const VistaInventario = () => {
     const [expiringAlerts, setExpiringAlerts] = useState([]);
     const [showLowStockAlert, setShowLowStockAlert] = useState(true);
     const [showExpiringAlert, setShowExpiringAlert] = useState(true);
+
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
