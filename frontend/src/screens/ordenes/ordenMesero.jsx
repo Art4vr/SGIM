@@ -20,10 +20,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 // Para importar el usuario
 import PerfilUsuario from '../../components/PerfilUsuario';
 import ModalProductos from './modalProductos';
-<<<<<<< HEAD
-=======
 import Encabezado from '../../components/Encabezado';
->>>>>>> origin/Arturo
 
 const OrdenMesero = () => {
   const { user } = useAuth();
