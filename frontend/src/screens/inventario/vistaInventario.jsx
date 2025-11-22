@@ -16,6 +16,61 @@ import AlertasInventario from './AlertasInventario';
 import Encabezado from '../../components/Encabezado';
 
 
+//funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
+    //fecha actual <=  fecha de caducidad -> 'caducado'
+    //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
+    //cantidad actual <= cantidad minima -> 'bajo stock'
+    //cantidad actual > cantidad minima -> 'en stock'
+    //cantidad actual == 0 -> 'finalizado'
+    const evaluarEstado = async (item) => {
+        const hoy = new Date();
+        //console.log("item: ", item);
+        //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
+        if (Number(item.cantidadActual) === 0 || item.cantidadActual === '0' || Number(item.cantidadActual) === 0.0 || Number(item.cantidadActual) < 0.0) {
+            //console.log("finalizado: ");
+            return 'finalizado';
+        } else if (item.fechaCaducidad) {
+            const fechaCad = new Date(item.fechaCaducidad);
+            if (hoy >= fechaCad) {
+                //console.log("caducado: ");
+                return 'caducado';
+            } else {
+                const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));   
+                if (diffDays <= 2) {
+                    //console.log("pronto_a_caducar: ");
+                    return 'pronto_a_caducar';
+                }
+            }
+        }
+        if (item.cantidadActual != null && item.cantidadMinima != null) {
+            console.log("EVALUANDO STOCK PARA ITEM else: ", item);
+            console.log("Number(item.cantidadActual) <= Number(item.cantidadMinima): ", Number(item.cantidadActual) <= Number(item.cantidadMinima));
+            if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
+                //console.log("bajo_stock: ");
+                return 'bajo_stock';
+            } else {
+                //console.log("en_stock: ");
+                return 'en_stock';
+            }
+        }
+    };
+
+    // Function to update states in backend (call this once after mapping)
+const actualizarEstadosEnBackend = async (inventarios) => {
+    for (const item of inventarios) {
+        //console.log("item: ", item);
+        const nuevoEstado = await evaluarEstado(item);
+        //console.log("nuevoEstado: ", nuevoEstado);
+        if (nuevoEstado !== item.estado) {
+            try {
+                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: nuevoEstado});
+            } catch (err) {
+                console.error(`Error actualizando estado para ${item.idInventarioProducto}:`, err);
+            }
+        }
+    }
+};
+
 const VistaInventario = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalInventario, setModalInventario] = useState(null);
@@ -23,7 +78,7 @@ const VistaInventario = () => {
     const [inventarioEditando, setInventarioEditando] = useState(null);
     const [eliminandoId, setEliminandoId] = useState(null);
 
-    const { logout, loading, user } = useAuth();
+    const { loading } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
@@ -59,6 +114,8 @@ const VistaInventario = () => {
             setProveedores(proveedoresRes.data || []);
             setCategorias(categoriasRes.data || []);
             setUsuarios(usuariosRes.data || []);
+
+            await actualizarEstadosEnBackend(inventariosRes.data.resultados || []);
         } catch (err) {
             setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
         } finally {
@@ -74,10 +131,8 @@ const VistaInventario = () => {
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario
     useEffect(() => {
         const lista = inventarios.map((inventario) => {
-            evaluarEstado(inventario); 
-            //const estado = evaluarEstado(inventario); 
-            //console.log("INVENTARIO EVALUADO: ", inventario);
-            //console.log("ESTADO EVALUADO: ", estado);
+            //const estado = evaluarEstado(inventario);
+            //console.log("estado-useefect: ", estado);
             const producto = productos.find((p) => p.idProducto === inventario.Producto_idProducto);
             const unidadMedida = medidas.find((m) => m.idUnidadMedida === inventario.UnidadMedida_idUnidadMedida);// aqui se busca la unidad de medida del producto
             const proveedor = proveedores.find((pr) => pr.idProveedor === inventario.Proveedor_idProveedor); // aqui se busca el proveedor del inventario
@@ -138,38 +193,8 @@ const VistaInventario = () => {
         return <div className={styles.loading}><ClipLoader /></div>;
     }
 
-    //funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
-    //fecha actual <=  fecha de caducidad -> 'caducado'
-    //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
-    //cantidad actual <= cantidad minima -> 'bajo stock'
-    //cantidad actual > cantidad minima -> 'en stock'
-    //cantidad actual == 0 -> 'finalizado'
-    const evaluarEstado = async (item) => {
-        const hoy = new Date();
-        //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
-        if (Number(item.cantidadActual) === 0 || item.cantidadActual === '0' || Number(item.cantidadActual) === 0.0 || Number(item.cantidadActual) < 0) {
-            await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'finalizado' });
-        } else if (item.fechaCaducidad) {
-            const fechaCad = new Date(item.fechaCaducidad);
-            if (hoy >= fechaCad) {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'caducado' });
-            } else {
-                const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));   
-                if (diffDays <= 2) {
-                    await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'pronto_a_caducar' });
-                }
-            }
-        }else if (item.cantidadActual != null && item.cantidadMinima != null) {
-            console.log("EVALUANDO STOCK PARA ITEM: ", item);
-            if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'bajo_stock' });
-            } else {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'en_stock' });
-            }
-        }
-    };
+    console.log("lista de inventario: ", listaInventario);
 
-    //console.log("LISTA INVENTARIO FINAL: ", listaInventario);
     return (
             <div className={styles.container}>
                 {/* Encabezado */}
