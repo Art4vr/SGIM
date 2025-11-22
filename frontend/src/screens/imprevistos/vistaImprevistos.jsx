@@ -16,6 +16,7 @@ import stylesCommon from "../../styles/common/common.module.css";
 import { getProductos, getUnidades } from "../../api/productoApi";
 
 import Encabezado from "../../components/Encabezado";
+import AlertasInventario from "../../components/AlertasInventario";
 
 const MostrarImprevistos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
@@ -349,6 +350,9 @@ const MostrarImprevistos = () => {
                     )
                     )}
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

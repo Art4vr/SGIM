@@ -12,7 +12,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
 import ModalEliminarInventario from './modalInventario';
-import AlertasInventario from './AlertasInventario';
+import AlertasInventario from '../../components/AlertasInventario';
 import Encabezado from '../../components/Encabezado';
 
 
@@ -319,7 +319,7 @@ const VistaInventario = () => {
                     )}
             </div>
             <div>
-                <AlertasInventario listaInventario={listaInventario}/>
+                <AlertasInventario/>
             </div>
         </div>
     );

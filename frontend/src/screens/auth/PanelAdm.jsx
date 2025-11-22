@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
 import Encabezado from '../../components/Encabezado.jsx';
+import AlertasInventario from '../../components/AlertasInventario.jsx';
 
 
 const PanelAdm = () => {
@@ -44,6 +45,9 @@ const PanelAdm = () => {
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
                 </button>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

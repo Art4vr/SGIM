@@ -8,6 +8,7 @@ import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import IngredientesPlatillo from './ingredientes';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaPlatillos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000);
@@ -255,6 +256,9 @@ const VistaPlatillos = () => {
                         )}
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

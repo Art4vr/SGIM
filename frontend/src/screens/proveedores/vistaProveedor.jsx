@@ -8,6 +8,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaProveedores = () => {
     const { logout, user, loading } = useAuth();
@@ -171,6 +172,9 @@ const VistaProveedores = () => {
                         )}
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );
