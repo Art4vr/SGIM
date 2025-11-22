@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import styles from '../../styles/auth/Register.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 /**
  * Componente de Registro de un Usuario (simulado)
@@ -78,29 +79,7 @@ const Registro = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* ESTA ES LA PARTE CLAVE (Derecha) */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                </div>
-            </div>
-        
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/Productos')}>Productos</li>
-                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                    <li onClick={handleLogout}>Log Out</li>
-                </ul>
-            </div>
+            <Encabezado/>
         
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
@@ -178,6 +157,9 @@ const Registro = () => {
                         {/* <WhatsAppButton pageName="registro"/> */}
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

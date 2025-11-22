@@ -269,9 +269,17 @@ const VistaInventario = () => {
                     </table>
                 )}
                 {/*Botón de volver al panel*/}
-                <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
-                    Volver al Inicio
-                </button>
+                {user?.rol===1 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
+                        Volver al Inicio
+                    </button>
+                )}
+
+                {user?.rol===2 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelEncargado')}>
+                        Volver al Inicio
+                    </button>
+                )}
                 {modalVisible && (
                         modalAccion === 'eliminar' ? (
                         <ModalEliminarInventario

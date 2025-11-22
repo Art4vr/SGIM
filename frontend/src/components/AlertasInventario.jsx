@@ -183,9 +183,9 @@ const AlertasInventario = () => { // Ya no recibe props
                     //transition: 'transform 0.3s ease-out' }}
                     >
                     {/* Lógica de renderizado de lowStockAlerts y expiringAlerts */}
-                    <div style={{ marginBottom: '20px' }}>
-                        <strong>Alertas</strong>
-                    </div>
+                        <div style={{ marginBottom: '20px' }}>
+                            <strong>Alertas</strong>
+                        </div>
                     
                     {/* Alerta Bajo Stock */}
                     {showLowStockAlert && lowStockAlerts.length > 0 && (
@@ -193,34 +193,34 @@ const AlertasInventario = () => { // Ya no recibe props
                             <strong>Productos con bajo stock ({lowStockAlerts.length}):</strong>
                             {/* ... tu map de lowStockAlerts ... */}
                             {lowStockAlerts.map(item => (
-                                    <div key={item.idInventarioProducto} style={{ backgroundColor: '#d92579', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}>
-                                        <p style={{ margin: '0', fontWeight: 'bold' }}>{item.nombreProducto}</p>
-                                        <p style={{ margin: '5px 0' }}>Cantidad actual: {parseInt(item.cantidadActual)}</p>
-                                        <p style={{ margin: '0' }}>Mínima: {item.cantidadMinima}</p>
-                                    </div>
-                                ))}
-                        </div>
-                    )}
-
-                    {/* Alerta Caducidad */}
-                    {showExpiringAlert && expiringAlerts.length > 0 && (
-                        <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
-                            <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
-                            {/* ... tu map de expiringAlerts ... */}
-                            {expiringAlerts.map(item => (
                                 <div key={item.idInventarioProducto} style={{ backgroundColor: '#d92579', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}>
                                     <p style={{ margin: '0', fontWeight: 'bold' }}>{item.nombreProducto}</p>
-                                    <p style={{ margin: '5px 0' }}>Caduca: {item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : 'N/A'}</p>
+                                    <p style={{ margin: '5px 0' }}>Cantidad actual: {Number(item.cantidadActual)}</p>
+                                    <p style={{ margin: '0' }}>Mínima: {item.cantidadMinima}</p>
                                 </div>
                             ))}
-
-                        {/* Mensaje si no hay alertas */}
-                        {!showLowStockAlert && !showExpiringAlert && (
-                            <p style={{textAlign:'center', color:'#aaa'}}>No hay alertas activas.</p>
-                        )}
                     </div>
+                )}
+
+                {/* Alerta Caducidad */}
+                {showExpiringAlert && expiringAlerts.length > 0 && (
+                    <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                        <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
+                        {/* ... tu map de expiringAlerts ... */}
+                        {expiringAlerts.map(item => (
+                            <div key={item.idInventarioProducto} style={{ backgroundColor: '#d92579', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}>
+                                <p style={{ margin: '0', fontWeight: 'bold' }}>{item.nombreProducto}</p>
+                                <p style={{ margin: '5px 0' }}>Caduca: {item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : 'N/A'}</p>
+                            </div>
+                        ))}
+
+                    {/* Mensaje si no hay alertas */}
+                    {!showLowStockAlert && !showExpiringAlert && (
+                        <p style={{textAlign:'center', color:'#aaa'}}>No hay alertas activas.</p>
                     )}
                 </div>
+                )}
+            </div>
         </>
     );
 };

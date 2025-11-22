@@ -153,13 +153,25 @@ const VistaProveedores = () => {
                                     </tbody>
                                 </table>
                                 
-                                <button
-                                    className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                    type="button"
-                                    onClick={() => navigate('/PanelGerente')}
-                                    >
-                                    VOLVER AL INICIO
-                                </button>
+                                {user?.rol===1 &&(
+                                    <button
+                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                        type="button"
+                                        onClick={() => navigate('/PanelGerente')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
+
+                                {user?.rol===2 &&(
+                                    <button
+                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                        type="button"
+                                        onClick={() => navigate('/PanelEncargado')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
                             </div>
                         )}
 

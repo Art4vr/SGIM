@@ -322,12 +322,22 @@ const MostrarImprevistos = () => {
                         </div>
                     )}
                     {/* Back button */}
-                    <button
-                        className={stylesCommon.backBtn}
-                        onClick={() => navigate("/PanelGerente")}
-                    >
-                        VOLVER AL INICIO
-                    </button>
+                    {user?.rol===1 &&(
+                        <button
+                            className={stylesCommon.backBtn}
+                            onClick={() => navigate("/PanelGerente")}
+                        >
+                            VOLVER AL INICIO
+                        </button>
+                    )}
+                    {user?.rol===2 &&(
+                        <button
+                            className={stylesCommon.backBtn}
+                            onClick={() => navigate("/PanelEncargado")}
+                        >
+                            VOLVER AL INICIO
+                        </button>
+                    )}
                     {/* aqui quiero que se muestren los modales de acuerdo a la accion */}
                     {modalVisible && (
                         modalAccion === 'eliminar' ? (
