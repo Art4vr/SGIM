@@ -31,7 +31,7 @@ const PanelMesero = () => {
                     <h3>Ver Menu</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevistoMesero')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
                 </button>

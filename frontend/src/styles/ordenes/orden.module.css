@@ -117,14 +117,20 @@
 
 /* ----- LISTA DE ÓRDENES ----- */
 .listaOrdenes {
- list-style: none;
- padding: 0;
- margin-top: 15px;
- width: 80%;
- max-width: 700px;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente fila */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+  width: 100%;
+  max-width: 900px;
+  /* Establece el comportamiento inicial con la cantidad de items */
 }
 
 .listaOrdenes li {
+  width: 250px;
  background-color: #2a2a2a;
  margin-bottom: 12px;
  padding: 15px;
@@ -181,7 +187,9 @@
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
- .listaOrdenes,
+ .listaOrdenes{
+    justify-content: space-evenly; /* Cambia la alineación a más distribuida en pantallas pequeñas */
+  }
  .contenedorPlatillos {
   width: 100%;
  }

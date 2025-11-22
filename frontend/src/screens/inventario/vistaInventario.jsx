@@ -86,45 +86,14 @@ const VistaInventario = () => {
                 ...inventario,
                 //estado: estado,
                 nombreProducto: producto ? producto.nombre : 'Desconocido',
-                nombreUnidad: unidadMedida ? unidadMedida.abreviatura : 'Desconocida',
+                nombreUnidad: unidadMedida ? unidadMedida.medida : 'Desconocida',
                 nombreProveedor: proveedor ? proveedor.nombre : 'Desconocido',
                 username: usuario ? usuario.username : 'Desconocido'
             };
         });
         setListaInventario(lista);
+        //console.log("LISTA INVENTARIO MAPEADA: ", lista);
     }, [inventarios, productos, medidas, proveedores, usuarios]);
-
-    //Ahora se va a hacer una especie de alerta o modal para cuando un inventario de producto sea igual a su cantidad minima se muestre en pantalla
-    //Igual si la fecha de caducidad esta cerca (por ejemplo 2 dias) se lanza una alerta pero de caducidad
-    /*useEffect(() => {
-        if (!listaInventario || listaInventario.length === 0) {
-            setLowStockAlerts([]);
-            setExpiringAlerts([]);
-            setShowLowStockAlert(false);
-            setShowExpiringAlert(false);
-            return;
-        }
-
-        const low = listaInventario.filter(item =>
-            item.cantidadActual != null &&
-            item.cantidadMinima != null &&
-            Number(item.cantidadActual) <= Number(item.cantidadMinima)
-        );
-
-        const hoy = new Date();
-        const expiringThresholdDays = 2; // adjust threshold here
-        const exp = listaInventario.filter(item => {
-            if (!item.fechaCaducidad) return false;
-            const fechaCad = new Date(item.fechaCaducidad);
-            const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));
-            return diffDays <= expiringThresholdDays;
-        });
-
-        setLowStockAlerts(low);
-        setExpiringAlerts(exp);
-        setShowLowStockAlert(low.length > 0);
-        setShowExpiringAlert(exp.length > 0);
-    }, [listaInventario]);*/
 
     //--------- MODAL PARA ELIMINAR ----------------
     const abrirModal = (inventario = null, mensaje, modalAccion) => {
@@ -178,7 +147,7 @@ const VistaInventario = () => {
     const evaluarEstado = async (item) => {
         const hoy = new Date();
         //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
-        if (Number(item.cantidadActual) === 0) {
+        if (Number(item.cantidadActual) === 0 || item.cantidadActual === '0' || Number(item.cantidadActual) === 0.0 || Number(item.cantidadActual) < 0) {
             await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'finalizado' });
         } else if (item.fechaCaducidad) {
             const fechaCad = new Date(item.fechaCaducidad);
@@ -191,6 +160,7 @@ const VistaInventario = () => {
                 }
             }
         }else if (item.cantidadActual != null && item.cantidadMinima != null) {
+            console.log("EVALUANDO STOCK PARA ITEM: ", item);
             if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
                 await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'bajo_stock' });
             } else {
@@ -200,10 +170,6 @@ const VistaInventario = () => {
     };
 
     //console.log("LISTA INVENTARIO FINAL: ", listaInventario);
-
-
-
-
     return (
             <div className={styles.container}>
                 {/* Encabezado */}
@@ -282,10 +248,10 @@ const VistaInventario = () => {
                                 <tr key={item.idInventarioProducto}>
                                     <td>{item.nombreProducto}</td>
                                     <td>{item.nombreProveedor}</td>
-                                    <td>{item.cantidadActual}</td>
-                                    <td>{item.cantidadMinima}</td>
-                                    <td>{item.cantidadMaxima}</td>
-                                    <td>{item.nombreUnidad}</td>
+                                    <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
                                     <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
                                     <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
                                     <td>{item.username}</td>

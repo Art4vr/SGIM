@@ -10,7 +10,8 @@ import {
     actualizarPlatilloOrdenController,
     eliminarPlatilloOrdenController,
     obtenerPlatillosOrdenController,
-    agregarPlatilloOrdenController
+    agregarPlatilloOrdenController, 
+    obtenerPlatillosMeseroController
 } from '../Controllers/ordenPlatilloControlador.js';
 
 const router = express.Router();
@@ -38,5 +39,8 @@ router.delete('/platillos/:idPlatilloOrden', eliminarPlatilloOrdenController);
 
 // Enviar platillos a cocina
 router.put('/enviarACocina/:idOrden', enviarOrdenACocinaController);
+
+// Obtener platillos de ordenes equivalentes a un mesero en especifico
+router.get('/mesero/:idMesero/platillos', obtenerPlatillosMeseroController);
 
 export default router;

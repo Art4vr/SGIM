@@ -20,12 +20,10 @@ const RegistroImprevisto = () => {
     const [descripcion, setDescripcion] = useState('');//descripcion que agrega el usuario sobre el imprevisto
     const [cantidad, setCantidad] = useState('');//cantidad ingresada
     const [medidaProducto, setMedidaProducto] = useState('');//unidad de medida equivalente al producto seleccionado
-    const [medidaInventario, setMedidaInventario] = useState('');//unidad de medida equivalente al inventario de dicho producto
     const [message, setMessage] = useState('');//variable de mensajes de error
     const [inventario, setInventario] = useState('');//objeto del inventario correspondiente al producto seleccionado
 
     const [selectedProductId, setSelectedProductId] = useState('');
-    const [cantidadConvertida, setCantidadConvertida] = useState(0.0);
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -69,18 +67,13 @@ const RegistroImprevisto = () => {
         const medidaSeleccionadaProductos = productoSeleccionado ? medidas.find(m => m.medida === productoSeleccionado.unidad) || null : null;
         //console.log("inventario seleccionado: ", inventarioSeleccionado);
         //console.log("producto seleccionado: ", productoSeleccionado);
-
-        //Busca el objeto de medida correspondiente al inventario de dicho producto seleccionado
-        const medidaSeleccionadaInventario = inventarioSeleccionado ? medidas.find(m => m.idUnidadMedida === inventarioSeleccionado.UnidadMedida_idUnidadMedida) || null : null;
-
+        
         if (inventarioSeleccionado) {
             setInventario(inventarioSeleccionado);
             setMedidaProducto(medidaSeleccionadaProductos);
-            setMedidaInventario(medidaSeleccionadaInventario);
         } else {
             setInventario('');
             setMedidaProducto('');
-            setMedidaInventario('');
         }
     };
 
@@ -89,24 +82,12 @@ const RegistroImprevisto = () => {
         const value = e.target.value;
         setCantidad(value);
 
-        if (!value || !medidaProducto?.factorConversion) {
-            setCantidadConvertida(0);
+        if (!value ) {
+            setCantidad(0);
             return;
         }
 
-        //hay que hacer una conversion de cantidad
-        //actualmente se usa la cantidad correspondiente a la tabla inventarioProducto
-        //entonces se hace una conversion respecto a la unidad de medida del producto hacia la unidad de medida correspondiente en inventarioProducto
-        //se usa la columna factorConversion y medidaEquivalente (ej. 'Kilogramo') de la tabla unidadMedida para hacer la conversion
-        //en el caso de medida equivalente habria que mapear medidas de nuevo
-
-        //ej. cantidad del producto -> gramo | se convierte a kilogramo | multiplica por factorConversion -> 0.001
-
-        //unidad de medida: gramo           100                  0.001
-        const cantidadConv = (Number(value) * Number(medidaProducto.factorConversion))
-        setCantidadConvertida(cantidadConv);
-
-        if (inventario?.cantidadActual !== null && Number(cantidadConv) > inventario.cantidadActual) {
+        if (inventario?.cantidadActual !== null && Number(cantidad) > inventario.cantidadActual) {
             setErrors({
                 ...errors,
                 cantidad: `La cantidad no puede superar el inventario disponible (${inventario.cantidadActual})`
@@ -144,7 +125,7 @@ const RegistroImprevisto = () => {
         setCargando(true);
         setTimeout(async () => {
             console.log("cantidad enviada a imprevistos: ", cantidad);
-            console.log("cantidad enviada a inventario: ", inventario.cantidadActual, " - ", cantidadConvertida);
+            console.log("cantidad enviada a inventario: ", inventario.cantidadActual, " - ", cantidad);
             try {
                 const response = await api.post('/api/imprevistos/crear', {
                     idUsuarioReporta: user.id,
@@ -157,7 +138,7 @@ const RegistroImprevisto = () => {
                 setMessage('Imprevisto registrado con éxito');
                 // Actualizar el inventario después de registrar el imprevisto
                 await api.put(`/api/inventario/${inventario.idInventarioProducto}`, {
-                    cantidadActual: (inventario.cantidadActual ?? 0) - Number(cantidadConvertida)
+                    cantidadActual: (inventario.cantidadActual ?? 0) - Number(cantidad)
                 });
 
                 setTimeout(() => navigate('/PanelChef'), 750);

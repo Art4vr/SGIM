@@ -79,3 +79,26 @@ export const obtenerPlatillosOrden = async (conn, idOrden) => {
         throw new Error('Error al obtener los platillos de la orden');
     }
 };
+
+// --------------------- OBTENER PLATILLOS DE ORDENES EQUIVALENTES A UN MESERO EN ESPECIFICO -----------------------
+export const obtenerPlatillosMesero = async (idMesero) => {
+    //console.log('obtenerPlatillosMesero llamado con idMesero:', idMesero);
+    const query = `
+    SELECT po.idPlatilloOrden, o.idOrden, pl.idPlatillo, pl.nombre AS platillo, po.cantidad, po.estado
+        FROM Platillo_Orden po
+        JOIN Orden o ON po.Orden_idOrden = o.idOrden
+        JOIN Platillo pl ON po.Platillo_idPlatillo = pl.idPlatillo
+        WHERE o.Usuario_idUsuario = ?
+        AND o.estado = 'abierta'
+        AND po.estado = 'listo'
+    `;
+    try {
+        const [rows] = await conexionDB.execute(query, [idMesero]);
+        //console.log('Platillos obtenidos para el mesero:', rows);
+        return rows;
+    } catch (err) {
+        console.error('Error en obtenerPlatillosOrden para un mesero:', err);
+        throw new Error('Error al obtener los platillos de la orden del mesero');
+    }
+
+};

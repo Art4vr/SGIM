@@ -9,7 +9,7 @@
 //importacion de modelos a utilizar
 //más
 // Para la orden
-import { agregarPlatilloOrden, actualizarPlatilloOrden, eliminarPlatilloOrden, obtenerPlatillosOrden } from '../Models/ordenPlatilloModelo.js';
+import { agregarPlatilloOrden, actualizarPlatilloOrden, eliminarPlatilloOrden, obtenerPlatillosOrden, obtenerPlatillosMesero } from '../Models/ordenPlatilloModelo.js';
 import {calcularTotalOrden, actualizarOrden} from '../Models/ordenMeseroModelo.js';
 import conexionDB from '../config/db.js';
 
@@ -141,5 +141,22 @@ export const obtenerPlatillosOrdenController = async (req, res) => {
         res.status(500).json({ mensaje: 'Error al obtener platillos de la orden' });
     } finally {
         conn.release();
+    }
+};
+
+
+// --------------------- OBTENER PLATILLOS DE ORDENES EQUIVALENTES A UN MESERO EN ESPECIFICO -----------------------
+export const obtenerPlatillosMeseroController = async (req,res) => {
+    //console.log('obtenerPlatillosMeseroController llamado', req.params);
+    try {
+        const  idMesero = req.params.idMesero;
+        
+        if (!idMesero)
+            return res.status(400).json({ mensaje: 'ID de mesero obligatorio' });
+        const platillos = await obtenerPlatillosMesero(idMesero); // platillos es de tipo array
+        res.json(platillos);
+    } catch (err) {
+        console.error('Error al obtener platillos de la orden del mesero:', err);
+        res.status(500).json({ mensaje: 'Error al obtener platillos de la orden del mesero' });
     }
 };
