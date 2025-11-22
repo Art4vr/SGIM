@@ -367,3 +367,79 @@ body {
         font-size: 0.85rem; /* Aún más pequeño si es necesario */
     }
 }
+
+.logoalerta {
+    /* POSICIÓN: Fixed hace que flote sobre la pantalla, ignorando el scroll */
+    position: fixed; 
+    bottom: 20px; 
+    left: 20px;   
+    z-index: 1000; 
+
+    /* TAMAÑO Y FORMA */
+    width: 60px; 
+    height: 60px;
+    border-radius: 50%; /* Esto lo hace redondo */
+    
+    /* COLORES */
+    background-color: #e4b004;
+    color: #f8f7f8;
+    border: 3px solid #5a5557;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); 
+
+    /* ALINEACIÓN DEL ICONO (Crucial para que el triangulo quede al medio) */
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    
+    /* TEXTO E INTERACCIÓN */
+    font-size: 2rem;
+    cursor: pointer; 
+    
+    /* LIMPIEZA */
+    margin: 0; 
+    padding: 0; 
+}
+
+/* Efecto Hover opcional */
+.logoalerta:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Estilo BASE del menú (cuando está CERRADO) */
+.alertaMenu {
+    position: fixed;
+    bottom: 90px; /* Posición final deseada */
+    left: 20px;
+    width: 300px;
+    max-width: 90%;
+    max-height: 60vh;
+    
+    /* Estilos visuales (Fondo, bordes, etc.) */
+    background-color: rgba(61, 45, 58, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 12px;
+    border: 1px solid #b44a82;
+    color: #fff;
+
+    /* === ANIMACIÓN (Aquí ocurre la magia) === */
+    
+    /* Estado inicial: invisible, un poco más abajo y ligeramente más pequeño */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    visibility: hidden; /* Crucial: para que no bloquee clicks cuando no se ve */
+    
+    /* Transición suave para todas las propiedades */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+/* Estilo ACTIVO (cuando está ABIERTO) */
+.alertaMenuAbierto {
+    opacity: 1;
+    transform: translateY(0) scale(1); /* Se mueve a su lugar original y tamaño real */
+    visibility: visible; /* Se hace visible e interactuable */
+}

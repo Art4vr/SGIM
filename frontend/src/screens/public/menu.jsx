@@ -1,4 +1,3 @@
-// src/screens/public/Menu.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../styles/public/Menu.module.css";
@@ -9,10 +8,13 @@ export default function Menu() {
   const [filtroCategoria, setFiltroCategoria] = useState("Todas");
   const [busqueda, setBusqueda] = useState("");
   const [loading, setLoading] = useState(true);
+  
+  // Nuevo estado para el mensaje de error
+  const [errorBusqueda, setErrorBusqueda] = useState("");
 
   useEffect(() => {
     axios
-      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.83"}:3000/api/platillos`) //Modificar el segundo campo dependiendo de la red
+      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.83"}:3000/api/platillos`) 
       .then((res) => {
         const agrupados = res.data.reduce((acc, platillo) => {
           if (!acc[platillo.categoria]) acc[platillo.categoria] = [];
@@ -26,6 +28,23 @@ export default function Menu() {
       })
       .catch((err) => console.error("Error cargando platillos:", err));
   }, []);
+
+  // Función actualizada con validación y mensaje
+  const handleBusqueda = (e) => {
+    const valor = e.target.value;
+    
+    // Si el valor contiene números (0-9)
+    if (/[0-9]/.test(valor)) {
+      setErrorBusqueda("⚠️ Solo se permiten letras");
+      
+      // Opcional: Ocultar el mensaje automáticamente después de 2 segundos
+      setTimeout(() => setErrorBusqueda(""), 2000);
+    } else {
+      // Si es válido, limpiamos error y actualizamos
+      setErrorBusqueda("");
+      setBusqueda(valor);
+    }
+  };
 
   const filtrarPlatillos = () => {
     const resultado = {};
@@ -49,17 +68,35 @@ export default function Menu() {
       <div className={styles.menuPanel}>
         {/* Filtros */}
         <div className={styles.menuFiltros}>
-          <input
-            type="text"
-            placeholder="Buscar platillo..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-            className={styles.menuBusqueda}
-          />
+          {/* Envolvemos el input en un div para poner el mensaje abajo sin romper el flex */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <input
+              type="text"
+              placeholder="Buscar platillo..."
+              value={busqueda}
+              onChange={handleBusqueda}
+              className={styles.menuBusqueda}
+              style={{ width: '100%' }} // Asegura que llene el contenedor
+            />
+            {/* Mensaje de error condicional */}
+            {errorBusqueda && (
+              <span style={{ 
+                color: '#ff4d4d', 
+                fontSize: '0.85rem', 
+                marginTop: '5px', 
+                marginLeft: '5px',
+                fontWeight: 'bold'
+              }}>
+                {errorBusqueda}
+              </span>
+            )}
+          </div>
+
           <select
             value={filtroCategoria}
             onChange={(e) => setFiltroCategoria(e.target.value)}
             className={styles.menuSelect}
+            style={{ height: 'fit-content', alignSelf: 'flex-start' }} // Alineación para cuando sale el mensaje
           >
             {categorias.map((cat) => (
               <option key={cat} value={cat}>

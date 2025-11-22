@@ -35,6 +35,7 @@ import VistaProveedores from './screens/proveedores/vistaProveedor';
 //Importacion de vista de imprevistos
 import MostrarImprevistos from './screens/imprevistos/vistaImprevistos';
 import RegistroImprevisto from './screens/imprevistos/registroImprevistoChef';
+import RegistroImprevistoMesero from './screens/imprevistos/registroImprevistoMesero';
 
 //Importacion de platillos
 import VistaPlatillos from './screens/platillos/platillos';
@@ -132,6 +133,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route 
+            path="/RegistroImprevistoMesero" 
+            element={
+              <ProtectedRoute user={user} allowedRoles={[1,4]}>
+                <RegistroImprevistoMesero />
+              </ProtectedRoute>
+            }
+          />
+
           <Route 
             path="/PanelChef" 
             element={
@@ -159,7 +170,7 @@ function App() {
           <Route 
             path="/ordenChef" 
             element={
-              <ProtectedRoute user={user} allowedRoles={[3]}>
+              <ProtectedRoute user={user} allowedRoles={[1,3]}>
                 <OrdenChef />
               </ProtectedRoute>
             }

@@ -11,10 +11,65 @@ import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
-import PerfilUsuario from '../../components/PerfilUsuario';
 import ModalEliminarInventario from './modalInventario';
-import AlertasInventario from './AlertasInventario';
+import AlertasInventario from '../../components/AlertasInventario';
+import Encabezado from '../../components/Encabezado';
 
+
+//funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
+    //fecha actual <=  fecha de caducidad -> 'caducado'
+    //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
+    //cantidad actual <= cantidad minima -> 'bajo stock'
+    //cantidad actual > cantidad minima -> 'en stock'
+    //cantidad actual == 0 -> 'finalizado'
+    const evaluarEstado = async (item) => {
+        const hoy = new Date();
+        //console.log("item: ", item);
+        //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
+        if (Number(item.cantidadActual) === 0 || item.cantidadActual === '0' || Number(item.cantidadActual) === 0.0 || Number(item.cantidadActual) < 0.0) {
+            //console.log("finalizado: ");
+            return 'finalizado';
+        } else if (item.fechaCaducidad) {
+            const fechaCad = new Date(item.fechaCaducidad);
+            if (hoy >= fechaCad) {
+                //console.log("caducado: ");
+                return 'caducado';
+            } else {
+                const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));   
+                if (diffDays <= 2) {
+                    //console.log("pronto_a_caducar: ");
+                    return 'pronto_a_caducar';
+                }
+            }
+        }
+        if (item.cantidadActual != null && item.cantidadMinima != null) {
+            console.log("EVALUANDO STOCK PARA ITEM else: ", item);
+            console.log("Number(item.cantidadActual) <= Number(item.cantidadMinima): ", Number(item.cantidadActual) <= Number(item.cantidadMinima));
+            if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
+                //console.log("bajo_stock: ");
+                return 'bajo_stock';
+            } else {
+                //console.log("en_stock: ");
+                return 'en_stock';
+            }
+        }
+    };
+
+    // Function to update states in backend (call this once after mapping)
+const actualizarEstadosEnBackend = async (inventarios) => {
+    for (const item of inventarios) {
+        //console.log("item: ", item);
+        const nuevoEstado = await evaluarEstado(item);
+        //console.log("nuevoEstado: ", nuevoEstado);
+        if (nuevoEstado !== item.estado) {
+            try {
+                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: nuevoEstado});
+            } catch (err) {
+                console.error(`Error actualizando estado para ${item.idInventarioProducto}:`, err);
+            }
+        }
+    }
+};
 
 const VistaInventario = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -23,13 +78,10 @@ const VistaInventario = () => {
     const [inventarioEditando, setInventarioEditando] = useState(null);
     const [eliminandoId, setEliminandoId] = useState(null);
 
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
-    const { logout, loading, user } = useAuth();
+    const { loading, logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-    const [menuAbierto, setMenuAbierto] = useState(false);
     const [productos, setProductos] = useState([]);
     const [proveedores, setProveedores] = useState([]);
     const [inventarios, setInventarios] = useState([]);
@@ -42,6 +94,7 @@ const VistaInventario = () => {
     const [expiringAlerts, setExpiringAlerts] = useState([]);
     const [showLowStockAlert, setShowLowStockAlert] = useState(true);
     const [showExpiringAlert, setShowExpiringAlert] = useState(true);
+
 
     // Cargar productos e inventario
     const cargarDatos = async () => {
@@ -62,6 +115,8 @@ const VistaInventario = () => {
             setProveedores(proveedoresRes.data || []);
             setCategorias(categoriasRes.data || []);
             setUsuarios(usuariosRes.data || []);
+
+            await actualizarEstadosEnBackend(inventariosRes.data.resultados || []);
         } catch (err) {
             setMensaje('Error al cargar datos' + (err.response?.data?.mensaje || err.message));
         } finally {
@@ -77,10 +132,8 @@ const VistaInventario = () => {
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario
     useEffect(() => {
         const lista = inventarios.map((inventario) => {
-            evaluarEstado(inventario); 
-            //const estado = evaluarEstado(inventario); 
-            //console.log("INVENTARIO EVALUADO: ", inventario);
-            //console.log("ESTADO EVALUADO: ", estado);
+            //const estado = evaluarEstado(inventario);
+            //console.log("estado-useefect: ", estado);
             const producto = productos.find((p) => p.idProducto === inventario.Producto_idProducto);
             const unidadMedida = medidas.find((m) => m.idUnidadMedida === inventario.UnidadMedida_idUnidadMedida);// aqui se busca la unidad de medida del producto
             const proveedor = proveedores.find((pr) => pr.idProveedor === inventario.Proveedor_idProveedor); // aqui se busca el proveedor del inventario
@@ -89,64 +142,14 @@ const VistaInventario = () => {
                 ...inventario,
                 //estado: estado,
                 nombreProducto: producto ? producto.nombre : 'Desconocido',
-                nombreUnidad: unidadMedida ? unidadMedida.abreviatura : 'Desconocida',
+                nombreUnidad: unidadMedida ? unidadMedida.medida : 'Desconocida',
                 nombreProveedor: proveedor ? proveedor.nombre : 'Desconocido',
                 username: usuario ? usuario.username : 'Desconocido'
             };
         });
         setListaInventario(lista);
+        //console.log("LISTA INVENTARIO MAPEADA: ", lista);
     }, [inventarios, productos, medidas, proveedores, usuarios]);
-
-    const toggleMenu = () => setMenuAbierto((s) => !s);
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ) {
-                setMenuAbierto(false);
-            }
-        };
-    
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [menuAbierto]);
-
-    //Ahora se va a hacer una especie de alerta o modal para cuando un inventario de producto sea igual a su cantidad minima se muestre en pantalla
-    //Igual si la fecha de caducidad esta cerca (por ejemplo 2 dias) se lanza una alerta pero de caducidad
-    /*useEffect(() => {
-        if (!listaInventario || listaInventario.length === 0) {
-            setLowStockAlerts([]);
-            setExpiringAlerts([]);
-            setShowLowStockAlert(false);
-            setShowExpiringAlert(false);
-            return;
-        }
-
-        const low = listaInventario.filter(item =>
-            item.cantidadActual != null &&
-            item.cantidadMinima != null &&
-            Number(item.cantidadActual) <= Number(item.cantidadMinima)
-        );
-
-        const hoy = new Date();
-        const expiringThresholdDays = 2; // adjust threshold here
-        const exp = listaInventario.filter(item => {
-            if (!item.fechaCaducidad) return false;
-            const fechaCad = new Date(item.fechaCaducidad);
-            const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));
-            return diffDays <= expiringThresholdDays;
-        });
-
-        setLowStockAlerts(low);
-        setExpiringAlerts(exp);
-        setShowLowStockAlert(low.length > 0);
-        setShowExpiringAlert(exp.length > 0);
-    }, [listaInventario]);*/
 
     //--------- MODAL PARA ELIMINAR ----------------
     const abrirModal = (inventario = null, mensaje, modalAccion) => {
@@ -191,55 +194,13 @@ const VistaInventario = () => {
         return <div className={styles.loading}><ClipLoader /></div>;
     }
 
-    //funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
-    //fecha actual <=  fecha de caducidad -> 'caducado'
-    //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
-    //cantidad actual <= cantidad minima -> 'bajo stock'
-    //cantidad actual > cantidad minima -> 'en stock'
-    //cantidad actual == 0 -> 'finalizado'
-    const evaluarEstado = async (item) => {
-        const hoy = new Date();
-        //console.log("EVALUANDO ESTADO PARA ITEM: ", item);
-        if (Number(item.cantidadActual) === 0) {
-            await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'finalizado' });
-        } else if (item.fechaCaducidad) {
-            const fechaCad = new Date(item.fechaCaducidad);
-            if (hoy >= fechaCad) {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'caducado' });
-            } else {
-                const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));   
-                if (diffDays <= 2) {
-                    await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'pronto_a_caducar' });
-                }
-            }
-        }else if (item.cantidadActual != null && item.cantidadMinima != null) {
-            if (Number(item.cantidadActual) <= Number(item.cantidadMinima)) {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'bajo_stock' });
-            } else {
-                await api.put(`/api/inventario/${item.idInventarioProducto}`, { estado: 'en_stock' });
-            }
-        }
-    };
-
-    //console.log("LISTA INVENTARIO FINAL: ", listaInventario);
-
-
-
+    console.log("lista de inventario: ", listaInventario);
 
     return (
             <div className={styles.container}>
                 {/* Encabezado */}
-                <div className={stylesCommon.header}>
-                    <button ref ={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                        <img src="/imagenes/menu_btn.png" alt="Menú" />
-                    </button>
-                    <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                    {/* Menú de usuario */}
-                    <div className={stylesCommon.headerRight}>
-                        <PerfilUsuario /> 
-                        <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" /> {}
-                    </div>
-                </div>
+                <Encabezado/>
+
                 {/* Non-blocking alert boxes (keeps existing styles) */}
                 <div style={{ padding: '0 20px' }}>
                     {showLowStockAlert && lowStockAlerts.length > 0 && (
@@ -275,21 +236,6 @@ const VistaInventario = () => {
                     )}
                 </div>
 
-                {/* Sidebar */}
-                <div
-                    ref={menuRef}
-                    className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
-                >
-                <ul>
-                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
-                    <li onClick={() => navigate('/Platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/Proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/Productos')}>Productos</li>
-                    <li onClick={() => navigate('/Imprevistos')}>Ver Imprevistos</li>
-                    <li onClick={() => navigate('/Inventario')}>Ver Inventario</li>
-                    <li onClick={() => navigate('/NuevoUsuario')}>Nuevo Usuario</li>
-                </ul>
-            </div>
 
             {/* Main Content */}
             <div className={styles.content}>
@@ -328,10 +274,10 @@ const VistaInventario = () => {
                                 <tr key={item.idInventarioProducto}>
                                     <td>{item.nombreProducto}</td>
                                     <td>{item.nombreProveedor}</td>
-                                    <td>{item.cantidadActual}</td>
-                                    <td>{item.cantidadMinima}</td>
-                                    <td>{item.cantidadMaxima}</td>
-                                    <td>{item.nombreUnidad}</td>
+                                    <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                    <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
                                     <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
                                     <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
                                     <td>{item.username}</td>
@@ -349,9 +295,17 @@ const VistaInventario = () => {
                     </table>
                 )}
                 {/*Botón de volver al panel*/}
-                <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
-                    Volver al Inicio
-                </button>
+                {user?.rol===1 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
+                        Volver al Inicio
+                    </button>
+                )}
+
+                {user?.rol===2 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelEncargado')}>
+                        Volver al Inicio
+                    </button>
+                )}
                 {modalVisible && (
                         modalAccion === 'eliminar' ? (
                         <ModalEliminarInventario
@@ -365,7 +319,7 @@ const VistaInventario = () => {
                     )}
             </div>
             <div>
-                <AlertasInventario listaInventario={listaInventario}/>
+                <AlertasInventario/>
             </div>
         </div>
     );

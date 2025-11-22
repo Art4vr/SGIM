@@ -4,7 +4,6 @@
 //Escoge tambien de la lista de unidades de medida y de una de proveedores
 //Ingresa fecha de caducidad, cantidad maxima y minima necesarias, asi como cantidad actual
 //Jala el username del usuario que hace el registro
-
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { ClipLoader } from 'react-spinners';
@@ -18,14 +17,14 @@ import stylesCommon from '../../styles/common/common.module.css';
 
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const ActualizarStock = () => {
     const { logout, loading, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-    const [menuAbierto, setMenuAbierto] = useState(false);
     const [productos, setProductos] = useState([]);
     const [unidades, setUnidades] = useState([]);
     const [categorias, setCategorias] = useState([]);
@@ -38,8 +37,6 @@ const ActualizarStock = () => {
     const [fechaCaducidad, setFechaCaducidad] = useState('');
     const [idProveedorSeleccionado, setIdProveedorSeleccionado] = useState('');
     const [idUnidadMedidaSeleccionada, setIdUnidadMedidaSeleccionada] = useState('');
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
     const [notificacion, setNotificacion] = useState({ visible: false, mensaje: '', tipo: 'info' });
 
     //Notificaciones personalizadas
@@ -84,18 +81,22 @@ const ActualizarStock = () => {
         e.preventDefault();
         setCargando(true);
         setMensaje('');
-        console.log("Unidades de medida2: ",  unidades);
+        //console.log("Unidades de medida2: ",  unidades);
+        const unidadM = unidades.find(u => u.idUnidadMedida === parseInt(idUnidadMedidaSeleccionada));
+        const unidadEquivalente = unidades.find(u => u.medida === unidadM.medidaEquivalente);
+        //console.log("Unidad de medida seleccionada: ", unidadM);
+        //console.log("Unidad de medida equivalente: ", unidadEquivalente);
         try {
-            console.log("DATOS PARA QUERY: idProducto", idProductoSeleccionado, " cantidadActual: ", cantidadAgregar, " cantidadMaxima: ", cantidadMaxima, " cantidadMinima: ", cantidadMinima, " fechaCaducidad: ", fechaCaducidad, " idProveedor: ", idProveedorSeleccionado, "idUsuario", user.id, " idUnidadMedida: ", idUnidadMedidaSeleccionada);
+            //console.log("DATOS PARA QUERY: idProducto", idProductoSeleccionado, " cantidadActual: ", cantidadAgregar * unidadM.factorConversion, " cantidadMaxima: ", cantidadMaxima * unidadM.factorConversion, " cantidadMinima: ", cantidadMinima * unidadM.factorConversion, " fechaCaducidad: ", fechaCaducidad, " idProveedor: ", idProveedorSeleccionado, "idUsuario", user.id, " idUnidadMedida: ", unidadEquivalente.idUnidadMedida);
             const response = await api.post('/api/inventario/crear', {
                 Producto_idProducto: idProductoSeleccionado,
-                cantidadMaxima,
-                cantidadMinima,
-                cantidadActual: cantidadAgregar,
+                cantidadMaxima: cantidadMaxima * unidadM.factorConversion,
+                cantidadMinima: cantidadMinima * unidadM.factorConversion,
+                cantidadActual: cantidadAgregar * unidadM.factorConversion,
                 fechaCaducidad,
                 Proveedor_idProveedor: idProveedorSeleccionado,
                 Usuario_idUsuario: user.id,
-                UnidadMedida_idUnidadMedida: idUnidadMedidaSeleccionada
+                UnidadMedida_idUnidadMedida: unidadEquivalente.idUnidadMedida
             });
             mostrarNotificacion('Stock actualizado correctamente', 'success');
             //setMensaje('Stock actualizado correctamente');
@@ -107,44 +108,11 @@ const ActualizarStock = () => {
             setCargando(false);
         }
     };
-    
-    const toggleMenu = () => {
-        setMenuAbierto(!menuAbierto);
-    };
-
-    useEffect(() => { 
-        const handleClickOutside = (event) =>{
-            if(
-                menuAbierto &&
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                botonRef.current &&
-                !botonRef.current.contains(event.target)
-            ){
-                setMenuAbierto(false);
-            }
-        }
-
-        document.addEventListener('mousedown',handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown',handleClickOutside);
-        };
-    }, [menuAbierto]);
 
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button ref={botonRef} className={stylesCommon.menuBoton} onClick={toggleMenu}>
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi </h1>
-                {/* Menú de usuario */}
-                <div className={stylesCommon.headerRight}>
-                    <PerfilUsuario /> 
-                    <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-                </div>
-            </div>
+            <Encabezado/>
 
             {/* 4. Renderizado de la notificación flotante */}
             {notificacion.visible && (
@@ -152,20 +120,6 @@ const ActualizarStock = () => {
                     {notificacion.mensaje}
                 </div>
             )}
-
-            {/* Menú lateral */}
-            <div ref={menuRef} className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}>
-                <ul>
-                    <li onClick={() => navigate('/usuarios')}>Usuarios</li>
-                    <li onClick={() => navigate('/proveedores')}>Proveedores</li>
-                    <li onClick={() => navigate('/inventario')}>Inventario</li>
-                    <li onClick={() => navigate('/platillos')}>Platillos</li>
-                    <li onClick={() => navigate('/pedidos')}>Pedidos</li>
-                    <li onClick={() => navigate('/reportes')}>Reportes</li>
-                    <li onClick={() => navigate('/mesas')}>Mesas</li>
-                    <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
-                </ul>
-            </div>
 
             {/* Contenido Principal Centrado */}
             <div className={styles.bodyContainer}>
@@ -175,10 +129,10 @@ const ActualizarStock = () => {
                     {/* Ya no renderizamos el div.mensaje antiguo aquí */}
 
                     {cargando && !productos.length ? (
-                         <div className={styles.spinnerContainer}>
+                        <div className={styles.spinnerContainer}>
                             {/* Loader simple CSS */}
                             <div className={styles.simpleLoader}>Cargando...</div>
-                         </div>
+                        </div>
                     ) : (
                         <form onSubmit={manejarActualizarStock} className={styles.form}>
                             {/* Producto */}
@@ -249,6 +203,7 @@ const ActualizarStock = () => {
                     <div>
                         {/*Botón para volver al inventario*/}
                         <button className={stylesCommon.backBtn} onClick={() => navigate('/inventario')}>
+<<<<<<< HEAD
                             VOLVER ATRÁS
                         </button>
 
@@ -256,8 +211,27 @@ const ActualizarStock = () => {
                         <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
                             VOLVER AL INICIO
                         </button>
+=======
+                            Ir al Inventario
+                        </button>
+
+                        {/*Botón de volver al panel*/}
+                        {user?.rol===1 &&(    
+                            <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
+                                Volver al Inicio
+                            </button>
+                        )}
+                        {user?.rol===2 &&(    
+                            <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelEncargado')}>
+                                Volver al Inicio
+                            </button>
+                        )}
+>>>>>>> origin/Arturo
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

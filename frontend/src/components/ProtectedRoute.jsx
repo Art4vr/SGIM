@@ -20,12 +20,13 @@ const ProtectedRoute = ({user,allowedRoles,children}) => {
     }
     
     if(!user){// Si no hay usuario autenticado, lo redirige al login
-        return <Navigate to="/Login" replace />;
+        return <Navigate to="/Login" replace />; // el replace es para no guardar esta ruta en el historial
     }
 
     // Si se pasan roles permitidos (allowedRoles),y el rol del usuario NO está incluido en esa lista,muestra un mensaje de "Acceso denegado"
     if (allowedRoles && !allowedRoles.includes(user.rol)) {
-        return <h2 style={{ textAlign: 'center', marginTop: '50px' }}>Acceso denegado</h2>;
+        //mensaje de acceso denegado y redirigir al   ruta: / 
+        return <Navigate to="/Login" replace />;
     }
 
     // Si el usuario está autenticado y tiene el rol permitido (o no se especificaron roles),
