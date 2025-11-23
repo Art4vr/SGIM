@@ -2,22 +2,42 @@
 
 /* ----- CONTENIDO PRINCIPAL ----- */
 .contenidoPrincipal {
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: flex-start;
- min-height: 100vh;
- color: #ffffff;
- padding: 30px 20px;
- box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  color: #ffffff;
+  padding: 30px 20px;
+  box-sizing: border-box;
 
- background-color: rgba(255, 255, 255, 0.44); /* Blanco con transparencia */
- border-radius: 16px; /* Bordes suaves */
- padding: 2rem;    /* Espacio interno */
- box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombrilla ligera */
- width: 90%;
- max-width: 1200px;
- margin: 2rem auto;  /* Centrado */
+  background-color: rgba(255, 255, 255, 0.44);
+  /* Blanco con transparencia */
+  border-radius: 16px;
+  /* Bordes suaves */
+  padding: 2rem;
+  /* Espacio interno */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  /* Sombrilla ligera */
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  /* Centrado */
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tituloPrincipal {
