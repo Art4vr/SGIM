@@ -253,46 +253,48 @@ const VistaInventario = () => {
                 {cargando ? (
                     <div className={styles.loading}><ClipLoader /></div>
                 ) : (
-                    <table className={styles.Table}>
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Proveedor</th>
-                                <th>Stock actual</th>
-                                <th>Cantidad Mínima</th>
-                                <th>Cantidad Máxima</th>
-                                <th>Unidad de Medida</th>
-                                <th>Fecha de Ingreso</th>
-                                <th>Fecha de Caducidad</th>
-                                <th>Usuario que Registró</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listaInventario.map((item) => (
-                                <tr key={item.idInventarioProducto}>
-                                    <td>{item.nombreProducto}</td>
-                                    <td>{item.nombreProveedor}</td>
-                                    <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
-                                    <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
-                                    <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
-                                    <td>{item.username}</td>
-                                    <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
-                                    <td className={styles.acciones}>
-                                        <button
-                                            onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
-                                            disabled={eliminandoId === item.idInventarioProducto}
-                                        >🗑️
-                                        </button>
-                                    </td>
+                    <div className={stylesCommon.productTableWrapper}>  
+                        <table className={styles.Table}>
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Proveedor</th>
+                                    <th>Stock actual</th>
+                                    <th>Cantidad Mínima</th>
+                                    <th>Cantidad Máxima</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Fecha de Ingreso</th>
+                                    <th>Fecha de Caducidad</th>
+                                    <th>Usuario que Registró</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {listaInventario.map((item) => (
+                                    <tr key={item.idInventarioProducto}>
+                                        <td>{item.nombreProducto}</td>
+                                        <td>{item.nombreProveedor}</td>
+                                        <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
+                                        <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
+                                        <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
+                                        <td>{item.username}</td>
+                                        <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
+                                        <td className={styles.acciones}>
+                                            <button
+                                                onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
+                                                disabled={eliminandoId === item.idInventarioProducto}
+                                            >🗑️
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
                 {/*Botón de volver al panel*/}
                 {user?.rol===1 &&(

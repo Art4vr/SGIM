@@ -204,40 +204,106 @@ body {
 }
 
 /* ===== Scrollbar Personalizado ===== */
+/* =========================================
+   1. CONTENEDOR (WRAPPER)
+   ========================================= */
+.productTableWrapper {
+    max-height: 400px;           /* Altura máxima visible */
+    overflow-y: auto;            /* Scroll vertical */
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+    /* FONDO: Igual al de la tabla para evitar parpadeos */
+    background-color: #f7eef4; 
 
-.tableWrapper {
-    max-height: 400px;          /* Ajusta según el tamaño del panel */
-    overflow-y: auto;
-    overflow-x: auto;
+    /* === SOLUCIÓN ESPACIOS EN BLANCO === */
+    /* Elimina el relleno en TODOS los lados (arriba, abajo, izq, der) */
+    padding: 0 !important; 
+
+    /* Soporte Firefox */
+    scrollbar-color: #b44a82 transparent; 
+    scrollbar-width: thin;
+}
+
+/* =========================================
+   2. SCROLLBAR PERSONALIZADO (Chrome/Edge)
+   ========================================= */
+.productTableWrapper::-webkit-scrollbar {
+    width: 10px;
+}
+
+.productTableWrapper::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* MARGEN SUPERIOR: Ajusta esto según la altura exacta de tu header (th) */
+    margin-top: 55px; 
+    margin-bottom: 5px;
+}
+
+.productTableWrapper::-webkit-scrollbar-thumb {
+    background-color: #b44a82; 
     border-radius: 10px;
+    /* Borde del mismo color del fondo para dar efecto "flotante" */
+    border: 2px solid #f7eef4; 
 }
 
-.tableWrapper::-webkit-scrollbar {
-    width: 10px;               /* ancho del scroll vertical */
-    height: 10px;              /* alto del scroll horizontal */
+.productTableWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #dc057b;
 }
 
-.tableWrapper::-webkit-scrollbar-track {
-    background: #e8d9e2;        /* color del fondo del track */
-    border-radius: 10px;
+/* =========================================
+   3. TABLA (Estilos y Reset de espacios)
+   ========================================= */
+/* Asegúrate de aplicar esta clase a la etiqueta <table> */
+.productTable {
+    width: 100%;
+    background-color: #f7eef4;
+    
+    /* === SOLUCIÓN TÉCNICA === */
+    /* separate: necesario para que el sticky header funcione bien */
+    border-collapse: separate; 
+    /* spacing 0: necesario para eliminar las líneas blancas entre celdas */
+    border-spacing: 0; 
+    
+    /* Elimina márgenes externos por defecto */
+    margin: 0; 
 }
 
-.tableWrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #b44a82, #8b3a65);
-    border-radius: 10px;
-    border: 2px solid #e8d9e2;  /* hace que se vea con relieve */
+/* === HEADER FIJO (STICKY) === */
+.productTable th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
+    background-color: #b44a82;
+    color: white;
+    padding: 0.8rem;
+
+    font-weight: bold;
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-size: 22px;
+    
+    /* Sombra inferior para sellar visualmente el borde */
+    box-shadow: 0 1px 0 #b44a82;
 }
 
-.tableWrapper::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #dc057b, #a04270);
-    cursor: pointer;
+/* === CELDAS DEL CUERPO === */
+.productTable td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-size: 18px;
 }
 
-/* Firefox */
-.tableWrapper {
-    scrollbar-width: thin;             /* grosor */
-    scrollbar-color: #b44a82 #e8d9e2;  /* color del thumb y del track */
+.productTable tr:hover {
+    background-color: #f0d8e3;
 }
+
 
 /* ======== MENSAJE ======== */
 .message {

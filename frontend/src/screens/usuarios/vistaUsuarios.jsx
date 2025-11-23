@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
+import stylesTabla from '../../styles/platillos/Platillo.module.css';
 
 const VistaUsuarios = () => {
     const { logout} = useAuth();
@@ -162,12 +163,11 @@ const VistaUsuarios = () => {
                         </select>
                         </div>
 
-
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando usuarios...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
-                                <table className={styles.productTable}>
+                            <div className={stylesCommon.productTableWrapper}>
+                                <table className={stylesTabla.platilloTable}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>

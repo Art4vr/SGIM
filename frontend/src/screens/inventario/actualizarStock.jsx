@@ -202,7 +202,7 @@ const ActualizarStock = () => {
                     )}
                     <div>
                         {/*Botón para volver al inventario*/}
-                        <button className={stylesCommon.backBtn} onClick={() => navigate('/inventario')}>
+                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/inventario')}>
                             VOLVER ATRÁS
                         </button>
 

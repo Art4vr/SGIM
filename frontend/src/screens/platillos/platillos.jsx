@@ -178,7 +178,7 @@ const VistaPlatillos = () => {
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando platillos...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
+                            <div className={stylesCommon.productTableWrapper}>
                                 <table className={styles.platilloTable}>
                                     <thead>
                                         <tr>
