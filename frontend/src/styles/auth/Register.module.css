@@ -21,7 +21,6 @@
 
 /* ======== FORMULARIO DE IMPREVISTOS ======== */
 .bodyContainer {
-    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,8 +36,22 @@
     text-align: center;
     color: #000;
     margin-top: 30px;
+
+    opacity: 0;
+    transform: scale(0.85);
+    animation: zoomIn 0.35s ease forwards;
 }
 
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .inputContainer {
     margin-top: 15px;
     margin-bottom: 15px;
