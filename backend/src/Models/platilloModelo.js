@@ -163,7 +163,7 @@ export const platilloDisponible = async () => {
                 const lotesProducto = inventario.filter(lote => lote.Producto_idProducto === Producto_idProducto);
                 // Si no hay lotes disponibles para el producto, marcamos como agotado
                 if (lotesProducto.length === 0) {
-                    console.warn(`No hay lotes para el producto ${Producto_idProducto} en el inventario.`);
+                    //console.warn(`No hay lotes para el producto ${Producto_idProducto} en el inventario.`);
                     platilloAgotado = true;
                     break;  // Si no hay lotes, el platillo se marca como agotado
                 }
@@ -186,9 +186,9 @@ export const platilloDisponible = async () => {
                 // Aviso que no hay cantidad de producto necesario
                 if (cantrestante > 0) {
                     platilloAgotado = true;
-                    console.warn(
-                        `Inventario insuficiente para el producto ${Producto_idProducto}. Faltaron ${restante}`
-                    );
+                    //console.warn(
+                    //    `Inventario insuficiente para el producto ${Producto_idProducto}. Faltaron ${restante}`
+                    //);
                     break;
                 }
             }
