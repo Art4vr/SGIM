@@ -203,7 +203,6 @@ const ActualizarStock = () => {
                     <div>
                         {/*Botón para volver al inventario*/}
                         <button className={stylesCommon.backBtn} onClick={() => navigate('/inventario')}>
-<<<<<<< HEAD
                             VOLVER ATRÁS
                         </button>
 
@@ -211,22 +210,6 @@ const ActualizarStock = () => {
                         <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
                             VOLVER AL INICIO
                         </button>
-=======
-                            Ir al Inventario
-                        </button>
-
-                        {/*Botón de volver al panel*/}
-                        {user?.rol===1 &&(    
-                            <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
-                                Volver al Inicio
-                            </button>
-                        )}
-                        {user?.rol===2 &&(    
-                            <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelEncargado')}>
-                                Volver al Inicio
-                            </button>
-                        )}
->>>>>>> origin/Arturo
                     </div>
                 </div>
             </div>

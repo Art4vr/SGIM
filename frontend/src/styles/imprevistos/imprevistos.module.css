@@ -291,15 +291,11 @@ input:disabled + .slider:before {
     font-family: "Yeseva One", serif;
     font-weight: 400;
     font-style: normal;
-<<<<<<< HEAD
-    font-size: 18px;
-=======
     /*font-size: 18px;*/
     font-size: 0.95rem;
     position: sticky;
     top:0;
     z-index: 1;
->>>>>>> origin/Arturo
 }
 
 .Table td {

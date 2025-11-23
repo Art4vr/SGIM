@@ -238,6 +238,21 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 999;
+
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Tarjeta del modal */
@@ -328,5 +343,10 @@ button:hover {
     border: 1px solid #ccc;
     margin-top: 5px;
     font-size: 16px;
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 
