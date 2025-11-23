@@ -347,14 +347,26 @@ const RegistroImprevistoMesero = () => {
                         <button className={styles.registerBtn} type="submit" disabled={cargando}>
                             {cargando ? <ClipLoader size={20} color="#fff" /> : 'REGISTRAR IMPREVISTO'}
                         </button>
+                        
+                        {user?.rol === 3 &&(
+                            <button
+                                className={styles.loginBtn}
+                                type="button"
+                                onClick={() => navigate('/PanelChef')}
+                            >
+                                VOLVER AL INICIO
+                            </button>
+                        )}
 
-                        <button
-                            className={styles.loginBtn}
-                            type="button"
-                            onClick={() => navigate('/PanelChef')}
-                        >
-                            VOLVER AL INICIO
-                        </button>
+                        {user?.rol === 4 &&(
+                            <button
+                                className={styles.loginBtn}
+                                type="button"
+                                onClick={() => navigate('/PanelMesero')}
+                            >
+                                VOLVER AL INICIO
+                            </button>
+                        )}
 
                         {message && <p className={stylesCommon.message}>{message}</p>}
                     </form>

@@ -66,29 +66,47 @@
 /* ------------------- TABLA ------------------- */
 .productTable {
     width: 100%;
-    border-collapse: collapse;
+    
+    /* CAMBIO 1: Usar separate en lugar de collapse */
+    /* Esto arregla el conflicto con el scroll y el header fijo */
+    border-collapse: separate; 
+    
+    /* CAMBIO 2: Eliminar espacio entre celdas */
+    border-spacing: 0; 
+    
+    /* CAMBIO 3: Eliminar márgenes por defecto del navegador */
+    margin-top: 0;
+    margin-bottom: 0;
+    
     background-color: #f7eef4;
-    border-radius: 8px;
-    overflow: hidden;
+    
+    /* NOTA: Ya no necesitas border-radius ni overflow aquí, 
+       porque el .productTableWrapper ya se encarga de recortar las esquinas */
 }
 
 .productTable th {
+    /* Agrega esto si aún no lo tienes para que el header se quede fijo */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
     background-color: #b44a82;
     color: white;
     padding: 0.8rem;
-
     font-weight: bold;
     font-family: "Yeseva One", serif;
     font-weight: 400;
     font-style: normal;
     font-size: 22px;
+    
+    /* Opcional: Una sombra sutil abajo para tapar cualquier micro-hueco restante */
+    box-shadow: 0 1px 0 #b44a82;
 }
 
 .productTable td {
     padding: 0.8rem;
     text-align: center;
     border-bottom: 1px solid #ccc;
-
     font-family: "Roboto Slab", serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -99,7 +117,6 @@
 .productTable tr:hover {
     background-color: #f0d8e3;
 }
-
 /* ===== Botones de acciones ===== */
 .acciones button {
     background: none;
@@ -139,12 +156,6 @@
     text-align: center;
     color: #555;
     padding: 1rem;
-}
-
-/* Centrar la tabla verticalmente dentro de la card */
-.registerCard table {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 
 /* ------------------- BOTONES ------------------- */

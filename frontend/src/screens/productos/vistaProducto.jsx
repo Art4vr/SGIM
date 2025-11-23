@@ -170,7 +170,7 @@ const VistaProductos = () => {
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando productos...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
+                            <div className={stylesCommon.productTableWrapper}>
                                 <table className={styles.productTable}>
                                     <thead>
                                         <tr>

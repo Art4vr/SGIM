@@ -250,7 +250,7 @@ const MostrarImprevistos = () => {
                     {cargando ? (
                         <p className={styles.loadingText}>🔄 Cargando imprevistos...</p>
                     ) : (
-                        <div className={stylesCommon.tableWrapper}>
+                        <div className={stylesCommon.productTableWrapper}>
                             {cargando ? (
                                 <div style={{ padding: 20 }}>
                                     <ClipLoader size={30} color="#000" />
