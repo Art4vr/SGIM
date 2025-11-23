@@ -7,7 +7,8 @@ import {
     agregarPlatilloController,
     eliminarPlatilloController,
     modificarPlatilloController,
-    obtenerPlatillosController
+    obtenerPlatillosController,
+    platilloDisponibleController
     } from '../Controllers/platilloControlador.js';
 
 const router = express.Router();
@@ -24,5 +25,8 @@ router.put('/:id', authMiddleware, requirePermission('editar_platillo'), modific
 
 // Eliminar platillos
 router.delete('/:id', authMiddleware, requirePermission('eliminar_platillo'), eliminarPlatilloController);
+
+// Verificar la disponibilidad de los platillos
+router.post('/disponibilidad', platilloDisponibleController);
 
 export default router;

@@ -89,6 +89,8 @@ const VistaInventario = () => {
     const [medidas, setMedidas] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
+
+    const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
     //Alertas
     const [lowStockAlerts, setLowStockAlerts] = useState([]);
     const [expiringAlerts, setExpiringAlerts] = useState([]);
@@ -96,6 +98,17 @@ const VistaInventario = () => {
     const [showExpiringAlert, setShowExpiringAlert] = useState(true);
 
     // Cargar productos e inventario
+
+    // Cargar datos solo de inventarios (lightweight)
+    const cargarInventarios = async () => {
+        try {
+            const inventariosRes = await api.get("/api/inventario");
+            setInventarios(inventariosRes.data.resultados || []);
+        } catch (err) {
+            console.error("Error al cargar inventarios:", err);
+        }
+    };
+
     const cargarDatos = async () => {
         setCargando(true);
         try {
@@ -126,6 +139,15 @@ const VistaInventario = () => {
     useEffect(() => {
         cargarDatos();
     }, []);
+
+    // Auto-refresh imprevistos every X seconds
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            cargarInventarios();
+        }, refreshInterval);
+
+        return () => clearInterval(intervalId);
+    }, [refreshInterval]);
 
     //aca se va a mapear que la tabla inventarioProducto jale la informacion de otras tablas como productos o unidadMedida, para no mostrar solo id's
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario

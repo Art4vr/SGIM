@@ -8,7 +8,7 @@
 
 //importacion de modelos a utilizar
 //más
-import { agregarPlatillo, eliminarPlatillo, actualizarPlatillo } from '../Models/platilloModelo.js';
+import { agregarPlatillo, eliminarPlatillo, actualizarPlatillo, platilloDisponible } from '../Models/platilloModelo.js';
 import conexionDB from '../config/db.js';
 
 export const agregarPlatilloController = async (req, res) => {
@@ -169,3 +169,18 @@ export const obtenerPlatillosController = async (req, res) => {
         res.status(500).json({ mensaje: 'Error al obtener platillos' });
     }
 };
+
+//--------------------- DISPONIBILIDAD DE PLATILLOS -----------------------------------------
+export const platilloDisponibleController = async (req,res) => {
+    try {
+        // Llamamos a la función que verifica la disponibilidad de los platillos
+        await platilloDisponible();
+
+        // Si todo salió bien, respondemos con un mensaje de éxito
+        res.json({ msg: 'Verificación de disponibilidad de platillos completada correctamente' });
+    } catch (error) {
+        // Si ocurre un error, capturamos y respondemos con un mensaje de error
+        console.error('Error al verificar disponibilidad de platillos:', error);
+        res.status(500).json({ msg: 'Error al verificar disponibilidad de platillos', error });
+    }
+}

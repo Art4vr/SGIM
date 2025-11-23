@@ -38,7 +38,32 @@ const VistaPlatillos = () => {
     };
 
     useEffect(() => {
+        const verificarDisponibilidad = async () => {
+            try {
+                // Hacemos una solicitud POST para verificar la disponibilidad
+                const response = await api.post('/api/platillos/disponibilidad');
+                
+                // Si la respuesta es exitosa
+                console.log(response.data.msg);  // Muestra el mensaje del backend
+            } catch (error) {
+                // Si ocurre un error
+                console.error('Error al verificar la disponibilidad de los platillos:', error);
+            }
+        };
+        verificarDisponibilidad();
+
         cargarPlatillos();
+        
+        // Configurar el intervalo para actualizar los platillos cada 30 segundos (30000ms)
+        const intervalo = setInterval(() => {
+            cargarPlatillos();
+            verificarDisponibilidad();
+        }, 10000); // Puedes ajustar este valor (en milisegundos)
+
+        // Limpiar el intervalo cuando el componente se desmonte
+        return () => {
+            clearInterval(intervalo);
+        }
     }, []);
 
     const abrirModal = (platillo = null, modalAccion = null) => {

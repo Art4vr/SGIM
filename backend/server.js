@@ -35,7 +35,7 @@ app.use(globalLimiter);
 //const PORT = process.env.PORT || 5000;
 
 //aqui se define el prefijo para las rutas
-app.use('/api/platillos',menuRutas);
+app.use('/api/platillosMenu',menuRutas);
 app.use('/api',router);
 
 //app.listen(PORT,()=>{

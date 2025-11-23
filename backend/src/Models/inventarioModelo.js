@@ -37,7 +37,7 @@ export const listarInventario = async (filtro,busqueda)=>{ //recibe el filtro y 
         query += ` AND ${filtro} LIKE ?`;
         params.push(`%${busqueda}%`);
     }
-    query += ` ORDER BY 11`;
+    query += ` ORDER BY 11, fechaCaducidad ASC`;
     try{
         const[resultados] = await conexionDB.execute(query,params);//ejecuta la consulta
         //console.log("Resultados inventario: -modelo: ", resultados);
@@ -126,6 +126,22 @@ export const actualizarInventario = async ({ idInventarioProducto, Producto_idPr
         return resultado.affectedRows; 
     } catch (err) {
         console.error('Error al modificar inventario-inventarioModelo:', err);
+        throw err;
+    }
+};
+
+//--------------------- OBTENER -----------------------------------------
+// Funcion para obetener los productos en inventario exceptuando lotes caducados o finalizados
+export const obtenerLotes = async ()=>{ //recibe el filtro y el criterio de busqueda como parametro
+    
+    //Base de la consulta
+    let query = `SELECT * FROM inventarioproducto WHERE estado NOT IN ('caducado','finalizado') ORDER BY 11, fechaCaducidad ASC`;
+    try{
+        const[resultados] = await conexionDB.execute(query);//ejecuta la consulta
+        //console.log("Resultados inventario: -modelo: ", resultados);
+        return resultados; //devuelve los resultados de la consulta
+    }catch(err){
+        console.error('Error al ejecutar la consulta (listarIInventario): ', err); //manejo de errores
         throw err;
     }
 };

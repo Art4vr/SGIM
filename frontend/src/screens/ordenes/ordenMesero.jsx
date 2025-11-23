@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from "../../api/axiosConfig";
-import { getPlatillos } from '../../api/platilloApi';
+import { getPlatillos, getPlatillosMenu } from '../../api/platilloApi';
 import {
   getOrdenes,
   crearOrden,
@@ -62,6 +62,21 @@ const OrdenMesero = () => {
     cargarMesas();
     cargarOrdenes();
     cargarPlatillos();
+
+    const verificarDisponibilidad = async () => {
+            try {
+                // Hacemos una solicitud POST para verificar la disponibilidad
+                const response = await api.post('/api/platillos/disponibilidad');
+                
+                // Si la respuesta es exitosa
+                console.log(response.data.msg);  // Muestra el mensaje del backend
+            } catch (error) {
+                // Si ocurre un error
+                console.error('Error al verificar la disponibilidad de los platillos:', error);
+            }
+    };
+    verificarDisponibilidad();
+    
   }, []);
 
 
@@ -85,7 +100,7 @@ const OrdenMesero = () => {
 
   const cargarPlatillos = async () => {
     try {
-      const response = await getPlatillos();
+      const response = await getPlatillosMenu();
       setPlatillos(response.data);
     } catch (err) {
       console.error('Error al cargar platillos:', err);
