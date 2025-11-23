@@ -109,8 +109,15 @@ const VistaUsuarios = () => {
             u.rol = rol ? rol.nombre : 'Desconocido';
             u.descripcionRol = rol ? rol.descripcion : 'Sin descripción';
         });
-        
 
+        //Prueba de poner iconos en lugar de la descripción de los roles.
+        const iconosRol = {
+        1: "/imagenes/IconosRoles/Gerente.png",
+        2: "/imagenes/IconosRoles/Inventario.png",
+        3: "/imagenes/IconosRoles/Chef.png",
+        4: "/imagenes/IconosRoles/Mesero.png",
+        5: "/imagenes/IconosRoles/Cliente.png"
+        };
 
     return (
         <div className={styles.container}>
@@ -162,7 +169,6 @@ const VistaUsuarios = () => {
                         </select>
                         </div>
 
-
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando usuarios...</p>
                         ) : (
@@ -183,7 +189,19 @@ const VistaUsuarios = () => {
                                             <tr key={u.idUsuario}>
                                                 <td>{u.nombre}</td>
                                                 <td>{u.username}</td>
-                                                <td>{u.rol}</td>
+                                                
+                                                {/* === Pone una imagen para representar el rol. === */}
+                                                <td>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <img 
+                                                    src={iconosRol[u.Rol_idRol]} 
+                                                    alt={u.rol}
+                                                    style={{ width: "26px", height: "26px", objectFit: "contain" }}
+                                                    />
+                                                    {u.rol}
+                                                </div>
+                                                </td>
+
                                                 <td>{u.descripcionRol}</td>
                                                 <td>{u.estado}</td>
                                                 <td className={styles.acciones}>
