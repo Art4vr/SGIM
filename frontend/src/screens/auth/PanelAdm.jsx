@@ -2,9 +2,9 @@ import api from '../../api/axiosConfig';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/auth/PanelAdm.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
-import PerfilUsuario from '../../components/PerfilUsuario.jsx';
 import Encabezado from '../../components/Encabezado.jsx';
+import AlertasInventario from '../../components/AlertasInventario.jsx';
+
 
 const PanelAdm = () => {
     const navigate = useNavigate();
@@ -45,6 +45,9 @@ const PanelAdm = () => {
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3>Imprevistos</h3>
                 </button>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

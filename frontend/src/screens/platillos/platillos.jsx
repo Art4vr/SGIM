@@ -8,6 +8,7 @@ import styles from '../../styles/platillos/Platillo.module.css';
 import stylesCommon from '../../styles/common/common.module.css';
 import IngredientesPlatillo from './ingredientes';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaPlatillos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000);
@@ -202,7 +203,7 @@ const VistaPlatillos = () => {
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando platillos...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
+                            <div className={stylesCommon.productTableWrapper}>
                                 <table className={styles.platilloTable}>
                                     <thead>
                                         <tr>
@@ -244,7 +245,6 @@ const VistaPlatillos = () => {
                             </div>
                         )}
 
-
                         {modalVisible && (
                             modalAccion === 'nuevoPlatillo' ? (
                             <NuevoPlatillo
@@ -261,6 +261,7 @@ const VistaPlatillos = () => {
                         )
                         )}
 
+                        {user?.rol=== 1 && (
                         <button
                             className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
                             type="button"
@@ -268,8 +269,21 @@ const VistaPlatillos = () => {
                             >
                             VOLVER AL INICIO
                         </button>
+                        )}
+                        {user?.rol=== 4 &&(
+                        <button
+                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            type="button"
+                            onClick={() => navigate('/PanelMesero')}
+                            >
+                            VOLVER AL INICIO
+                        </button>
+                        )}
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

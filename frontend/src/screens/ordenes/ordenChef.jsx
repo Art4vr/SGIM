@@ -45,7 +45,7 @@ const OrdenChef = () => {
 
             {/* Contenido principal */}
             <div className={styles.contenidoPrincipal}>
-                <h2 className={styles.tituloSeccion}>Órdenes en Cocina</h2>
+                <h2 className={styles.tituloSeccion}>ÓRDENES EN COCINA</h2>
 
                 {platillos.length === 0 ? (
                     <p className={styles.noPedidos}>No hay platillos pendientes en cocina</p>

@@ -12,7 +12,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
 import ModalEliminarInventario from './modalInventario';
-import AlertasInventario from './AlertasInventario';
+import AlertasInventario from '../../components/AlertasInventario';
 import Encabezado from '../../components/Encabezado';
 
 
@@ -78,7 +78,7 @@ const VistaInventario = () => {
     const [inventarioEditando, setInventarioEditando] = useState(null);
     const [eliminandoId, setEliminandoId] = useState(null);
 
-    const { loading } = useAuth();
+    const { loading, logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
@@ -96,6 +96,7 @@ const VistaInventario = () => {
     const [expiringAlerts, setExpiringAlerts] = useState([]);
     const [showLowStockAlert, setShowLowStockAlert] = useState(true);
     const [showExpiringAlert, setShowExpiringAlert] = useState(true);
+
 
     // Cargar productos e inventario
 
@@ -274,51 +275,61 @@ const VistaInventario = () => {
                 {cargando ? (
                     <div className={styles.loading}><ClipLoader /></div>
                 ) : (
-                    <table className={styles.Table}>
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Proveedor</th>
-                                <th>Stock actual</th>
-                                <th>Cantidad Mínima</th>
-                                <th>Cantidad Máxima</th>
-                                <th>Unidad de Medida</th>
-                                <th>Fecha de Ingreso</th>
-                                <th>Fecha de Caducidad</th>
-                                <th>Usuario que Registró</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listaInventario.map((item) => (
-                                <tr key={item.idInventarioProducto}>
-                                    <td>{item.nombreProducto}</td>
-                                    <td>{item.nombreProveedor}</td>
-                                    <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
-                                    <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
-                                    <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
-                                    <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
-                                    <td>{item.username}</td>
-                                    <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
-                                    <td className={styles.acciones}>
-                                        <button
-                                            onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
-                                            disabled={eliminandoId === item.idInventarioProducto}
-                                        >🗑️
-                                        </button>
-                                    </td>
+                    <div className={stylesCommon.productTableWrapper}>  
+                        <table className={styles.Table}>
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Proveedor</th>
+                                    <th>Stock actual</th>
+                                    <th>Cantidad Mínima</th>
+                                    <th>Cantidad Máxima</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Fecha de Ingreso</th>
+                                    <th>Fecha de Caducidad</th>
+                                    <th>Usuario que Registró</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {listaInventario.map((item) => (
+                                    <tr key={item.idInventarioProducto}>
+                                        <td>{item.nombreProducto}</td>
+                                        <td>{item.nombreProveedor}</td>
+                                        <td>{Number(item.cantidadActual) * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{item.cantidadMinima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{item.cantidadMaxima * medidas.find(medida => medida.idUnidadMedida === item.UnidadMedida_idUnidadMedida)?.factorConversion}</td>
+                                        <td>{medidas.find(m => m.medida === item.nombreUnidad).medidaEquivalente}</td>
+                                        <td>{item.fechaIngreso ? format(new Date(item.fechaIngreso), 'dd/MM/yyyy HH:mm:ss') : ''}</td>
+                                        <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
+                                        <td>{item.username}</td>
+                                        <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
+                                        <td className={styles.acciones}>
+                                            <button
+                                                onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
+                                                disabled={eliminandoId === item.idInventarioProducto}
+                                            >🗑️
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
                 {/*Botón de volver al panel*/}
-                <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
-                    Volver al Inicio
-                </button>
+                {user?.rol===1 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
+                        Volver al Inicio
+                    </button>
+                )}
+
+                {user?.rol===2 &&(
+                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelEncargado')}>
+                        Volver al Inicio
+                    </button>
+                )}
                 {modalVisible && (
                         modalAccion === 'eliminar' ? (
                         <ModalEliminarInventario
@@ -332,7 +343,7 @@ const VistaInventario = () => {
                     )}
             </div>
             <div>
-                <AlertasInventario listaInventario={listaInventario}/>
+                <AlertasInventario/>
             </div>
         </div>
     );

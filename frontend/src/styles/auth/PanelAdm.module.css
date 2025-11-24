@@ -24,6 +24,7 @@
     transition: all 0.3s ease;
 }
 
+
 .tarjetas:hover {
     transform: scale(1.05);
     background-color: #e3cadbee ;

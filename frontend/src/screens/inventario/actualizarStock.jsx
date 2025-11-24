@@ -4,7 +4,6 @@
 //Escoge tambien de la lista de unidades de medida y de una de proveedores
 //Ingresa fecha de caducidad, cantidad maxima y minima necesarias, asi como cantidad actual
 //Jala el username del usuario que hace el registro
-
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { ClipLoader } from 'react-spinners';
@@ -19,13 +18,13 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const ActualizarStock = () => {
     const { logout, loading, user } = useAuth();
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const navigate = useNavigate();
-    const [menuAbierto, setMenuAbierto] = useState(false);
     const [productos, setProductos] = useState([]);
     const [unidades, setUnidades] = useState([]);
     const [categorias, setCategorias] = useState([]);
@@ -38,8 +37,6 @@ const ActualizarStock = () => {
     const [fechaCaducidad, setFechaCaducidad] = useState('');
     const [idProveedorSeleccionado, setIdProveedorSeleccionado] = useState('');
     const [idUnidadMedidaSeleccionada, setIdUnidadMedidaSeleccionada] = useState('');
-    const menuRef = useRef(null);
-    const botonRef = useRef(null);
     const [notificacion, setNotificacion] = useState({ visible: false, mensaje: '', tipo: 'info' });
 
     //Notificaciones personalizadas
@@ -205,16 +202,19 @@ const ActualizarStock = () => {
                     )}
                     <div>
                         {/*Botón para volver al inventario*/}
-                        <button className={stylesCommon.backBtn} onClick={() => navigate('/inventario')}>
-                            Volver atras 
+                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/inventario')}>
+                            VOLVER ATRÁS
                         </button>
 
                         {/*Botón de volver al panel*/}
                         <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
-                            Volver al Inicio
+                            VOLVER AL INICIO
                         </button>
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );
