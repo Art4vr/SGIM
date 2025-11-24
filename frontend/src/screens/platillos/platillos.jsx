@@ -122,8 +122,8 @@ const VistaPlatillos = () => {
                         <h1 className={styles.title}>GESTIÓN DE PLATILLOS</h1>
 
                         <h2 className={styles.subtitle}>Añadir Platillo al Menú</h2>
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
-                            Agregar Platillo
+                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
+                            AGEGAR PLATLLO
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
@@ -174,7 +174,7 @@ const VistaPlatillos = () => {
                             />
                         </div>
                         {/*Botón para limpiar filtros*/}
-                        <button onClick={limpiarFiltros} className={stylesCommon.registerBtn}>Limpiar Filtros</button>
+                        <button onClick={limpiarFiltros} className={styles.registerBtn}>LIMPIAR FILTROS</button>
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando platillos...</p>
                         ) : (
@@ -238,8 +238,7 @@ const VistaPlatillos = () => {
 
                         {user?.rol=== 1 && (
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                            type="button"
+                            className={`${styles.registerBtn}`}
                             onClick={() => navigate('/PanelGerente')}
                             >
                             VOLVER AL INICIO
@@ -247,8 +246,7 @@ const VistaPlatillos = () => {
                         )}
                         {user?.rol=== 4 &&(
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                            type="button"
+                            className={`${styles.registerBtn}`}
                             onClick={() => navigate('/PanelMesero')}
                             >
                             VOLVER AL INICIO

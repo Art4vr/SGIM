@@ -163,7 +163,7 @@ body {
 /* ======== BOTÓN DE VOLVER ======== */
 .backBtn {
     display: block;
-    width: auto;
+    width: 30%;
     max-width: 200px;
     padding: 12px;
     font-size: 16px;

@@ -132,3 +132,25 @@
     color: #ff6666;
     font-size: 16px;
 }
+
+/* ------------------- BOTONES ------------------- */
+.registerBtn {
+    width: 20%;            /* Cámbialo al ancho que quieras */
+    padding: 15px 20px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.registerBtn:hover {
+    background-color: #400C24;
+}
