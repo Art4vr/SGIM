@@ -94,7 +94,7 @@ const OrdenChef = () => {
                         </table>
                     </div>
                 )}
-                <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelChef')}>
+                <button className={styles.registerBtn} onClick={() => navigate('/PanelChef')}>
                     Volver al Inicio
                 </button>
             </div>
