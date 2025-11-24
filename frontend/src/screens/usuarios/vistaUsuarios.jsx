@@ -131,7 +131,7 @@ const VistaUsuarios = () => {
                     <div className={styles.registerCard}>
                         <h1 className={styles.title}>GESTIÓN DE USUARIOS</h1>
 
-                        <button className={styles.registerBtn} onClick={() => navigate('/NuevoUsuario')}>
+                        <button className={`${styles.btnBase} ${styles.registerBtn}`} onClick={() => navigate('/NuevoUsuario')}>
                             AGREGAR USUARIO
                         </button>
 
@@ -197,7 +197,7 @@ const VistaUsuarios = () => {
                                                     <img 
                                                     src={iconosRol[u.Rol_idRol]} 
                                                     alt={u.rol}
-                                                    style={{ width: "40px", height: "40px", objectFit: "contain" }}
+                                                    style={{ width: "60px", height: "60px", objectFit: "contain" }}
                                                     />
                                                     {u.rol}
                                                 </div>
@@ -221,8 +221,7 @@ const VistaUsuarios = () => {
                             </div>
                         )}
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                            type="button"
+                            className={`${styles.btnBase} ${styles.registerBtn} ${stylesCommon.backBtn}`}
                             onClick={() => navigate('/PanelGerente')}
                             >
                             VOLVER AL INICIO

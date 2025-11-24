@@ -34,6 +34,7 @@
     color: #000;
     text-align: center;
     box-shadow: 0px 4px 12px #b90464b6;
+    justify-content: center;
 
     opacity: 0;
     transform: translateX(25px);
@@ -160,20 +161,21 @@
 }
 
 /* ------------------- BOTONES ------------------- */
-.registerBtn, button {
-    width: 50%;
+.registerBtn {
+    width: 20%;            /* Cámbialo al ancho que quieras */
     padding: 15px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 16px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    
-    font-family: "Murecho", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 900;
-    font-style: normal;
+    font-family: "Murecho", sans-serif;
     font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .registerBtn {
