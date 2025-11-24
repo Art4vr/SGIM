@@ -86,17 +86,23 @@
   width: 100%;
   border-collapse: collapse;
   min-width: 800px; /* Fuerza scroll horizontal en móviles */
+  overflow: auto;
 }
 
 .Table th {
   background-color: #b44a82;
-  color: #fff;
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: bold;
-  position: sticky; /* Encabezado fijo al hacer scroll */
-  top: 0;
-  z-index: 1;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: bold;
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    font-style: normal;
+    /*font-size: 18px;*/
+    font-size: 0.95rem;
+    position: sticky;
+    top:0;
+    z-index: 1;
 }
 
 .Table td {

@@ -136,7 +136,7 @@
     border-collapse: collapse;
     background-color: #f7eef4;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .platilloTable th {
@@ -149,6 +149,10 @@
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
+
+    position: sticky;
+    top:0;
+    z-index: 1;
 }
 
 .platilloTable td {
