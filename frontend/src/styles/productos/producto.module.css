@@ -50,34 +50,57 @@
 /* ------------------- TABLA ------------------- */
 .productTable {
     width: 100%;
-    border-collapse: collapse;
+    
+    /* CAMBIO 1: Usar separate en lugar de collapse */
+    /* Esto arregla el conflicto con el scroll y el header fijo */
+    border-collapse: separate; 
+    
+    /* CAMBIO 2: Eliminar espacio entre celdas */
+    border-spacing: 0; 
+    
+    /* CAMBIO 3: Eliminar márgenes por defecto del navegador */
+    margin-top: 0;
+    margin-bottom: 0;
+    
     background-color: #f7eef4;
-    border-radius: 8px;
-    overflow: hidden;
+    
+    /* NOTA: Ya no necesitas border-radius ni overflow aquí, 
+       porque el .productTableWrapper ya se encarga de recortar las esquinas */
 }
 
 .productTable th {
+    /* Agrega esto si aún no lo tienes para que el header se quede fijo */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    
     background-color: #b44a82;
     color: white;
     padding: 0.8rem;
-
     font-weight: bold;
     font-family: "Yeseva One", serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 16px;
+    font-size: 22px;
+    
+    /* Opcional: Una sombra sutil abajo para tapar cualquier micro-hueco restante */
+    box-shadow: 0 1px 0 #b44a82;
 }
 
 .productTable td {
     padding: 0.8rem;
     text-align: center;
     border-bottom: 1px solid #ccc;
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
 }
 
 .productTable tr:hover {
     background-color: #f0d8e3;
 }
-
 /* ===== Botones de acciones ===== */
 .acciones button {
     background: none;
@@ -119,22 +142,20 @@
     padding: 1rem;
 }
 
-/* Centrar la tabla verticalmente dentro de la card */
-.registerCard table {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
 /* ------------------- BOTONES ------------------- */
 .registerBtn, button {
-    padding: 10px 15px;
+    padding: 15px 20px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 20px;
 }
 
 .registerBtn {
@@ -228,6 +249,21 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 999;
+
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Tarjeta del modal */
@@ -239,12 +275,23 @@ button:hover {
     max-width: 500px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     text-align: center;
-    font-family: 'Arial', sans-serif;
+    
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 16px;
 }
 
 /* Título del modal */
 .modalTitle {
-    font-size: 28px;
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #8a4565;
+    text-align: center;
+    margin: 20px 0 10px 0;
+    font-size: 36px;
     margin-bottom: 20px;
 }
 
@@ -307,5 +354,10 @@ button:hover {
     border: 1px solid #ccc;
     margin-top: 5px;
     font-size: 16px;
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
 }
 

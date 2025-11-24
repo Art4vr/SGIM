@@ -40,10 +40,14 @@
 
 /* ======== TÍTULO PRINCIPAL ======== */
 .title {
-  font-size: 2rem;
-  color: #400C24;
-  font-weight: bold;
-  margin-bottom: 15px;
+    font-family: "Protest Strike", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 44px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #61053f;
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
 }
 
@@ -65,7 +69,12 @@
   font-weight: 600;
   color: #400C24;
   margin-bottom: 5px;
-  font-size: 0.95rem;
+  
+  font-family: "Roboto Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 20px; /* Tamaño de fuente */
 }
 
 /* Estilos de Inputs y Selects */
@@ -79,6 +88,12 @@
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
+
+  font-family: "Roboto Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 16px; /* Tamaño de fuente */
 }
 
 .formGroup input:focus,
@@ -90,17 +105,21 @@
 
 /* Botón de Submit */
 .submitBtn {
-  background-color: #b44a82;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    width: 50%;                                /* Ocupa todo el ancho */
+    padding: 8px;                              /* Espaciado interno */
+    color: white;                             /* Color del texto */
+    background-color: #D92579;                /* Color de fondo */
+    border: none;                               /* Sin borde */
+    border-radius: 18px;                         /* Bordes redondeados */
+    cursor: pointer;                            /* Cursor de puntero */
+    transition: background-color 0.3s ease;     /* Efecto de transición */
+    margin-bottom: 10px;                        /* Espaciado inferior */
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    font-size: 18px;    
 }
 
 .submitBtn:hover {

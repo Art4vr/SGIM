@@ -16,6 +16,7 @@ import stylesCommon from "../../styles/common/common.module.css";
 import { getProductos, getUnidades } from "../../api/productoApi";
 
 import Encabezado from "../../components/Encabezado";
+import AlertasInventario from "../../components/AlertasInventario";
 
 const MostrarImprevistos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
@@ -249,7 +250,7 @@ const MostrarImprevistos = () => {
                     {cargando ? (
                         <p className={styles.loadingText}>🔄 Cargando imprevistos...</p>
                     ) : (
-                        <div className={stylesCommon.tableWrapper}>
+                        <div className={stylesCommon.productTableWrapper}>
                             {cargando ? (
                                 <div style={{ padding: 20 }}>
                                     <ClipLoader size={30} color="#000" />
@@ -321,12 +322,22 @@ const MostrarImprevistos = () => {
                         </div>
                     )}
                     {/* Back button */}
-                    <button
-                        className={stylesCommon.backBtn}
-                        onClick={() => navigate("/PanelGerente")}
-                    >
-                        VOLVER AL INICIO
-                    </button>
+                    {user?.rol===1 &&(
+                        <button
+                            className={stylesCommon.backBtn}
+                            onClick={() => navigate("/PanelGerente")}
+                        >
+                            VOLVER AL INICIO
+                        </button>
+                    )}
+                    {user?.rol===2 &&(
+                        <button
+                            className={stylesCommon.backBtn}
+                            onClick={() => navigate("/PanelEncargado")}
+                        >
+                            VOLVER AL INICIO
+                        </button>
+                    )}
                     {/* aqui quiero que se muestren los modales de acuerdo a la accion */}
                     {modalVisible && (
                         modalAccion === 'eliminar' ? (
@@ -349,6 +360,9 @@ const MostrarImprevistos = () => {
                     )
                     )}
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

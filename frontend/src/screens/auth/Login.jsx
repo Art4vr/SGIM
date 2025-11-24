@@ -83,7 +83,7 @@ const Login = ({setUser}) => {
 
                     <form onSubmit={handleLogin}>
                         <div className={styles.inputContainer}>
-                            <label>Usuario / Rol</label>
+                            <label>Usuario:</label>
                             <input
                                 type="text"
                                 value={username}
@@ -93,32 +93,17 @@ const Login = ({setUser}) => {
                         </div>
 
                         <div className={styles.inputContainer}>
-                            <label>Contraseña</label>
+                            <label>Contraseña:</label>
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                            <div className={styles.showPasswordContainer}>
-                                <label>Mostrar Contraseña</label>
-                                <input
-                                    type="checkbox"
-                                    checked={showPassword}
-                                    onChange={() => setShowPassword(!showPassword)}
-                                />
-                            </div>
                         </div>
 
                         <button className={styles.loginBtn} type="submit">
                             INGRESAR
-                        </button>
-                        <button
-                            className={styles.registerBtn}
-                            type="button"
-                            onClick={() => navigate('/NuevoUsuario')}
-                        >
-                            REGISTRAR
                         </button>
 
                         {errorMessage && <p className={stylesCommon.message}>{errorMessage}</p>}    

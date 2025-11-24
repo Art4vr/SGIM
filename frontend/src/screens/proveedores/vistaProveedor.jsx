@@ -8,6 +8,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaProveedores = () => {
     const { logout, user, loading } = useAuth();
@@ -86,10 +87,10 @@ const VistaProveedores = () => {
             <div className={styles.bodyContainer}>
                 <div className={styles.registerContainer}>
                     <div className={styles.registerCard}>
-                        <h1 className={styles.title}>Gestión de Proveedores</h1>
+                        <h1 className={styles.title}>GESTIÓN DE PROVEEDORES</h1>
 
                         <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
-                            Agregar Proveedor
+                            AGREGAR PROVEEDOR
                         </button>
 
                         {mensaje && <p className={styles.message}>{mensaje}</p>}
@@ -152,13 +153,25 @@ const VistaProveedores = () => {
                                     </tbody>
                                 </table>
                                 
-                                <button
-                                    className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                    type="button"
-                                    onClick={() => navigate('/PanelGerente')}
-                                    >
-                                    VOLVER AL INICIO
-                                </button>
+                                {user?.rol===1 &&(
+                                    <button
+                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                        type="button"
+                                        onClick={() => navigate('/PanelGerente')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
+
+                                {user?.rol===2 &&(
+                                    <button
+                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                        type="button"
+                                        onClick={() => navigate('/PanelEncargado')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
                             </div>
                         )}
 
@@ -171,6 +184,9 @@ const VistaProveedores = () => {
                         )}
                     </div>
                 </div>
+            </div>
+            <div>
+                <AlertasInventario/>
             </div>
         </div>
     );

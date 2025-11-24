@@ -7,6 +7,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import Encabezado from '../../components/Encabezado';
+import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaProductos = () => {
     const { logout, user, loading } = useAuth();
@@ -169,7 +170,7 @@ const VistaProductos = () => {
                         {cargando ? (
                             <p className={styles.loadingText}>🔄 Cargando productos...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
+                            <div className={stylesCommon.productTableWrapper}>
                                 <table className={styles.productTable}>
                                     <thead>
                                         <tr>
@@ -202,13 +203,25 @@ const VistaProductos = () => {
                                 </table>
                             </div>
                         )}
-                        <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                            type="button"
-                            onClick={() => navigate('/PanelGerente')}
-                            >
-                            VOLVER AL INICIO
-                        </button>
+                        {user?.rol===1 && (
+                            <button
+                                className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                type="button"
+                                onClick={() => navigate('/PanelGerente')}
+                                >
+                                VOLVER AL INICIO
+                            </button>
+                        )}
+                        {user?.rol===2 && (
+                            <button
+                                className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                type="button"
+                                onClick={() => navigate('/PanelEncargado')}
+                                >
+                                VOLVER AL INICIO
+                            </button>
+                        )}
+
                         {modalVisible && (
                             <NuevoProducto
                                 producto={productoEditando}
@@ -219,6 +232,7 @@ const VistaProductos = () => {
                     </div>
                 </div>
             </div>
+            <AlertasInventario/>
         </div>
     );
 };
