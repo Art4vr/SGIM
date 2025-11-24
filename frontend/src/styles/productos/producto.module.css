@@ -15,7 +15,7 @@
 /* ------------------- CONTENEDOR PRINCIPAL DE PRODUCTOS ------------------- */
 .registerContainer {
     width: 100%;
-    max-width: 1600px; /* ancho máximo para pantallas grandes */
+    max-width: 1400px; /* ancho máximo para pantallas grandes */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,6 +33,7 @@
     gap: 20px;
     color: #000;
     text-align: center;
+    box-shadow: 0px 4px 12px #b90464b6;
 
     opacity: 0;
     transform: translateX(25px);
@@ -160,13 +161,14 @@
 
 /* ------------------- BOTONES ------------------- */
 .registerBtn, button {
+    width: 50%;
     padding: 15px 20px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
-
+    
     font-family: "Murecho", sans-serif;
     font-optical-sizing: auto;
     font-weight: 900;
