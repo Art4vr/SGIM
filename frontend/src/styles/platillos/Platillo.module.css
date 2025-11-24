@@ -13,10 +13,25 @@
 
 /* Contenedor principal */
 .registerContainer {
-    width: 90%;
+    width: 95%;
     display: flex;
     justify-content: center;
     margin-top: 2rem; /* o el valor que se vea mejor */
+
+    opacity: 0;
+    transform: translateX(25px);
+    animation: fadeRight 0.45s ease forwards;
+}
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .registerCard {
@@ -25,7 +40,7 @@
     border: 2px solid #9f8a9ac6;
     box-shadow: 0px 4px 8px #b90464b6;
     padding: 2rem;
-    width: 85%;
+    width: 90%;
     max-width: 1000px;
     text-align: center;
     transition: all 0.3s ease;

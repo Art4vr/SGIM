@@ -78,8 +78,25 @@
   background-color: rgba(255, 255, 255, 0.6); /* Fondo ligero para la tabla */
   box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
   padding: 10px;
+
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(-10px);
+  animation: blurIn 0.45s ease forwards;
 }
 
+@keyframes blurIn {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
 
 /* ======== TABLA DE INVENTARIO ======== */
 .Table {
