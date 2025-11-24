@@ -15,6 +15,7 @@ export const actualizarStock = async (productos) => {
                 `SELECT * 
                 FROM inventarioproducto 
                 WHERE Producto_idProducto = ?
+                AND estado NOT IN ('caducado', 'finalizado')
                 ORDER BY fechaCaducidad ASC`,
                 [Producto_idProducto]
             );

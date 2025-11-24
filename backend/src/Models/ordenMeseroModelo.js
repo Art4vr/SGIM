@@ -71,26 +71,6 @@ export const calcularTotalOrden = async (conn, idOrden) => {
     }
 };
 
-// --------------------- FINALIZAR ORDEN ------------------------------------
-export const finalizarOrden = async (conn, idOrden, idMesa) => {
-    try {
-        await conn.beginTransaction();
-
-        // Actualizar el estado de la orden a 'cerrada'
-        await actualizarOrden(conn, { idOrden, estado: 'cerrada' });
-
-        // Liberar la mesa
-        await conn.execute('UPDATE Mesa SET estado = ? WHERE idMesa = ?', ['disponible', idMesa]);
-
-        await conn.commit();
-        return true;
-    } catch (err) {
-        await conn.rollback();
-        console.error('Error al finalizar la orden:', err);
-        throw new Error('Error al finalizar la orden');
-    }
-};
-
 // --------------------- ENVIAR ORDEN A COCINA --------------------
 export const enviarOrdenACocina = async (conn, idOrden) => {
     const query = `

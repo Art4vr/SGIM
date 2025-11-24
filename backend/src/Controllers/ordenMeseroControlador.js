@@ -6,7 +6,7 @@
 //importacion de modelos a utilizar
 //más
 // Para la orden
-import { agregarOrden, actualizarOrden,finalizarOrden } from '../Models/ordenMeseroModelo.js';
+import { agregarOrden, actualizarOrden} from '../Models/ordenMeseroModelo.js';
 import { actualizarMesa } from '../Models/catalogoModelo.js';
 import { obtenerPlatillosOrden } from '../Models/ordenPlatilloModelo.js';
 
@@ -78,6 +78,20 @@ export const modificarOrdenController = async (req, res) => {
 
         const idMesa = ordenRows[0].Mesa_idMesa;
 
+        //Validar que todos los platillos esten como entregados
+        if (estado && estado.toLowerCase() === 'cerrada') {
+            const [pendientes] = await conn.execute(`
+                SELECT idPlatilloOrden 
+                FROM platillo_orden 
+                WHERE Orden_idOrden = ? AND estado != 'entregado'`, [id]);
+
+            if (pendientes.length > 0) {
+                await conn.rollback();
+                return res.status(400).json({
+                    mensaje: "No se puede cerrar la orden: hay platillos sin entregar",pendientes});
+            }
+        }    
+
         // Calcular total automáticamente
         const platillos = await obtenerPlatillosOrden(conn, id);
         const totalCalculado = platillos.reduce(
@@ -128,29 +142,6 @@ export const obtenerOrdenesController = async (req, res) => {
     } catch (err) {
         console.error('Error al obtener órdenes:', err);
         res.status(500).json({ mensaje: 'Error al obtener órdenes' });
-    }
-};
-
-// --------------------- FINALIZAR ORDEN --------------------------
-export const finalizarOrdenController = async (req, res) => {
-    const conn = await conexionDB.getConnection();
-    try {
-        const { idOrden } = req.params;
-
-        // Obtener idMesa asociado a la orden
-        const [ordenRows] = await conn.execute('SELECT Mesa_idMesa FROM Orden WHERE idOrden = ?', [idOrden]);
-        if (ordenRows.length === 0) return res.status(404).json({ mensaje: 'Orden no encontrada' });
-
-        const idMesa = ordenRows[0].Mesa_idMesa;
-
-        await finalizarOrden(conn, idOrden, idMesa);
-
-        res.json({ mensaje: 'Orden finalizada y mesa liberada' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ mensaje: 'Error al finalizar la orden' });
-    } finally {
-        conn.release();
     }
 };
 
