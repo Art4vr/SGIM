@@ -65,7 +65,7 @@ body{
     align-items: center;
     justify-content: center;
     background-color: #d5c3cfbd;
-    border-radius: 10px;
+    border-radius: 50%;
     border: 2px solid #9f8a9ac6;
     box-shadow: 0px 4px 8px #b90464b6;
     max-height: 80vh;

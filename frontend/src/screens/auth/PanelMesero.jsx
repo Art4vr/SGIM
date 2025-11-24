@@ -18,22 +18,23 @@ const PanelMesero = () => {
             <div className={styles.contenido}>
                 <button className={styles.tarjetas} onClick={() => navigate('/OrdenesMesero')}>
                     <img className={styles.imagenMenu} src="/imagenes/Orden_Mesero.png" alt="Ordenes Mesero" />
-                    <h3>Ordenes Mesero</h3>
+                    <h3 className={styles.nombreMenu}>Ordenes Mesero</h3>
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/platillos')}>
                     <img className={styles.imagenMenu} src="/imagenes/Platillos.png" alt="Platillos" />
-                    <h3>Platillos</h3>
+                    <h3 className={styles.nombreMenu}>Platillos</h3>
                 </button>
-
+                {/*
                 <button className={styles.tarjetas} onClick={() => navigate('/verMenu')}>
                     <img className={styles.imagenMenu} src="/imagenes/VerM.png" alt="Ver Menu" />
                     <h3>Ver Menu</h3>
                 </button>
+                */}
 
                 <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevistoMesero')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
-                    <h3>Imprevistos</h3>
+                    <h3 className={styles.nombreMenu}>Imprevistos</h3>
                 </button>
             </div>
         </div>
