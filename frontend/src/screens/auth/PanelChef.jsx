@@ -26,7 +26,7 @@ const PanelChef = () => {
                     </div>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/platillosChef')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/platillos')}>
                     <div>
                         <img className={styles.imagenMenu} src="/imagenes/platillos.png" alt="platillos" />
                     </div>

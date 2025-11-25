@@ -9,6 +9,8 @@ import stylesCommon from '../../styles/common/common.module.css';
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
+import ModalEliminarProveedor from "./modalEliminar";
+
 
 const VistaProveedores = () => {
     const { logout, user, loading } = useAuth();
@@ -19,6 +21,9 @@ const VistaProveedores = () => {
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
+
+    const [modalEliminarVisible, setModalEliminarVisible] = useState(false);
+    const [proveedorAEliminar, setProveedorAEliminar] = useState(null);
 
     const cargarProveedores = async () => {
         setCargando(true);
@@ -47,7 +52,11 @@ const VistaProveedores = () => {
         setProveedorEditando(null);
     };
 
-    const eliminar = async (id) => {
+const confirmarEliminar = (platillo) => {
+    setProveedorAEliminar(platillo);
+    setModalEliminarVisible(true);
+};
+    /*const eliminar = async (id) => {
         const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar este proveedor?');
         if (!confirmacion) return;
 
@@ -60,6 +69,26 @@ const VistaProveedores = () => {
             setMensaje('Error al eliminar proveedor');
         } finally {
             setEliminandoId(null);
+        }
+    };*/
+
+    const handleEliminarProveedor = async () => {
+        if (!proveedorAEliminar) return;
+    
+        const id = proveedorAEliminar.idProveedor;
+        setEliminandoId(id);
+    
+        try {
+            await eliminarProveedor(id);
+            setMensaje("Proveedor eliminado correctamente");
+            await cargarProveedores();
+        } catch (err) {
+            console.error(err);
+            setMensaje(err.response?.data?.mensaje || "Error al eliminar proveedor");
+        } finally {
+            setEliminandoId(null);
+            setModalEliminarVisible(false);
+            setProveedorAEliminar(null);
         }
     };
 
@@ -135,7 +164,7 @@ const VistaProveedores = () => {
                                                     <td className={styles.acciones}>
                                                         <button onClick={() => abrirModal(p)}>✏️</button>
                                                         <button
-                                                            onClick={() => eliminar(p.idProveedor)}
+                                                            onClick={() => confirmarEliminar(p)}
                                                             disabled={eliminandoId === p.idProveedor}
                                                         >
                                                             {eliminandoId === p.idProveedor ? '🗑️...' : '🗑️'}
@@ -171,6 +200,15 @@ const VistaProveedores = () => {
                                         >
                                         VOLVER AL INICIO
                                     </button>
+                                )}
+
+                                {modalEliminarVisible && (
+                                    <ModalEliminarProveedor 
+                                        visible={modalEliminarVisible}
+                                        platillo={proveedorAEliminar}
+                                        onConfirm={handleEliminarProveedor}
+                                        onClose={() => setModalEliminarVisible(false)}
+                                        />
                                 )}
                             </div>
                         )}
