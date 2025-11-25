@@ -141,14 +141,6 @@ const VistaInventario = () => {
         cargarDatos();
     }, []);
 
-    // Auto-refresh imprevistos every X seconds
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            cargarInventarios();
-        }, refreshInterval);
-
-        return () => clearInterval(intervalId);
-    }, [refreshInterval]);
 
     //aca se va a mapear que la tabla inventarioProducto jale la informacion de otras tablas como productos o unidadMedida, para no mostrar solo id's
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario

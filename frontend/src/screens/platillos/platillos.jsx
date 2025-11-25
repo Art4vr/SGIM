@@ -11,7 +11,6 @@ import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
 
 const VistaPlatillos = () => {
-    const [refreshInterval, setRefreshInterval] = useState(5000);
     const { logout, user, loading } = useAuth();
     const navigate = useNavigate();
     const [platillos, setPlatillos] = useState([]);
@@ -20,7 +19,6 @@ const VistaPlatillos = () => {
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState('');
     const [eliminandoId, setEliminandoId] = useState(null);
-    const [menuAbierto, setMenuAbierto] = useState(false);
     const [modalAccion, setModalAccion] = useState(null);
     const menuRef = useRef(null);
     const botonRef = useRef(null);
@@ -54,17 +52,6 @@ const VistaPlatillos = () => {
         verificarDisponibilidad();
 
         cargarPlatillos();
-        
-        // Configurar el intervalo para actualizar los platillos cada 30 segundos (30000ms)
-        const intervalo = setInterval(() => {
-            cargarPlatillos();
-            verificarDisponibilidad();
-        }, 10000); // Puedes ajustar este valor (en milisegundos)
-
-        // Limpiar el intervalo cuando el componente se desmonte
-        return () => {
-            clearInterval(intervalo);
-        }
     }, []);
 
     const abrirModal = (platillo = null, modalAccion = null) => {
@@ -147,7 +134,7 @@ const VistaPlatillos = () => {
                         <h1 className={styles.title}>GESTIÓN DE PLATILLOS</h1>
 
                         <h2 className={styles.subtitle}>Añadir Platillo al Menú</h2>
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
+                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal(null, "nuevoPlatillo")}>
                             Agregar Platillo
                         </button>
 
