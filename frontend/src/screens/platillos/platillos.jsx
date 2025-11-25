@@ -9,6 +9,7 @@ import stylesCommon from '../../styles/common/common.module.css';
 import IngredientesPlatillo from './ingredientes';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
+import ModalEliminarPlatillo from "./modalEliminar";
 
 const VistaPlatillos = () => {
     const [refreshInterval, setRefreshInterval] = useState(5000);
@@ -22,8 +23,12 @@ const VistaPlatillos = () => {
     const [eliminandoId, setEliminandoId] = useState(null);
     const [menuAbierto, setMenuAbierto] = useState(false);
     const [modalAccion, setModalAccion] = useState(null);
+    
     const menuRef = useRef(null);
     const botonRef = useRef(null);
+
+    const [modalEliminarVisible, setModalEliminarVisible] = useState(false);
+    const [platilloAEliminar, setPlatilloAEliminar] = useState(null);
 
     const cargarPlatillos = async () => {
         
@@ -79,7 +84,12 @@ const VistaPlatillos = () => {
         setPlatilloEditando(null);
     };
 
-    const eliminar = async (id) => {
+const confirmarEliminar = (platillo) => {
+    setPlatilloAEliminar(platillo);
+    setModalEliminarVisible(true);
+};
+
+    /*const eliminar = async (id) => {
         const confirm = window.confirm("¿Estás seguro de que deseas eliminar este platillo?");
         if (!confirm) return;
 
@@ -93,7 +103,27 @@ const VistaPlatillos = () => {
         } finally {
             setEliminandoId(null);
         }
-    };
+    };*/
+
+const handleEliminarPlatillo = async () => {
+    if (!platilloAEliminar) return;
+
+    const id = platilloAEliminar.idPlatillo;
+    setEliminandoId(id);
+
+    try {
+        await eliminarPlatillo(id);
+        setMensaje("Platillo eliminado correctamente");
+        await cargarPlatillos();
+    } catch (err) {
+        console.error(err);
+        setMensaje(err.response?.data?.mensaje || "Error al eliminar platillo");
+    } finally {
+        setEliminandoId(null);
+        setModalEliminarVisible(false);
+        setPlatilloAEliminar(null);
+    }
+};
 
     const [filtros, setFiltros] = useState({
         categoria: '',
@@ -229,7 +259,7 @@ const VistaPlatillos = () => {
                                                 <td className={styles.acciones}>
                                                     <button onClick={() => abrirModal(p,"nuevoPlatillo")}>✏️</button>
                                                     <button
-                                                        onClick={() => eliminar(p.idPlatillo)}
+                                                        onClick={() => confirmarEliminar(p)}
                                                         disabled={eliminandoId === p.idPlatillo}
                                                     >
                                                         {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
@@ -278,6 +308,15 @@ const VistaPlatillos = () => {
                             >
                             VOLVER AL INICIO
                         </button>
+                        )}
+
+                        {modalEliminarVisible && (
+                            <ModalEliminarPlatillo 
+                                visible={modalEliminarVisible}
+                                platillo={platilloAEliminar}
+                                onConfirm={handleEliminarPlatillo}
+                                onClose={() => setModalEliminarVisible(false)}
+                            />
                         )}
                     </div>
                 </div>

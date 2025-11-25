@@ -8,6 +8,8 @@ import api from '../../api/axiosConfig';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
 import stylesTabla from '../../styles/platillos/Platillo.module.css';
+import ModalEliminarUsuarios from "./modalEliminar";
+
 
 const VistaUsuarios = () => {
     const { logout} = useAuth();
@@ -50,11 +52,19 @@ const VistaUsuarios = () => {
         setUsuarioEditando(null);
     };
 
+    const [modalEliminarVisible, setModalEliminarVisible] = useState(false);
+    const [usuarioAEliminar, setUsuarioAEliminar] = useState(null);    
 
-    const eliminar = async (id) => {
+const confirmarEliminar = (usuario) => {
+    setUsuarioAEliminar(usuario);
+    setModalEliminarVisible(true);
+};
+
+
+/* const eliminar = async (id) => {
         const usuarionombre = usuarios.find(u => u.idUsuario === id);
-        const confirm = window.confirm("¿Estás seguro de que deseas eliminar al usuario <" + usuarionombre.nombre + "> ?");
-        if (!confirm) return;
+        setUsuarioAEliminar(usuario);
+        setModalEliminarVisible(true);
 
 
         setEliminandoId(id);
@@ -68,7 +78,27 @@ const VistaUsuarios = () => {
         } finally {
             setEliminandoId(null);
         }
-    };
+    };*/
+
+const eliminarUsuario = async () => {
+    if (!usuarioAEliminar) return;
+
+    const id = usuarioAEliminar.idUsuario;
+    setEliminandoId(id);
+
+    try {
+        await api.delete(`/api/usuarios/eliminar/${id}`);
+        setMensaje("Usuario eliminado correctamente");
+        await cargarUsuarios();
+    } catch (err) {
+        console.error(err);
+        setMensaje(err.response?.data?.mensaje || "Error al eliminar usuario");
+    } finally {
+        setEliminandoId(null);
+        setModalEliminarVisible(false);
+        setUsuarioAEliminar(null);
+    }
+};
 
     // Justo antes del return, debajo de tus otros useState
         const [filtros, setFiltros] = useState({
@@ -189,7 +219,7 @@ const VistaUsuarios = () => {
                                                 <td className={styles.acciones}>
                                                     <button onClick={() => abrirModal(u)}>✏️</button>
                                                     <button
-                                                        onClick={() => eliminar(u.idUsuario)}
+                                                        onClick={() => confirmarEliminar(u)}
                                                         disabled={eliminandoId === u.idUsuario}
                                                     >
                                                         {eliminandoId === u.idUsuario ? '🗑️...' : '🗑️'}
@@ -215,6 +245,16 @@ const VistaUsuarios = () => {
                                 onRefresh={cargarUsuarios}
                             />
                         )}
+
+                        {modalEliminarVisible && (
+                            <ModalEliminarUsuarios 
+                                visible={modalEliminarVisible}
+                                usuario={usuarioAEliminar}
+                                onConfirm={eliminarUsuario}
+                                onClose={() => setModalEliminarVisible(false)}
+                            />
+                        )}
+
                     </div>
                 </div>
             </div>
