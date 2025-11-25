@@ -81,9 +81,8 @@ const Encabezado = () => {
                     {/* OPCIONES PARA EL CHEF (Rol 3) */}
                     {user?.rol === 3 &&(
                         <>
-                            <li onClick={() => navigate('/Perfil')}>Perfil</li>
                             <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
-                            <li onClick={() => navigate('/platillosChef')}>Platillos</li>
+                            <li onClick={() => navigate('/platillos')}>Platillos</li>
                             <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                         </>
                     )}
@@ -93,7 +92,9 @@ const Encabezado = () => {
                         <>
                             <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
-                            <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                            <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
+                            <li onClick={() => navigate('/RegistroImprevistoMesero')}>Imprevistos</li>
+
                         </>
                     )}
                 </ul>

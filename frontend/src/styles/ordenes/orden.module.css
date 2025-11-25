@@ -69,6 +69,22 @@
  margin-top: 15px;
 }
 
+.indicador {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.indicadorVerde {
+  background-color: #1cc300;
+}
+
+.indicadorRojo {
+  background-color: #ff0000;
+}
+
 .contenidoPrincipal input[type="number"],
 .contenidoPrincipal button {
   margin: 8px;

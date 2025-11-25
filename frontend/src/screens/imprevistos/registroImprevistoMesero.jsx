@@ -8,7 +8,10 @@ import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 import { getPlatillosChef, actualizarPlatilloChef } from '../../api/chefApi';
-import Encabezado from '../../components/Encabezado';
+import Encabezado from "../../components/Encabezado";
+
+import PerfilUsuario from '../../components/PerfilUsuario';
+
 
 const RegistroImprevistoMesero = () => {
     const { logout, user, loading } = useAuth();
@@ -266,9 +269,11 @@ const RegistroImprevistoMesero = () => {
     }
     
     return (
-        <div className={styles.container}>
+        <div className={stylesCommon.bodyContainer}>
+            
             {/* Encabezado */}
             <Encabezado/>
+
 
             {/* Menú lateral */}
             <div
@@ -283,7 +288,6 @@ const RegistroImprevistoMesero = () => {
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
-
             <div className={styles.registerContainer}>
                 <div className={styles.registerCard}>
                     <h2 className={styles.title}>Registrar Imprevisto</h2>
@@ -362,6 +366,7 @@ const RegistroImprevistoMesero = () => {
                 </div>
             </div>
         </div>
+        
     );
 };
 

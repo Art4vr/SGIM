@@ -309,28 +309,6 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
     });
   };
 
-  //Funciones de Modal para editar platillos
-const abrirModalEditar = async (platillo) => {
-  setPlatilloEditando(platillo);
-  setModalEditarAbierto(true);
-
-  try {
-    const response = await api.get(
-      `/producto-platillo/obtener/${platillo.Platillo_idPlatillo}`
-    );
-
-    setIngredientes(response.data);
-  } catch (err) {
-    console.error("Error al obtener ingredientes:", err);
-    setIngredientes([]);
-  }
-};
-
-
-const cerrarModalEditar = () => {
-  setModalEditarAbierto(false);
-  setPlatilloEditando(null);
-};
 
 // ---------------------- FILTROS ----------------------
   const handleFiltroChange = (e) => {
@@ -394,7 +372,8 @@ const cerrarModalEditar = () => {
                     <option value="">Selecciona una mesa</option>
                     {mesas.map((mesa) => (
                       <option key={mesa.idMesa} value={mesa.idMesa}>
-                        Mesa {mesa.numeroMesa} ({mesa.estado})
+                        {mesa.estado === "disponible" ? "🟩" : "🟥"} Mesa {mesa.numeroMesa}
+                        {/*Mesa {mesa.numeroMesa} ({mesa.estado})*/}
                       </option>
                     ))}
                   </select>
@@ -434,17 +413,6 @@ const cerrarModalEditar = () => {
                     {p.estado === 'listo' && (
                       <button onClick={() => cambiarEstado(p, 'entregado')} className={styles.botonAccion}>
                         Entregado
-                      </button>
-                    )}
-
-                    {/*Editar platillo antes de enviar a cocina */}
-                    {p.estado === 'pendiente' && (
-                      <button
-                        onClick={() => abrirModalEditar(p)}
-                        className={styles.botonAccion}
-                        style={{ marginLeft: "10px" }}
-                      >
-                        Editar
                       </button>
                     )}
 
@@ -508,14 +476,7 @@ const cerrarModalEditar = () => {
       <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelMesero')}>
         Volver al Inicio
       </button>
-      {modalEditarAbierto && (
-        <ModalProductos
-          platillo={platilloEditando}
-          ingredientes={ingredientes}
-          onClose={cerrarModalEditar}
-          onRefresh={() => seleccionarOrden(ordenSeleccionada)}
-        />
-      )}
+
       </div>
     </div>
   );
