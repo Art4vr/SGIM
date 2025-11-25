@@ -93,7 +93,6 @@ const Encabezado = () => {
                         <>
                             <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
-                            <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
                             <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
                         </>
                     )}

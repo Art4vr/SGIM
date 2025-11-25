@@ -6,7 +6,7 @@
 }
 
 body {
-    background: linear-gradient(to right, #664152, #8c747c);
+    background: linear-gradient(to right, #7d616e, #8c747c);
 }
 
 /* ===== Header ===== */
@@ -20,6 +20,7 @@ body {
     background: linear-gradient(90deg, #5e2a45 0%, #b44a82 60%, #e17aa9 100%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border-bottom: 2px solid #00000044;
+    /*position: absolute;*/
 }
 
 .headerRight {

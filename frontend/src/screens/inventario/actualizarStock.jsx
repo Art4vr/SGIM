@@ -135,6 +135,7 @@ const ActualizarStock = () => {
                         </div>
                     ) : (
                         <form onSubmit={manejarActualizarStock} className={styles.form}>
+                            <div className={styles.formDatos}>
                             {/* Producto */}
                             <div className={styles.formGroup}>
                                 <label>Producto:</label>
@@ -193,24 +194,34 @@ const ActualizarStock = () => {
                                     ))}
                                 </select>
                             </div>
+                            </div>
 
                             {/* Botón de Acción */}
-                            <button type="submit" className={styles.registerBtn} disabled={cargando}>
-                                {cargando ? 'Guardando...' : 'Actualizar Stock'}
-                            </button>
+                            <div className={styles.Btns}>
+                                <button type="submit" className={styles.registerBtn} disabled={cargando}>
+                                    {cargando ? 'Guardando...' : 'Actualizar Stock'}
+                                </button>
+                                {/*Botón para volver al inventario*/}
+                                <button className={styles.registerBtn} onClick={() => navigate('/inventario')}>
+                                    VOLVER ATRÁS
+                                </button>
+
+                                {/*Botón de volver al panel*/}
+                                {user.rol === 1 && (
+                                    <button className={styles.registerBtn} onClick={() => navigate('/panelGerente')}>
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
+
+                                {user.rol === 2 && (
+                                    <button className={styles.registerBtn} onClick={() => navigate('/panelEncargado')}>
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
+                            </div>
                         </form>
                     )}
-                    <div>
-                        {/*Botón para volver al inventario*/}
-                        <button className={styles.registerBtn} onClick={() => navigate('/inventario')}>
-                            VOLVER ATRÁS
-                        </button>
-
-                        {/*Botón de volver al panel*/}
-                        <button className={styles.registerBtn} onClick={() => navigate('/PanelGerente')}>
-                            VOLVER AL INICIO
-                        </button>
-                    </div>
+                    
                 </div>
             </div>
             <div>

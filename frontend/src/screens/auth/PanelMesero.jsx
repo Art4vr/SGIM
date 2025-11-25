@@ -1,7 +1,7 @@
 import api from '../../api/axiosConfig';
 import { useState, botonRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/auth/PanelAdm.module.css';
+import styles from '../../styles/common/paneles.module.css';
 import Encabezado from '../../components/Encabezado';
 
 
@@ -10,7 +10,7 @@ const PanelMesero = () => {
     const navigate = useNavigate();
 
     return (
-        <div className={styles.container}>
+        <div>
             {/* Encabezado */}
             <Encabezado/>
 

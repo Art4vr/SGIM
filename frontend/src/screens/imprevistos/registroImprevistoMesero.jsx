@@ -8,8 +8,7 @@ import api from '../../api/axiosConfig';
 import stylesCommon from '../../styles/common/common.module.css';
 import styles from '../../styles/auth/Register.module.css'; // Asegúrate que este archivo existe
 import { getPlatillosChef, actualizarPlatilloChef } from '../../api/chefApi';
-
-import PerfilUsuario from '../../components/PerfilUsuario';
+import Encabezado from '../../components/Encabezado';
 
 const RegistroImprevistoMesero = () => {
     const { logout, user, loading } = useAuth();
@@ -269,17 +268,7 @@ const RegistroImprevistoMesero = () => {
     return (
         <div className={styles.container}>
             {/* Encabezado */}
-            <div className={stylesCommon.header}>
-                <button
-                    ref={botonRef}
-                    className={stylesCommon.menuBoton}
-                    onClick={toggleMenu}
-                >
-                    <img src="/imagenes/menu_btn.png" alt="Menú" />
-                </button>
-                <h1>Sistema de Gestión de Inventarios y Menús para Restaurante de Sushi</h1>
-                <img className={stylesCommon.logo} src="/imagenes/MKSF.png" alt="LogoMK" />
-            </div>
+            <Encabezado/>
 
             {/* Menú lateral */}
             <div

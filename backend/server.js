@@ -19,7 +19,7 @@ app.use(cookieParser());//va a analizar las cookies en las solicitudes y hacerla
 
 app.use(express.json());
 app.use(cors({ //Habilitar CORS (Cross-Origin Resource Sharing) para permitir solicitudes de otros dominios
-    origin: process.env.FRONTEND_URL || 'http://127.0.0.1:3000', // Permite solicitudes solo desde el frontend especificado
+    origin: process.env.FRONTEND_URL || 'http://192.168.0.5:3000', // Permite solicitudes solo desde el frontend especificado
     credentials: true, // Permite el envío de cookies con las solicitudes
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -27,7 +27,7 @@ app.use(cors({ //Habilitar CORS (Cross-Origin Resource Sharing) para permitir so
 
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, //equivale a 15 minutos
-    max: 500 // Número máximo de peticiones permitidas en esos 15 minutos
+    max: 1000 // Número máximo de peticiones permitidas en esos 15 minutos
 });
 app.use(globalLimiter);
 

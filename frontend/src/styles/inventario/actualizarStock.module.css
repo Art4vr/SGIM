@@ -18,7 +18,7 @@
 /* ======== TARJETA CENTRAL ======== */
 .registerCard {
   width: 90%;
-  max-width: 600px; /* Ajustado para un formulario vertical */
+  max-width: 80vw; /* Ajustado para un formulario vertical */
   margin: 0 auto;
   padding: 40px;
   border-radius: 12px;
@@ -52,10 +52,22 @@
 }
 
 /* ======== FORMULARIO ======== */
+.formDatos {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente fila */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  /*flex-direction: column;*/
+  align-content: center;
+  gap: 2em;
+}
+
 .form {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan a la siguiente fila */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  /*flex-direction: column;*/
+  align-content: center;
+  gap: 2em;
 }
 
 /* Grupos de input (Label + Input) */
@@ -88,12 +100,11 @@
   font-size: 1rem;
   outline: none;
   transition: all 0.3s ease;
-
+  max-width: 55vw;
   font-family: "Roboto Slab", serif;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
-  font-size: 16px; /* Tamaño de fuente */
 }
 
 .formGroup input:focus,
@@ -172,9 +183,18 @@
   }
 }
 
+.Btns{
+  margin-top: 5em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 60%;
+}
+
 .registerBtn {
     margin-top: 10px;
-    width: 50%;            /* Cámbialo al ancho que quieras */
+    width: 30%;            /* Cámbialo al ancho que quieras */
+    max-width: 10em;
     padding: 10px 15px;
     border: none;
     border-radius: 16px;
@@ -192,6 +212,7 @@
 
     background-color: #D92579;
     color: #fff;
+    min-width: 9em;
 }
 
 .registerBtn:hover {
