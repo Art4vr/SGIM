@@ -307,7 +307,7 @@ const RegistroImprevistoMesero = () => {
                                 <option value="">Selecciona un platillo</option>
                                 {platillosOrden.map((pl) => (
                                     <option key={pl.idPlatilloOrden} value={pl.idPlatilloOrden}>
-                                        {pl.idOrden} | {pl.platillo} | {pl.cantidad}
+                                        {pl.platillo}
                                     </option>
                                 ))}
                             </select>
