@@ -15,7 +15,7 @@
 /* ------------------- CONTENEDOR PRINCIPAL DE PRODUCTOS ------------------- */
 .registerContainer {
     width: 100%;
-    max-width: 1600px; /* ancho máximo para pantallas grandes */
+    max-width: 1400px; /* ancho máximo para pantallas grandes */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +33,25 @@
     gap: 20px;
     color: #000;
     text-align: center;
+    box-shadow: 0px 4px 12px #b90464b6;
+    justify-content: center;
+
+    opacity: 0;
+    transform: translateX(25px);
+    animation: fadeRight 0.45s ease forwards;
 }
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 
 /* ------------------- TÍTULO ------------------- */
 .title {
@@ -143,19 +161,21 @@
 }
 
 /* ------------------- BOTONES ------------------- */
-.registerBtn, button {
+.registerBtn {
+    width: 20%;            /* Cámbialo al ancho que quieras */
     padding: 15px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 16px;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-
-    font-family: "Murecho", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 900;
-    font-style: normal;
+    font-family: "Murecho", sans-serif;
     font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
 .registerBtn {
@@ -182,13 +202,6 @@ button:hover {
 .inputContainer {
     margin-bottom: 15px;
     text-align: left;
-}
-
-.inputContainer label {
-    display: block;
-    font-size: 14px;
-    color: #000;
-    margin-bottom: 5px;
 }
 
 .inputContainer input,
@@ -218,6 +231,18 @@ button:hover {
 
 .inputContainer select:hover {
     background-color: #555;
+}
+
+.inputContainer label {
+    display: block;
+    color: #000;
+    margin-bottom: 5px;
+
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
 }
 
 /* ------------------- RESPONSIVE ------------------- */
@@ -302,7 +327,10 @@ button:hover {
     margin-top: 20px;
 }
 
+/* ============= BOTONES DE GUARDAR Y CANCELAR ============== */
 .btnGuardar {
+    display: inline-block;       /* Evita que se expanda al 100% */
+    width: auto;                 /* Solo ocupa lo que necesita */
     background-color: #D92579;
     color: #fff;
     border: none;
@@ -310,6 +338,12 @@ button:hover {
     padding: 10px 20px;
     cursor: pointer;
     transition: background 0.3s ease;
+    text-align: center;
+
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
 }
 
 .btnGuardar:hover {
@@ -317,6 +351,8 @@ button:hover {
 }
 
 .btnCancelar {
+    display: inline-block;       /* Evita que se expanda al 100% */
+    width: auto;                 /* Solo ocupa lo que necesita */
     background-color: #f44336;
     color: #fff;
     border: none;
@@ -324,6 +360,12 @@ button:hover {
     padding: 10px 20px;
     cursor: pointer;
     transition: background 0.3s ease;
+    text-align: center;
+
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
 }
 
 .btnCancelar:hover {
@@ -353,8 +395,8 @@ button:hover {
     border-radius: 6px;
     border: 1px solid #ccc;
     margin-top: 5px;
-    font-size: 16px;
 
+    font-size: 16px;
     font-family: "Murecho", sans-serif;
     font-optical-sizing: auto;
     font-weight: 600;

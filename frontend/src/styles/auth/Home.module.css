@@ -66,7 +66,7 @@
     font-family: "Playball", cursive;
     font-weight: 400;
     font-style: normal;
-    font-size: 30px; /* Tamaño del subtítulo */
+    font-size: 35px; /* Tamaño del subtítulo */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
     color: #D92579; /* Color del texto */
 }
@@ -105,17 +105,23 @@
     color: #e4e4e4;
 }
 
-.logoutBtn{
-    display: flex;
-    justify-self: center;
-    background-color: #e4e4e4; /* Color de fondo del botón */
-    color: rgb(51, 50, 50); /* Color del texto */
-    border: none; /* Sin bordes */
-    border-radius: 19px; /* Bordes redondeados */
-    padding: 10px 20px; /* Espaciado interno */
-    font-size: 18px; /* Tamaño del texto */
-    cursor: pointer; /* Cursor tipo puntero */
-    margin: 15px; /* Márgenes entre botones */
-    transition: background 0.3s; /* Transición suave en el cambio de color */
-    box-shadow: 2px 2px 2px 2px rgba(138, 89, 121, 0.616);
+.loginBtn{
+    width: 30%;            /* Cámbialo al ancho que quieras */
+    padding: 15px 20px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.loginBtn:hover {
+    background-color: #400C24;
 }

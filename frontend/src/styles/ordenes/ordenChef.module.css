@@ -188,3 +188,33 @@
         font-size: 0.85rem;
     }
 }
+
+/* Botón principal */
+.registerBtn {
+    background-color: #D92579;
+    color: #fff;
+    width: 20%;            /* Cámbialo al ancho que quieras */
+    padding: 15px 20px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    margin: 20px auto;
+}
+
+.registerBtn:hover {
+    background-color: #400C24;
+}
+
+.registerBtn:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
+}

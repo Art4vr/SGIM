@@ -195,19 +195,19 @@ const ActualizarStock = () => {
                             </div>
 
                             {/* Botón de Acción */}
-                            <button type="submit" className={styles.submitBtn} disabled={cargando}>
+                            <button type="submit" className={styles.registerBtn} disabled={cargando}>
                                 {cargando ? 'Guardando...' : 'Actualizar Stock'}
                             </button>
                         </form>
                     )}
                     <div>
                         {/*Botón para volver al inventario*/}
-                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/inventario')}>
+                        <button className={styles.registerBtn} onClick={() => navigate('/inventario')}>
                             VOLVER ATRÁS
                         </button>
 
                         {/*Botón de volver al panel*/}
-                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/PanelGerente')}>
+                        <button className={styles.registerBtn} onClick={() => navigate('/PanelGerente')}>
                             VOLVER AL INICIO
                         </button>
                     </div>

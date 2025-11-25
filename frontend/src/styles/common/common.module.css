@@ -160,26 +160,29 @@ body {
     color: #fff;
 }
 
-/* ======== BOTÓN DE VOLVER ======== */
+/* ========= BOTÓN DE VOLVER ================== */
 .backBtn {
-    display: block;
-    width: auto;
-    max-width: 200px;
-    padding: 12px;
-    font-size: 16px;
-    color: white;
-    background-color: #D92579;
+    margin-top: 10px;
+    width: 20%;            /* Cámbialo al ancho que quieras */
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 20px auto;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
     text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    margin: 20px auto;
 }
 
-.backBtn:hover {
-    background-color: #400C24;
-    transform: scale(1.05);
+.backBtn {
+    background-color: #D92579;
+    color: #fff;
 }
 
 /* ======= Botón de registrar ========*/

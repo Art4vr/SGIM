@@ -13,10 +13,25 @@
 
 /* Contenedor principal */
 .registerContainer {
-    width: 90%;
+    width: 95%;
     display: flex;
     justify-content: center;
     margin-top: 2rem; /* o el valor que se vea mejor */
+
+    opacity: 0;
+    transform: translateX(25px);
+    animation: fadeRight 0.45s ease forwards;
+}
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .registerCard {
@@ -25,7 +40,7 @@
     border: 2px solid #9f8a9ac6;
     box-shadow: 0px 4px 8px #b90464b6;
     padding: 2rem;
-    width: 85%;
+    width: 90%;
     max-width: 1000px;
     text-align: center;
     transition: all 0.3s ease;
@@ -78,24 +93,28 @@
 
 /* Botón principal */
 .registerBtn {
-    display: block;
-    margin: 0 auto 1.5rem auto;
-    background-color: #b44a82;
+    background-color: #D92579;
     color: #fff;
+    width: 20%;            /* Cámbialo al ancho que quieras */
+    padding: 15px 20px;
     border: none;
-    border-radius: 8px;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    border-radius: 16px;
     cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    margin: 20px auto;
 }
 
 .registerBtn:hover {
-    background-color: #dc057b;
-    transform: scale(1.05);
+    background-color: #400C24;
 }
-
 
 .registerBtn:active {
     transform: scale(0.97);

@@ -103,34 +103,6 @@
   background-color: #fff;
 }
 
-/* Botón de Submit */
-.submitBtn {
-    width: 50%;                                /* Ocupa todo el ancho */
-    padding: 8px;                              /* Espaciado interno */
-    color: white;                             /* Color del texto */
-    background-color: #D92579;                /* Color de fondo */
-    border: none;                               /* Sin borde */
-    border-radius: 18px;                         /* Bordes redondeados */
-    cursor: pointer;                            /* Cursor de puntero */
-    transition: background-color 0.3s ease;     /* Efecto de transición */
-    margin-bottom: 10px;                        /* Espaciado inferior */
-
-    font-family: "Murecho", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 900;
-    font-style: normal;
-    font-size: 18px;    
-}
-
-.submitBtn:hover {
-  background-color: #dc057b;
-  transform: scale(1.02);
-}
-
-.submitBtn:active {
-  transform: scale(0.98);
-}
-
 /* === ALERTAS ====*/
 .mensaje {
   background: linear-gradient(90deg, rgba(135, 131, 133, 0.95) 0%, rgba(97, 88, 92, 0.95) 100%);
@@ -198,4 +170,31 @@
     opacity: 0;
     transform: translateX(-50%) translateY(-20px);
   }
+}
+
+.registerBtn {
+    margin-top: 10px;
+    width: 50%;            /* Cámbialo al ancho que quieras */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    font-size: 20px;
+    text-align: center;
+
+    display: block;        /* IMPORTANTÍSIMO para centrarlo */
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+    
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    margin: 20px auto;
+
+    background-color: #D92579;
+    color: #fff;
+}
+
+.registerBtn:hover {
+  background-color: #400C24;
+  transform: scale(1.05);
 }

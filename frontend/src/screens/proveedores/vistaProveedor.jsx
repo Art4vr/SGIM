@@ -89,7 +89,7 @@ const VistaProveedores = () => {
                     <div className={styles.registerCard}>
                         <h1 className={styles.title}>GESTIÓN DE PROVEEDORES</h1>
 
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
+                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
                             AGREGAR PROVEEDOR
                         </button>
 
@@ -155,8 +155,7 @@ const VistaProveedores = () => {
                                 
                                 {user?.rol===1 &&(
                                     <button
-                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                        type="button"
+                                        className={`${styles.registerBtn} ${styles.backBtn}`}
                                         onClick={() => navigate('/PanelGerente')}
                                         >
                                         VOLVER AL INICIO
@@ -165,8 +164,7 @@ const VistaProveedores = () => {
 
                                 {user?.rol===2 &&(
                                     <button
-                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                        type="button"
+                                        className={`${styles.registerBtn} ${styles.backBtn}`}
                                         onClick={() => navigate('/PanelEncargado')}
                                         >
                                         VOLVER AL INICIO
