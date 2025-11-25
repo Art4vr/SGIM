@@ -28,7 +28,7 @@ export default function Menu() {
     verificarDisponibilidad();
 
     axios
-      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.13"}:3000/api/platillosMenu`) 
+      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.5"}:3000/api/platillosMenu`) 
       .then((res) => {
         const agrupados = res.data.reduce((acc, platillo) => {
           if (!acc[platillo.categoria]) acc[platillo.categoria] = [];

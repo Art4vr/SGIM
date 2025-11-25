@@ -137,8 +137,7 @@ const Registro = () => {
                                 REGISTRAR
                             </button>
                             <button
-                                className={styles.loginBtn}
-                                type="button"
+                                className={styles.registerBtn}
                                 onClick={() => navigate('/PanelGerente')}
                             >
                                 VOLVER ATRAS

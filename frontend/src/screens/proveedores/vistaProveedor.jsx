@@ -118,7 +118,7 @@ const confirmarEliminar = (platillo) => {
                     <div className={styles.registerCard}>
                         <h1 className={styles.title}>GESTIÓN DE PROVEEDORES</h1>
 
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
+                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
                             AGREGAR PROVEEDOR
                         </button>
 
@@ -184,8 +184,7 @@ const confirmarEliminar = (platillo) => {
                                 
                                 {user?.rol===1 &&(
                                     <button
-                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                        type="button"
+                                        className={`${styles.registerBtn} ${styles.backBtn}`}
                                         onClick={() => navigate('/PanelGerente')}
                                         >
                                         VOLVER AL INICIO
@@ -194,8 +193,7 @@ const confirmarEliminar = (platillo) => {
 
                                 {user?.rol===2 &&(
                                     <button
-                                        className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                                        type="button"
+                                        className={`${styles.registerBtn} ${styles.backBtn}`}
                                         onClick={() => navigate('/PanelEncargado')}
                                         >
                                         VOLVER AL INICIO

@@ -15,7 +15,6 @@ import ModalEliminarInventario from './modalInventario';
 import AlertasInventario from '../../components/AlertasInventario';
 import Encabezado from '../../components/Encabezado';
 
-
 //funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
     //fecha actual <=  fecha de caducidad -> 'caducado'
     //fecha actual >  fecha de caducidad por poco-> 'pronto a caducar'
@@ -141,14 +140,6 @@ const VistaInventario = () => {
         cargarDatos();
     }, []);
 
-    // Auto-refresh imprevistos every X seconds
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            cargarInventarios();
-        }, refreshInterval);
-
-        return () => clearInterval(intervalId);
-    }, [refreshInterval]);
 
     //aca se va a mapear que la tabla inventarioProducto jale la informacion de otras tablas como productos o unidadMedida, para no mostrar solo id's
     //se crea una nueva lista ya con los datos mapeados y se guarda en listaInventario
@@ -320,7 +311,7 @@ const VistaInventario = () => {
                 )}
                 {/*Botón de volver al panel*/}
                 {user?.rol===1 &&(
-                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelGerente')}>
+                    <button className={styles.backBtn} onClick={() => navigate('/PanelGerente')}>
                         Volver al Inicio
                     </button>
                 )}

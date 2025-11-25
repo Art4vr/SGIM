@@ -94,6 +94,7 @@ const Encabezado = () => {
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
                             <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
                             <li onClick={() => navigate('/RegistroImprevistoMesero')}>Imprevistos</li>
+
                         </>
                     )}
                 </ul>

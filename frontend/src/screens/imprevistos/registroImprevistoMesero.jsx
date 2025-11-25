@@ -12,6 +12,7 @@ import Encabezado from "../../components/Encabezado";
 
 import PerfilUsuario from '../../components/PerfilUsuario';
 
+
 const RegistroImprevistoMesero = () => {
     const { logout, user, loading } = useAuth();
     const [cargando, setCargando] = useState(false);
@@ -273,6 +274,20 @@ const RegistroImprevistoMesero = () => {
             {/* Encabezado */}
             <Encabezado/>
 
+
+            {/* Menú lateral */}
+            <div
+                ref={menuRef} 
+                className={`${stylesCommon.sidebar} ${menuAbierto ? stylesCommon.sidebarAbierto : ''}`}
+            >
+                <ul>
+                    <li onClick={() => navigate('/Perfil')}>Perfil</li>
+                    <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
+                    <li onClick={() => navigate('/platillosChef')}>Platillos</li>
+                    <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
+                    <li onClick={handleLogout}>Log Out</li>
+                </ul>
+            </div>
             <div className={styles.registerContainer}>
                 <div className={styles.registerCard}>
                     <h2 className={styles.title}>Registrar Imprevisto</h2>

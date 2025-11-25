@@ -140,8 +140,15 @@ const eliminarUsuario = async () => {
             u.rol = rol ? rol.nombre : 'Desconocido';
             u.descripcionRol = rol ? rol.descripcion : 'Sin descripción';
         });
-        
 
+        //Prueba de poner iconos en lugar de la descripción de los roles.
+        const iconosRol = {
+        1: "/imagenes/IconosRoles/Gerente.png",
+        2: "/imagenes/IconosRoles/Inventario.png",
+        3: "/imagenes/IconosRoles/Chef.png",
+        4: "/imagenes/IconosRoles/Mesero.png",
+        5: "/imagenes/IconosRoles/Cliente.png"
+        };
 
     return (
         <div className={styles.container}>
@@ -154,7 +161,7 @@ const eliminarUsuario = async () => {
                     <div className={styles.registerCard}>
                         <h1 className={styles.title}>GESTIÓN DE USUARIOS</h1>
 
-                        <button className={stylesCommon.registerBtn} onClick={() => navigate('/NuevoUsuario')}>
+                        <button className={`${styles.btnBase} ${styles.registerBtn}`} onClick={() => navigate('/NuevoUsuario')}>
                             AGREGAR USUARIO
                         </button>
 
@@ -213,7 +220,19 @@ const eliminarUsuario = async () => {
                                             <tr key={u.idUsuario}>
                                                 <td>{u.nombre}</td>
                                                 <td>{u.username}</td>
-                                                <td>{u.rol}</td>
+                                                
+                                                {/* === Pone una imagen para representar el rol. === */}
+                                                <td>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <img 
+                                                    src={iconosRol[u.Rol_idRol]} 
+                                                    alt={u.rol}
+                                                    style={{ width: "60px", height: "60px", objectFit: "contain" }}
+                                                    />
+                                                    {u.rol}
+                                                </div>
+                                                </td>
+
                                                 <td>{u.descripcionRol}</td>
                                                 <td>{u.estado}</td>
                                                 <td className={styles.acciones}>
@@ -232,8 +251,7 @@ const eliminarUsuario = async () => {
                             </div>
                         )}
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
-                            type="button"
+                            className={`${styles.btnBase} ${styles.registerBtn} ${stylesCommon.backBtn}`}
                             onClick={() => navigate('/PanelGerente')}
                             >
                             VOLVER AL INICIO

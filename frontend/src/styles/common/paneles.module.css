@@ -1,0 +1,107 @@
+
+.container{
+    /*overflow-x: auto;*/
+}
+.contenido1 {
+    margin-top: 5rem;
+    display: flex;
+    flex-wrap: nowrap; /* No permite que se envuelvan las tarjetas en varias filas */
+    justify-content: flex-start; /* Alinea las tarjetas desde la izquierda */
+    align-content: center; /* Alinea las tarjetas desde arriba */
+    gap: 2rem; /* Espacio entre tarjetas */
+    padding: 5rem;
+    overflow-x: auto; /* Permite el desplazamiento horizontal si hay muchas tarjetas */
+    overflow-y: hidden; /* Elimina el scroll vertical */
+    width: fit-content;/* Asegura que no se desborde horizontalmente */
+    white-space: nowrap; /* Asegura que el contenido no se divida en varias líneas */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el cálculo del ancho */
+    position:static;
+    -webkit-overflow-scrolling: touch; /* Habilita el desplazamiento suave (scrolling) en Chrome y Safari */
+}
+.contenido { 
+    display: flex; flex-wrap: wrap; /* Permite múltiples filas */ 
+    justify-content: center; /* Centra las tarjetas */ 
+    align-items: flex-start; /* Alinea desde arriba */ 
+    gap: 2rem; /* Espacio entre tarjetas */ 
+    padding: 2rem; overflow-y: auto; /* Scroll si hay muchas tarjetas */ 
+    max-height: calc(100vh - 20vh); /* Ajusta según el header */ 
+}
+
+
+.tarjetas {
+    color: #dc057b;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse, #eacce0ee 30%, #dcc7d5ee 63%, #cc0977cb 92%); /* Suavizamos los puntos de transición 776d75ee */
+    border-radius: 50%;
+    border: 5px double #dc057b; /* Usamos borde sólido para mayor suavidad */
+    box-shadow: 0px 1px 5px #cc0977cb;
+    height: 24em;
+    width: 24em;
+    margin: 0.5rem;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.tarjetas:hover {
+    transform: scale(1.08);
+    background-color: #e3cadbee ;
+    border-color: #99167ac6;
+    box-shadow: 0 5px 9px #99547b;
+    color: #7f727b;
+}
+
+.tarjetas:hover img{
+    transform: scale(1.08);
+    background: radial-gradient( circle at center,  #ac1a8a66 8%,  #fcfcfc00 50%);
+}
+
+.tarjetas:active {
+    transform: scale(0.95); /* un pequeño "aplastamiento" al hacer clic */
+    box-shadow: 0 0 8px rgba(206, 1, 131, 0.6);
+    background-color:  #c17ba1 ;
+    transition: transform 0.1s ease;
+    color: #ffcff2;
+}
+
+.tarjetas:active img{
+    transform: scale(1.08);
+    background: radial-gradient( circle at center,  #f57cf585 9%,  #fcfcfc00 50%);
+}
+
+
+
+.imagenMenu{
+    aspect-ratio: 1 / 1; /* Relación cuadrada */
+    max-width: 100%;
+    object-fit: cover;
+    height: 18.3em;
+    width: 19em;
+    clip-path: circle(50% at 50% 50%); /* Recorta en forma circular */
+    border-radius: 50%; /* Aseguramos que la imagen también tenga bordes redondeados */
+}
+
+@media (max-width: 726px) {
+    .imagenMenu {
+        height: 10em; /* Reducimos el tamaño */
+        width: 10em; /* Reducimos el tamaño */
+        margin: 0.7em;
+        justify-self: center;
+    }
+    
+    .tarjetas {
+        max-height: 50vh; /* Reducimos el máximo tamaño */
+        max-width: 52vw;  /* Aseguramos que no sobrepasen el ancho */
+        height: 17em;  /* Ajustamos el tamaño de la tarjeta */
+        width: 28em;   /* Ajustamos el tamaño de la tarjeta */
+    }
+}
+
+.nombreMenu{
+    text-align: center;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: large;
+    margin-bottom: 3rem;
+    margin-inline: 2rem;
+}
