@@ -62,7 +62,7 @@ const Encabezado = () => {
                             <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                             <li onClick={() => navigate('/inventario')}>Inventario</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
-                            <li onClick={() => navigate('/reportes')}>Reportes</li>
+                            <li onClick={() => navigate('/productos')}>Productos</li>
                             <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
                         </>
                     )}
@@ -74,7 +74,7 @@ const Encabezado = () => {
                             <li onClick={() => navigate('/inventario')}>Inventario</li>
                             <li onClick={() => navigate('/actualizarStock')}>Actualizar Stock</li>
                             <li onClick={() => navigate('/productos')}>Productos</li>
-                            <li onClick={() => navigate('/imprevistos')}>Imprevistos</li>
+                            <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
                         </>
                     )}
 
@@ -92,7 +92,6 @@ const Encabezado = () => {
                         <>
                             <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
-                            <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>
                             <li onClick={() => navigate('/RegistroImprevistoMesero')}>Imprevistos</li>
 
                         </>

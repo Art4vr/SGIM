@@ -269,7 +269,7 @@ const RegistroImprevistoMesero = () => {
     }
     
     return (
-        <div className={stylesCommon.bodyContainer}>
+        <div className={styles.container}>
             
             {/* Encabezado */}
             <Encabezado/>
@@ -292,9 +292,7 @@ const RegistroImprevistoMesero = () => {
                 <div className={styles.registerCard}>
                     <h2 className={styles.title}>Registrar Imprevisto</h2>
                     <form onSubmit={handleRegister}>
-                        <div className={styles.inputContainer}>
-                            <h4>Usuario que Reporta: {user.username}</h4>
-                        </div>
+                        
 
                         <div className={styles.inputContainer}>
                             <h4>Platillo:</h4>

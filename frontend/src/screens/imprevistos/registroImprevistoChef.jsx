@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getProductos, getUnidades } from '../../api/productoApi'; // Aquí llamas al API de inventarioProducto
 import api from '../../api/axiosConfig';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 import styles from '../../styles/auth/Register.module.css';
 import Encabezado from '../../components/Encabezado';
 
@@ -170,9 +170,7 @@ const RegistroImprevisto = () => {
                 <div className={styles.registerCard}>
                     <h2 className={styles.title}>Registrar Imprevisto</h2>
                     <form onSubmit={handleRegister}>
-                        <div className={styles.inputContainer}>
-                            <h4>Usuario que Reporta: {user.username}</h4>
-                        </div>
+                        
 
                         <div className={styles.inputContainer}>
                             <h4>Producto:</h4>
@@ -227,12 +225,12 @@ const RegistroImprevisto = () => {
 
                         {/*Botón de volver al panel*/}
                         {user.rol === 3 && (
-                            <button className={styles.registerBtn} onClick={() => navigate('/panelChef')}>
+                            <button className={stylesCommon.BtnForm} onClick={() => navigate('/panelChef')}>
                                 VOLVER AL INICIO
                             </button>
                         )}
                         {user.rol === 2 && (
-                            <button className={styles.registerBtn} onClick={() => navigate('/PanelEncargado')}>
+                            <button className={stylesCommon.BtnForm} onClick={() => navigate('/PanelEncargado')}>
                                 VOLVER AL INICIO
                             </button>
                         )}
