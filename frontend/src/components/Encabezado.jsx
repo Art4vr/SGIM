@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axiosConfig';
 import stylesCommon from '../styles/common/common.module.css';
 import PerfilUsuario from './PerfilUsuario';
+import { IoHome } from "react-icons/io5";
+
 
 const Encabezado = () => {
     const { user, logout } = useAuth();
@@ -57,7 +59,8 @@ const Encabezado = () => {
                 <ul>
                     {/* OPCIONES PARA GERENTE (Rol 1) */}
                     {user?.rol === 1 && (
-                        <>
+                        <>  
+                            <li onClick={() => navigate('/panelGerente')}><IoHome className="sidebarIcon" />Principal</li>
                             <li onClick={() => navigate('/usuarios')}>Usuarios</li>
                             <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                             <li onClick={() => navigate('/inventario')}>Inventario</li>
@@ -69,7 +72,8 @@ const Encabezado = () => {
                     
                     {/* OPCIONES PARA ENCARGADO DE INVENTARIO (Rol 2) */}
                     {user?.rol=== 2 && (
-                        <>
+                        <>  
+                            <li onClick={() => navigate('/panelInventario')}><IoHome className="sidebarIcon" />Principal</li>
                             <li onClick={() => navigate('/proveedores')}>Proveedores</li>
                             <li onClick={() => navigate('/inventario')}>Inventario</li>
                             <li onClick={() => navigate('/actualizarStock')}>Actualizar Stock</li>
@@ -81,6 +85,7 @@ const Encabezado = () => {
                     {/* OPCIONES PARA EL CHEF (Rol 3) */}
                     {user?.rol === 3 &&(
                         <>
+                            <li onClick={() => navigate('/panelChef')}><IoHome className="sidebarIcon" />Principal</li>
                             <li onClick={() => navigate('/ordenChef')}>Órdenes</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
                             <li onClick={() => navigate('/RegistroImprevisto')}>Imprevistos</li>
@@ -89,7 +94,8 @@ const Encabezado = () => {
 
                     {/* OPCIONES PARA MESERO (Rol 4) */}
                     {user?.rol === 4 && (
-                        <>
+                        <>  
+                            <li onClick={() => navigate('/panelMesero')}><IoHome className="sidebarIcon" />Principal</li>
                             <li onClick={() => navigate('/OrdenesMesero')}>Órdenes Mesero</li>
                             <li onClick={() => navigate('/platillos')}>Platillos</li>
                             <li onClick={() => navigate('/VerMenu')}>Ver Menú</li>

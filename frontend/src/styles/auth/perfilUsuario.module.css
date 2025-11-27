@@ -1,90 +1,106 @@
-/* Contenedor principal para posicionar el dropdown */
+/* --- CONTENEDOR PRINCIPAL --- */
 .perfilContainer {
     position: relative;
-    z-index: 1000; /* Asegura que esté sobre otros elementos del header */
+    z-index: 1000;
 }
 
-/* El menú desplegable (Estilo oscuro "formulario") */
+/* --- DROPDOWN MODERNO --- */
 .perfilDropdown {
-    align-items: center;
     position: absolute;
-    top: calc(100% + 12px); /* 12px debajo del botón */
-    right: 0; /* Alineado a la derecha del contenedor */
-    /*Ajuste para dispositivos móviles */
+    top: calc(100% + 10px);
+    right: 0;
+
     width: 90vw;
-    max-width: 300px;
-    
-    /* Estilo oscuro "tipo formulario" (basado en tu sidebar) */
-    background-color: #3d2d3aef;
-    border: 1px solid #b44a82; /* Borde con el color principal */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    border-radius: 8px;
-    
-    padding: 1rem;
-    color: #f6c9e0; /* Texto claro por defecto */
-    
-    /* Animación para que aparezca suavemente */
-    animation: fadeIn 0.2s ease;
+    max-width: 280px;
+
+    background: #2b1f29f0; /* Más elegante que el anterior */
+    backdrop-filter: blur(6px);
+    border: 1px solid #b44a82;
+    border-radius: 14px;
+
+    padding: 1.2rem;
+    color: #f8d7e9;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.25),
+        inset 0 0 20px rgba(180, 74, 130, 0.08);
+
+    animation: fadeIn 0.25s ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
-/* Animación simple de aparición */
+/* --- ANIMACIÓN --- */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Estilo para el nombre (ej. Arturo) */
+/* --- NOMBRE --- */
 .perfilDropdown h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.1rem;
-    color: #fff; /* Título en blanco */
-    font-weight: 600;
+    margin: 0;
+    font-size: 1.15rem;
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-/* Estilo para el username */
+/* --- USERNAME --- */
 .perfilDropdown .username {
-    margin: 0 0 10px 0;
-    font-size: 0.9rem;
-    color: #e17aa9; /* Color rosado para el username */
+    font-size: 0.85rem;
+    color: #e185ae;
+    border-bottom: 1px solid #b44a82;
+    padding-bottom: 6px;
     font-style: italic;
-    border-bottom: 1px solid #b44a82; /* Línea separadora */
-    padding-bottom: 10px;
+    margin-bottom: 4px;
 }
 
-/* Estilo para la descripción del rol (ej. Mesero) */
+/* --- DESCRIPCIÓN --- */
 .perfilDropdown .descripcion {
     margin: 0;
     font-size: 0.9rem;
-    color: #f6c9e0; /* Texto claro */
+    color: #f4c2dd;
     line-height: 1.4;
 }
 
-/* Estilos para los mensajes de Carga o Error */
+/* --- ESTADOS (LOADING/ERROR) --- */
 .perfilDropdown .loading,
 .perfilDropdown .error {
     text-align: center;
-    color: #f6c9e0; /* Texto claro */
     padding: 10px 0;
-}
-
-/* Estilos para el botón de logout */
-.botonlogout{
-    margin-top: 5px;
-    background-color: #3d2d3aef;
-    width: 100%;
-    color: white;
-    padding: 0.5rem 0.5rem;
     font-size: 0.9rem;
-    cursor: pointer;
 }
 
-.botonlogout:hover{
-    background-color: #b44a82;
-    color: #fff;
+/* --- BOTÓN LOGOUT (MODERNO) --- */
+.botonlogout {
+    margin-top: 6px;
+    width: 100%;
+    padding: 0.65rem;
+
+    background: #b44a82;
+    color: white;
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.botonlogout:hover {
+    background: #cf5b99;
+    transform: translateY(-2px);
+}
+
+.botonlogout:active {
+    transform: translateY(0);
 }

@@ -269,7 +269,7 @@ const RegistroImprevistoMesero = () => {
     }
     
     return (
-        <div className={stylesCommon.bodyContainer}>
+        <div className={styles.container}>
             
             {/* Encabezado */}
             <Encabezado/>
@@ -288,7 +288,7 @@ const RegistroImprevistoMesero = () => {
                     <li onClick={handleLogout}>Log Out</li>
                 </ul>
             </div>
-            <div className={styles.registerContainer}>
+            <div className={`${styles.registerContainer} ${menuAbierto ? stylesCommon.conMenuAbierto : ''}`}>
                 <div className={styles.registerCard}>
                     <h2 className={styles.title}>Registrar Imprevisto</h2>
                     <form onSubmit={handleRegister}>

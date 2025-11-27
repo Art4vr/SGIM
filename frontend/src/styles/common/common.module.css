@@ -11,31 +11,30 @@ body {
 
 /* ===== Header ===== */
 .header {
-    height: 13vh;
     width: 100%;
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     align-items: center;
     /*justify-content: space-between;*/
+    padding: 1rem 2%;
     background: linear-gradient(90deg, #5e2a45 0%, #b44a82 60%, #e17aa9 100%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     border-bottom: 2px solid #00000044;
-    /*position: absolute;*/
+    border-radius: 0 0 1rem 1rem;
+    /*position: fixed;*/
 }
 
 .headerRight {
     display: flex;
     align-items: center;
-    gap: 1rem; /* Espacio entre el avatar y el logo */
+    gap: 2rem; /* Espacio entre el avatar y el logo */
     margin-right: 1rem;
 }
 
 /* ===== Título dentro del header ===== */
 .header h1 {
+    font-size: clamp(1rem,2vw,2rem);
     font-family: "Josefin Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
     color: #fff;
     font-size: 2rem;
     font-weight: 700;
@@ -52,14 +51,17 @@ body {
     all: unset;
     background: #f8f8f8e1;
     border: 2px solid black;
-    border-radius: 8px;
+    border-radius: 0.6rem;
     padding: 6px;
     cursor: pointer; 
     margin: 1rem; 
     width: 45px; 
     height: 45px;
     /*align-self: flex-start;*/
-    transition: all 0.2s ease; 
+    transition: all 0.3s ease;
+    display: flex;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2); 
+
 }
 
 .menuBoton:hover{
@@ -94,16 +96,11 @@ body {
     border-radius: 50%;
     overflow: hidden;
     border: 2px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none; 
 }
 
 .logousuario:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -121,16 +118,20 @@ body {
     top: 0;
     left: 0;
     transform: translateX(-100%); /* 👈 usa % en lugar de px */
-    width: 250px;
+    width: 14rem;
+    max-width: 25%;
     height: 100vh;
     background-color: #3d2d3aef;
-    box-shadow: 3px 0 8px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(14px);
+    box-shadow: 0.5vw 0.5vw 2vw rgba(0,0,0,0.4);
     padding-top: 4rem;
-    transition: transform 0.3s ease;
+    transform: translateX(-110%);
+    transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
     z-index: 999;
     display: flex;
+    border-radius: 0 2vw 2vw 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
     flex-direction: column;
-    align-items: start;
     pointer-events: none; /* desactiva clics cuando está cerrado */
 }
 
@@ -142,22 +143,29 @@ body {
 .sidebar ul {
     list-style: none;
     width: 100%;
-    padding: 0;
+    padding: 0 1.2rem;
     margin: 0;
+    margin-top: 3rem;
 }
 
 .sidebar li {
+    display:flex;
+    align-items: center;
+    gap:1rem;
     width: 100%;
     color: #f6c9e0;
     padding: 1rem 2rem;
     font-size: 1.2rem;
     cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.8rem;
+    border-bottom: 0.2rem solid rgba(255, 255, 255, 0.1);
     transition: background 0.2s ease, color 0.2s ease;
+    
 }
 
 .sidebar li:hover {
     background-color: #b44a82;
+    transform: translateX(6px);
     color: #fff;
 }
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/auth/perfilUsuario.module.css'; 
 import api from '../api/axiosConfig'; 
 import stylesCommon from '../styles/common/common.module.css';
-
+import { FiLogOut } from "react-icons/fi";
 const PerfilUsuario = () => {
     const [perfilAbierto, setPerfilAbierto] = useState(false);
     const [perfilData, setPerfilData] = useState(null);
@@ -75,7 +75,7 @@ const PerfilUsuario = () => {
                     {perfilData.rolNombre} ({perfilData.rolDescripcion})
                 </p>
                 {/* Se muestra el botón para cerrar sesión */}
-                <button className={styles.botonlogout} onClick={handleLogout}>
+                <button className={styles.botonlogout} onClick={handleLogout}><FiLogOut />
                     Cerrar Sesión
                 </button>
                 </>
@@ -83,7 +83,7 @@ const PerfilUsuario = () => {
                 <>
                 <p className={styles.error}>No se pudo cargar el perfil.</p>
                 {/* Se muestra el botón para cerrar sesión */}
-                <button className={styles.botonlogout} onClick={handleLogout}>
+                <button className={styles.botonlogout} onClick={handleLogout}><FiLogOut />
                     Cerrar Sesión
                 </button>
                 </>

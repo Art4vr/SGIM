@@ -372,7 +372,7 @@ const cambiarEstado = async (platillo, nuevoEstado) => {
                     <option value="">Selecciona una mesa</option>
                     {mesas.map((mesa) => (
                       <option key={mesa.idMesa} value={mesa.idMesa}>
-                        {mesa.estado === "disponible" ? "🟩" : "🟥"} Mesa {mesa.numeroMesa}
+                        {mesa.estado === "disponible" ? "✔️" : "❌"} Mesa {mesa.numeroMesa}
                         {/*Mesa {mesa.numeroMesa} ({mesa.estado})*/}
                       </option>
                     ))}
