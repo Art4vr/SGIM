@@ -4,8 +4,8 @@ import { getPlatillos, eliminarPlatillo, getCategoriasPlatillo } from '../../api
 import { useNavigate } from 'react-router-dom';
 import NuevoPlatillo from './nuevoPlatillo';
 import api from '../../api/axiosConfig';
-import styles from '../../styles/platillos/Platillo.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesTabla from '../../styles/common/tablas.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 import IngredientesPlatillo from './ingredientes';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
@@ -153,24 +153,24 @@ const handleEliminarPlatillo = async () => {
     };
 
     return (
-        <div className={styles.container}>
+        <div>
             {/* Encabezado */}
             <Encabezado/>
             
             {/* Contenido Principal */}
-            <div className={styles.bodyContainer}>
-                <div className={styles.registerContainer}>
-                    <div className={styles.registerCard}>
-                        <h1 className={styles.title}>GESTIÓN DE PLATILLOS</h1>
+            <div className={stylesTabla.bodyContainer}>
+                <div className={stylesTabla.tablaContainer}>
+                    <div className={stylesTabla.tablaCard}>
+                        <div className={stylesTabla.encabezadoTabla}>
+                        <h2 className={stylesCommon.title}>GESTIÓN DE PLATILLOS</h2>
 
-                        <h2 className={styles.subtitle}>Añadir Platillo al Menú</h2>
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal(null, "nuevoPlatillo")}>
+                        
+                        <button className={stylesCommon.Btn} onClick={() => abrirModal(null, "nuevoPlatillo")}>
                             Agregar Platillo
                         </button>
-
-                        {mensaje && <p className={styles.message}>{mensaje}</p>}
-                        <h2 className={styles.subtitle}>Búsqueda de Elementos</h2>
-
+                        </div>
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
+                        
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>
                             {/* Este 'select' de categoría se queda como está */}
@@ -216,12 +216,12 @@ const handleEliminarPlatillo = async () => {
                             />
                         </div>
                         {/*Botón para limpiar filtros*/}
-                        <button onClick={limpiarFiltros} className={stylesCommon.registerBtn}>Limpiar Filtros</button>
+                        <button onClick={limpiarFiltros} className={stylesCommon.BtnForm}>Limpiar Filtros</button>
                         {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando platillos...</p>
+                            <p>🔄 Cargando platillos...</p>
                         ) : (
-                            <div className={stylesCommon.productTableWrapper}>
-                                <table className={styles.platilloTable}>
+                            <div className={stylesTabla.TableWrapper}>
+                                <table className={stylesTabla.Table}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -242,8 +242,8 @@ const handleEliminarPlatillo = async () => {
                                                 <td>{p.categoria}</td>
                                                 <td>{p.imagen}</td>
                                                 <td>{p.precio}</td>
-                                                <td>{p.estado}</td>
-                                                <td className={styles.acciones}>
+                                                <td className={`${p.estado === 'disponible' ? stylesTabla.estadoactivo : stylesTabla.estadoinactivo}`}>{p.estado}</td>
+                                                <td className={stylesCommon.BtnAcciones}>
                                                     <button onClick={() => abrirModal(p,"nuevoPlatillo")}>✏️</button>
                                                     <button
                                                         onClick={() => confirmarEliminar(p)}
@@ -252,7 +252,7 @@ const handleEliminarPlatillo = async () => {
                                                         {eliminandoId === p.idPlatillo ? '🗑️...' : '🗑️'}
                                                     </button>
                                                 </td>
-                                                <td className={styles.acciones}> 
+                                                <td className={stylesCommon.BtnAcciones}> 
                                                     <button onClick={() => abrirModal(p,"ingredientes")}>🍽️</button>
                                                 </td>
                                             </tr>
@@ -280,7 +280,7 @@ const handleEliminarPlatillo = async () => {
 
                         {user?.rol=== 1 && (
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            className={stylesCommon.BtnForm}
                             type="button"
                             onClick={() => navigate('/PanelGerente')}
                             >
@@ -289,7 +289,7 @@ const handleEliminarPlatillo = async () => {
                         )}
                         {user?.rol=== 4 &&(
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            className={stylesCommon.BtnForm}
                             type="button"
                             onClick={() => navigate('/PanelMesero')}
                             >
@@ -298,7 +298,7 @@ const handleEliminarPlatillo = async () => {
                         )}
                         {user?.rol=== 3 &&(
                         <button
-                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            className={stylesCommon.BtnForm}
                             type="button"
                             onClick={() => navigate('/PanelChef')}
                             >

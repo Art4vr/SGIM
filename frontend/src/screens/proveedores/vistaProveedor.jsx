@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import NuevoProveedor from './agregarProveedor';
 import { useAuth } from '../../context/AuthContext';
-import styles from '../../styles/proveedores/proveedor.module.css';
+import stylesTabla from '../../styles/common/tablas.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 // Funciones API
 import { getProveedores,eliminarProveedor } from '../../api/proveedorApi';
 import Encabezado from '../../components/Encabezado';
@@ -108,21 +108,23 @@ const confirmarEliminar = (platillo) => {
 
 
     return (
-        <div className={styles.container}>
+        <div >
             {/* Encabezado */}
             <Encabezado/>
 
             {/*Contenido principal */}
-            <div className={styles.bodyContainer}>
-                <div className={styles.registerContainer}>
-                    <div className={styles.registerCard}>
-                        <h1 className={styles.title}>GESTIÓN DE PROVEEDORES</h1>
+            <div className={stylesTabla.bodyContainer}>
+                <div className={stylesTabla.tablaContainer}>
+                    <div className={stylesTabla.tablaCard}>
+                        <div className={stylesTabla.encabezadoTabla}>
+                        <h2 className={stylesCommon.title}>GESTIÓN DE PROVEEDORES</h2>
 
-                        <button className={styles.registerBtn} onClick={() => abrirModal()}>
+                        <button className={stylesCommon.Btn} onClick={() => abrirModal()}>
                             AGREGAR PROVEEDOR
                         </button>
+                        </div>
 
-                        {mensaje && <p className={styles.message}>{mensaje}</p>}
+                        {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
 
                         {/* === FILTROS === */}
                         <div className={stylesCommon.filterContainer}>
@@ -138,10 +140,10 @@ const confirmarEliminar = (platillo) => {
                         </div>
 
                         {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando proveedores...</p>
+                            <p>🔄 Cargando proveedores...</p>
                         ) : (
-                            <div className={stylesCommon.tableWrapper}>
-                                <table className={styles.productTable}>
+                            <div className={stylesTabla.TableWrapper}>
+                                <table className={stylesTabla.Table}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -161,7 +163,7 @@ const confirmarEliminar = (platillo) => {
                                                     <td>{p.direccion}</td>
                                                     <td>{p.correo}</td>
                                                     <td>{p.estado}</td>
-                                                    <td className={styles.acciones}>
+                                                    <td className={stylesCommon.BtnAcciones}>
                                                         <button onClick={() => abrirModal(p)}>✏️</button>
                                                         <button
                                                             onClick={() => confirmarEliminar(p)}
@@ -174,7 +176,7 @@ const confirmarEliminar = (platillo) => {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan="6" className={styles.noData}>
+                                                <td colSpan="6" className={stylesCommon.message}>
                                                     No hay proveedores registrados.
                                                 </td>
                                             </tr>
@@ -182,23 +184,7 @@ const confirmarEliminar = (platillo) => {
                                     </tbody>
                                 </table>
                                 
-                                {user?.rol===1 &&(
-                                    <button
-                                        className={`${styles.registerBtn} ${styles.backBtn}`}
-                                        onClick={() => navigate('/PanelGerente')}
-                                        >
-                                        VOLVER AL INICIO
-                                    </button>
-                                )}
-
-                                {user?.rol===2 &&(
-                                    <button
-                                        className={`${styles.registerBtn} ${styles.backBtn}`}
-                                        onClick={() => navigate('/PanelEncargado')}
-                                        >
-                                        VOLVER AL INICIO
-                                    </button>
-                                )}
+                                
 
                                 {modalEliminarVisible && (
                                     <ModalEliminarProveedor 
@@ -218,6 +204,23 @@ const confirmarEliminar = (platillo) => {
                                 onRefresh={cargarProveedores}
                             />
                         )}
+                        {user?.rol===1 &&(
+                                    <button
+                                        className={stylesCommon.BtnForm}
+                                        onClick={() => navigate('/PanelGerente')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
+
+                                {user?.rol===2 &&(
+                                    <button
+                                        className={stylesCommon.BtnForm}
+                                        onClick={() => navigate('/PanelEncargado')}
+                                        >
+                                        VOLVER AL INICIO
+                                    </button>
+                                )}
                     </div>
                 </div>
             </div>

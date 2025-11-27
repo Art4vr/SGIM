@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import EditarUsuario from './editarUsuario';
-import styles from '../../styles/productos/producto.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import Encabezado from '../../components/Encabezado';
 import AlertasInventario from '../../components/AlertasInventario';
-import stylesTabla from '../../styles/platillos/Platillo.module.css';
+import stylesTabla from '../../styles/common/tablas.module.css';
 import ModalEliminarUsuarios from "./modalEliminar";
 
 
 const VistaUsuarios = () => {
-    const { logout} = useAuth();
     const navigate = useNavigate();
     const [modalVisible, setModalVisible] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
@@ -151,20 +149,21 @@ const eliminarUsuario = async () => {
         };
 
     return (
-        <div className={styles.container}>
+        <div>
             {/* Encabezado */}
             <Encabezado/>
 
             {/*Contenido principal*/}
-            <div className={styles.bodyContainer}>
-                <div className={styles.registerContainer}>
-                    <div className={styles.registerCard}>
-                        <h1 className={styles.title}>GESTIÓN DE USUARIOS</h1>
+            <div className={stylesTabla.bodyContainer}>
+                <div className={stylesTabla.tablaContainer}>
+                    <div className={stylesTabla.tablaCard}>
+                        <div className={stylesTabla.encabezadoTabla}>
+                        <h1 className={stylesCommon.title}>GESTIÓN DE USUARIOS</h1>
 
-                        <button className={`${styles.btnBase} ${styles.registerBtn}`} onClick={() => navigate('/NuevoUsuario')}>
+                        <button className={stylesCommon.Btn} onClick={() => navigate('/NuevoUsuario')}>
                             AGREGAR USUARIO
                         </button>
-
+                        </div>
                         {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
 
                         {/* === FILTROS === */}
@@ -201,10 +200,10 @@ const eliminarUsuario = async () => {
                         </div>
 
                         {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando usuarios...</p>
+                            <p >🔄 Cargando usuarios...</p>
                         ) : (
-                            <div className={stylesCommon.productTableWrapper}>
-                                <table className={stylesTabla.platilloTable}>
+                            <div className={stylesTabla.TableWrapper}>
+                                <table className={stylesTabla.Table}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -234,8 +233,8 @@ const eliminarUsuario = async () => {
                                                 </td>
 
                                                 <td>{u.descripcionRol}</td>
-                                                <td>{u.estado}</td>
-                                                <td className={styles.acciones}>
+                                                <td className={`${u.estado === 'activo' ? stylesTabla.estadoactivo : stylesTabla.estadoinactivo}`}>{u.estado}</td>
+                                                <td className={stylesCommon.BtnAcciones}>
                                                     <button onClick={() => abrirModal(u)}>✏️</button>
                                                     <button
                                                         onClick={() => confirmarEliminar(u)}
@@ -251,7 +250,7 @@ const eliminarUsuario = async () => {
                             </div>
                         )}
                         <button
-                            className={`${styles.btnBase} ${styles.registerBtn} ${stylesCommon.backBtn}`}
+                            className={stylesCommon.BtnForm}
                             onClick={() => navigate('/PanelGerente')}
                             >
                             VOLVER AL INICIO

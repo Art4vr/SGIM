@@ -36,9 +36,9 @@ const PanelAdm = () => {
                     <h3 className={styles.nombreMenu}>Platillos</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/reportes')}>
-                    <img className={styles.imagenMenu} src="/imagenes/Reportes.png" alt="Reportes" />
-                    <h3 className={styles.nombreMenu}>Reportes</h3>
+                <button className={styles.tarjetas} onClick={() => navigate('/productos')}>
+                    <img className={styles.imagenMenu} src="/imagenes/Productos.png" alt="Productos" />
+                    <h3 className={styles.nombreMenu}>Productos</h3>
                 </button>
 
                 <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>

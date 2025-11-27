@@ -1,15 +1,3 @@
-/* Estilos generales del contenedor principal de la página */
-.bodyContainer {
-    font-family: 'Arial'; /* Fuente utilizada en la página */
-    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-    background-position: center; /* Centra la imagen de fondo */
-    display: flex; /* Usa flexbox para centrar elementos */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    margin: 0; /* Elimina márgenes predeterminados */
-}
-
 /* Contenedor principal del formulario de inicio de sesión */
 .loginContainer {
     display: flex;
@@ -30,20 +18,10 @@
     color: #fff; /* Color del texto */
 }
 
-/* Estilos del avatar dentro del formulario */
-.avatar img {
-    box-shadow: 0px 4px 3px rgba(100, 5, 54, 0.456);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* Forma circular */
-    border: 3px solid #D9115A; /* Borde de color */
-    margin-bottom: 15px; /* Espaciado inferior */
-}
-
 /* Título dentro de la tarjeta de inicio de sesión */
 .loginCard h2 {
-    margin-bottom: 20px;                        /* Espaciado inferior */
-    font-size: 40px;                            /* Tamaño de fuente */
+    margin-bottom: 1.25rem;                        /* Espaciado inferior */
+    font-size: 2.5rem;                            /* Tamaño de fuente */
     font-family: "Bowlby One", sans-serif;      /* Tipo de fuente, fuente: Google Fonts. */
     font-weight: 400;                           /* Grosor de la letra, varía entre 200 a 800 */
     font-style: normal;
@@ -53,7 +31,7 @@
 
 /* Contenedor de los campos de entrada */
 .inputContainer {
-    margin-bottom: 15px; /* Espaciado entre campos */
+    margin-bottom: 1.3rem; /* Espaciado entre campos */
     text-align: left; /* Alinea el texto a la izquierda */
 }
 
@@ -67,7 +45,7 @@
     font-optical-sizing: auto;              /* Ajuste del tamaño correspondiente al contenedor. */
     font-weight: 500;                       /* Ancho de la fuente, de 100 a 900 */
     font-style: normal;                     /* Estilo de la fuente, normal, negrita, cursiva */
-    font-size: 20px;                        /* Tamaño de fuente */
+    font-size: 1.25rem;                        /* Tamaño de fuente */
 }
 
 /* Campos de entrada */
@@ -83,42 +61,11 @@
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
-    font-size: 16px; /* Tamaño de fuente */
+    font-size: 1rem; /* Tamaño de fuente */
     color: #ffe0f8; /* Color del texto */
 }
 
 /* Efecto cuando un campo de entrada está enfocado */
 .inputContainer input:focus {
     border: 2px solid #262523; /* Borde resaltado */
-}
-
-/* Botón de inicio de sesión */
-.loginBtn {
-    width: 50%;                                /* Ocupa todo el ancho */
-    padding: 8px;                              /* Espaciado interno */
-    color: white;                             /* Color del texto */
-    background-color: #D92579;                /* Color de fondo */
-    border: none;                               /* Sin borde */
-    border-radius: 18px;                         /* Bordes redondeados */
-    cursor: pointer;                            /* Cursor de puntero */
-    transition: background-color 0.3s ease;     /* Efecto de transición */
-    margin: 20px 0;
-
-    font-family: "Murecho", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 900;
-    font-style: normal;
-    font-size: 18px;                            /* Tamaño de fuente */
-}
-
-/* Efecto hover del botón de inicio de sesión */
-.loginBtn:hover {
-    background-color: #400C24; /* Cambio de color al pasar el mouse */
-}
-
-/* Mensajes de error o advertencia */
-.message {
-    margin-top: 20px; /* Espaciado superior */
-    color: #ff6666; /* Color del mensaje */
-    font-size: 16px; /* Tamaño de fuente */
 }

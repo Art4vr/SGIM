@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getProductos, eliminarProducto } from '../../api/productoApi';
 import NuevoProducto from './nuevoProducto';
-import styles from '../../styles/productos/producto.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
+import stylesTabla from '../../styles/common/tablas.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axiosConfig';
 import Encabezado from '../../components/Encabezado';
@@ -103,20 +103,21 @@ const VistaProductos = () => {
         }
 
     return (
-        <div className={styles.container}>
+        <div>
             {/* Encabezado */}
             <Encabezado/>
             
             {/*Contenido principal*/}
-            <div className={styles.bodyContainer}>
-                <div className={styles.registerContainer}>
-                    <div className={styles.registerCard}>
-                        <h1 className={styles.title}>GESTIÓN DE PRODUCTOS</h1>
+            <div className={stylesTabla.bodyContainer}>
+                <div className={stylesTabla.tablaContainer}>
+                    <div className={stylesTabla.tablaCard}>
+                        <div className={stylesTabla.encabezadoTabla}>
+                        <h1 className={stylesCommon.title}>GESTIÓN DE PRODUCTOS</h1>
 
-                        <button className={stylesCommon.registerBtn} onClick={() => abrirModal()}>
+                        <button className={stylesCommon.Btn} onClick={() => abrirModal()}>
                             Agregar Producto
                         </button>
-
+                        </div>
                         {mensaje && <p className={stylesCommon.message}>{mensaje}</p>}
 
                         {/* === FILTROS === */}
@@ -163,15 +164,15 @@ const VistaProductos = () => {
                         </select>
                         </div>
 
-                        <button onClick={limpiarFiltros} className={stylesCommon.registerBtn}>
+                        <button onClick={limpiarFiltros} className={stylesCommon.BtnForm}>
                             Limpiar Filtros
                         </button>
 
                         {cargando ? (
-                            <p className={styles.loadingText}>🔄 Cargando productos...</p>
+                            <p>🔄 Cargando productos...</p>
                         ) : (
-                            <div className={stylesCommon.productTableWrapper}>
-                                <table className={styles.productTable}>
+                            <div className={stylesTabla.TableWrapper}>
+                                <table className={stylesTabla.Table}>
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -187,8 +188,8 @@ const VistaProductos = () => {
                                                 <td>{p.nombre}</td>
                                                 <td>{p.categoria}</td>
                                                 <td>{p.unidad}</td>
-                                                <td>{p.estado}</td>
-                                                <td className={styles.acciones}>
+                                                <td className={`${p.estado === 'vigente' ? stylesTabla.estadoactivo : stylesTabla.estadoinactivo}`}>{p.estado}</td>
+                                                <td className={stylesCommon.BtnAcciones}>
                                                     <button onClick={() => abrirModal(p)}>✏️</button>
                                                     <button
                                                         onClick={() => eliminar(p.idProducto)}
@@ -205,7 +206,7 @@ const VistaProductos = () => {
                         )}
                         {user?.rol===1 && (
                             <button
-                                className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                className={`${stylesCommon.registerBtn} ${stylesCommon.BtnForm}`}
                                 type="button"
                                 onClick={() => navigate('/PanelGerente')}
                                 >
@@ -214,7 +215,7 @@ const VistaProductos = () => {
                         )}
                         {user?.rol===2 && (
                             <button
-                                className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                                className={`${stylesCommon.BtnForm} ${stylesCommon.BtnForm}`}
                                 type="button"
                                 onClick={() => navigate('/PanelEncargado')}
                                 >

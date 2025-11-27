@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Login.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 /**
  * Componente de inicio de sesión (simulado).
  * 
@@ -70,12 +70,12 @@ const Login = ({setUser}) => {
 
     return (
         <div
-            className={styles.bodyContainer}
+            className={stylesCommon.bodyContainer}
             style={{ backgroundImage: 'url(/imagenes/FondoMK.PNG)' }}
         >
             <div className={styles.loginContainer}>
                 <div className={styles.loginCard}>
-                    <div className={styles.avatar}>
+                    <div className={stylesCommon.avatar}>
                         <img src="/imagenes/Avatar.png" alt="Avatar" />
                     </div>
 
@@ -102,7 +102,7 @@ const Login = ({setUser}) => {
                             />
                         </div>
 
-                        <button className={styles.loginBtn} type="submit">
+                        <button className={stylesCommon.BtnForm} type="submit">
                             INGRESAR
                         </button>
 

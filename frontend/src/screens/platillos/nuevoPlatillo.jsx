@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { crearPlatillo, modificarPlatillo, getCategoriasPlatillo } from '../../api/platilloApi';
 import styles from '../../styles/platillos/nuevoPlatillo.module.css';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 
 const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
     const [nombre, setNombre] = useState('');
@@ -116,17 +116,17 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
             <div className={styles.modalCard}>
                 <h2 className={styles.modalTitle}>{platillo ? 'Editar Platillo' : 'Agregar Platillo'}</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className={styles.inputContainer}>
+                    <div className={stylesCommon.inputContainer}>
                         <label>Nombre</label>
                         <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} />
                     </div>
 
-                    <div className={styles.inputContainer}>
+                    <div className={stylesCommon.inputContainer}>
                         <label>Descripción</label>
                         <textarea value={descripcion} onChange={e => setDescripcion(e.target.value)} />
                     </div>
 
-                    <div className={styles.inputContainer}>
+                    <div className={stylesCommon.inputContainer}>
                     <label>Categoría</label>
                     <select value={idCategoria} onChange={e => setIdCategoria(e.target.value)}>
                         {!platillo && <option value="" disabled>Selecciona una categoría</option>}
@@ -137,18 +137,18 @@ const NuevoPlatillo = ({ platillo, onClose, onRefresh }) => {
                     </select>
                 </div>
 
-                    <div className={styles.inputContainer}>
+                    <div className={stylesCommon.inputContainer}>
                         <label>Imagen</label>
                         <input type="text" value={imagen} onChange={e => setImagen(e.target.value)} />
                     </div>
 
-                    <div className={styles.inputContainer}>
+                    <div className={stylesCommon.inputContainer}>
                         <label>Precio</label>
                         <input type="text" value={precio} onChange={e => setPrecio(e.target.value)} />
                     </div>
 
                     {platillo && (
-                        <div className={styles.inputContainer}>
+                        <div className={stylesCommon.inputContainer}>
                             <label>Estado</label>
                             <select value={estado} onChange={e => setEstado(e.target.value)}>
                                 <option value="disponible">Disponible</option>

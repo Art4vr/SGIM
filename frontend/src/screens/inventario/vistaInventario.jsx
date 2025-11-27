@@ -8,12 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/inventario/inventario.module.css';
 import api from '../../api/axiosConfig';
-import stylesCommon from '../../styles/common/common.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
+import stylesTabla from '../../styles/common/tablas.module.css';
 import { getProductos, getUnidades, getCategorias } from '../../api/productoApi';
 import { getProveedores } from '../../api/proveedorApi';
 import ModalEliminarInventario from './modalInventario';
 import AlertasInventario from '../../components/AlertasInventario';
 import Encabezado from '../../components/Encabezado';
+import { BsJustify } from 'react-icons/bs';
 
 //funcion para establecer un nuevo estado de acuerdo a la evaluacion de fecha de caducidad o stock que se establecio para las alertas
     //fecha actual <=  fecha de caducidad -> 'caducado'
@@ -209,14 +211,15 @@ const VistaInventario = () => {
     console.log("lista de inventario: ", listaInventario);
 
     return (
-            <div className={styles.container}>
+            <div>
                 {/* Encabezado */}
                 <Encabezado/>
 
                 {/* Non-blocking alert boxes (keeps existing styles) */}
-                <div style={{ padding: '0 20px' }}>
+                <div className={stylesTabla.bodyContainer}>
+                    <div className={stylesTabla.tablaContainer}>
                     {showLowStockAlert && lowStockAlerts.length > 0 && (
-                        <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                        <div className={stylesCommon.message} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
                             <strong>Productos con bajo stock ({lowStockAlerts.length}):</strong>
                             <ul style={{ margin: '8px 0 0 16px' }}>
                                 {lowStockAlerts.map(item => (
@@ -232,7 +235,7 @@ const VistaInventario = () => {
                     )}
 
                     {showExpiringAlert && expiringAlerts.length > 0 && (
-                        <div className={styles.mensaje} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
+                        <div className={stylesCommon.message} role="status" aria-live="polite" style={{ marginBottom: 12 }}>
                             <strong>Productos cerca de caducidad ({expiringAlerts.length}):</strong>
                             <ul style={{ margin: '8px 0 0 16px' }}>
                                 {expiringAlerts.map(item => (
@@ -250,23 +253,23 @@ const VistaInventario = () => {
 
 
             {/* Main Content */}
-            <div className={styles.content}>
-                <div className={styles.encabezadoTabla}>
-                    <h2 className={styles.tituloSeccion}>Inventario Actual</h2>   
+            <div className={stylesTabla.tablaCard}>
+                <div className={stylesTabla.encabezadoTabla}>
+                    <h2 className={stylesCommon.title}>Inventario Actual</h2>   
                     <button 
-                        className={styles.botonAgregar} 
+                        className={stylesCommon.Btn} 
                         onClick={() => navigate('/actualizarstock')}
                     >
                         <span>+</span> Actualizar Stock
                     </button>
                 </div>
-                {mensaje && <div className={styles.mensaje}>{mensaje}</div>}
+                {mensaje && <div className={stylesCommon.message}>{mensaje}</div>}
                 
                 {cargando ? (
-                    <div className={styles.loading}><ClipLoader /></div>
+                    <div><ClipLoader /></div>
                 ) : (
-                    <div className={stylesCommon.productTableWrapper}>  
-                        <table className={styles.Table}>
+                    <div className={stylesTabla.TableWrapper}>
+                        <table className={stylesTabla.Table}>
                             <thead>
                                 <tr>
                                     <th>Producto</th>
@@ -295,7 +298,7 @@ const VistaInventario = () => {
                                         <td>{item.fechaCaducidad ? format(new Date(item.fechaCaducidad), 'dd/MM/yyyy') : ''}</td>
                                         <td>{item.username}</td>
                                         <td><span className={styles[`estado_${item.estado}`]}>{item.estado}</span></td>
-                                        <td className={styles.acciones}>
+                                        <td className={stylesCommon.BtnAcciones}>
                                             <button
                                                 onClick={() => abrirModal(item.idInventarioProducto, "¿Estás seguro de eliminar este Inventario?", "eliminar")}
                                                 disabled={eliminandoId === item.idInventarioProducto}
@@ -310,13 +313,13 @@ const VistaInventario = () => {
                 )}
                 {/*Botón de volver al panel*/}
                 {user?.rol===1 &&(
-                    <button className={styles.backBtn} onClick={() => navigate('/PanelGerente')}>
+                    <button className={stylesCommon.BtnForm} onClick={() => navigate('/PanelGerente')}>
                         Volver al Inicio
                     </button>
                 )}
 
                 {user?.rol===2 &&(
-                    <button className={stylesCommon.backBtn} onClick={() => navigate('/PanelEncargado')}>
+                    <button className={stylesCommon.BtnForm} onClick={() => navigate('/PanelEncargado')}>
                         Volver al Inicio
                     </button>
                 )}
@@ -331,6 +334,7 @@ const VistaInventario = () => {
                         />
                     ) : null
                     )}
+            </div>
             </div>
             <div>
                 <AlertasInventario/>

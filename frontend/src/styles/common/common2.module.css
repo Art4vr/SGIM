@@ -1,38 +1,267 @@
-/* Estilos para los botones de login y registro */
+button{
+    all: unset;
+    border-radius: 10px;
+    padding: 3px;
+}
+/*  ======== CONTENEDOR PRINCIPAL ======== */
+.bodyContainer {
+    /*background-image: url('/imagenes/FondoMK.PNG'); /* Imagen de fondo */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Usa flexbox para centrar elementos */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+/* ------------------- TÍTULO ------------------- */
+.title {
+    margin-bottom: 1.25rem;                        /* Espaciado inferior */
+    font-size: 2.9rem;                            /* Tamaño de fuente */
+    font-family: "Bowlby One", sans-serif;      /* Tipo de fuente, fuente: Google Fonts. */
+    font-weight: 400;                           /* Grosor de la letra, varía entre 200 a 800 */
+    font-style: normal;
+    text-align: center;
+    color: #61053f;   
+}
+
+@media (max-width: 768px) {
+    .title{
+        font-size: 2.3rem;
+    }
+}
+
+/* ======== BOTONES ======== */
+.BtnForm{
+    background-color: #D92579; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 1.2rem;
+    padding: 10px 20px; /* Espaciado interno */
+    margin: 10px; /* Márgenes entre botones */
+    width: auto;
+    font-size: 1.1rem; /* Tamaño del texto */
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-family: "Murecho", sans-serif;
+    cursor: pointer; /* Cursor tipo puntero */
+    transition: background 0.3s; /* Transición suave en el cambio de color */
+    box-shadow: 1px 2px 2px 2px rgba(138, 89, 121, 0.616);
+    display: flex;
+    justify-self: center;
+    align-content:center;
+    text-align: center;
+    margin: 0 auto;        /* CENTRA EL BOTÓN */
+}
+
 .Btn{
     background-color: #D92579; /* Color de fondo del botón */
     color: white; /* Color del texto */
     border: none; /* Sin bordes */
-    border-radius: 9px; /* Bordes redondeados */
+    border-radius: 1.2rem;
     padding: 10px 20px; /* Espaciado interno */
-    font-size: 1.1rem; /* Tamaño del texto */
-    cursor: pointer; /* Cursor tipo puntero */
     margin: 10px; /* Márgenes entre botones */
-    transition: background 0.3s; /* Transición suave en el cambio de color */
-    box-shadow: 2px 2px 2px 2px rgba(138, 89, 121, 0.616);
-    display: flex;
-    justify-self: center;
-    align-content:center;
-
-    width: 30%;            /* Cámbialo al ancho que quieras */
-    padding: 15px 20px;
-    border-radius: 16px;
-    
+    width: auto;
+    font-size: 1.1rem; /* Tamaño del texto */
+    font-optical-sizing: auto;
     font-weight: 900;
     font-family: "Murecho", sans-serif;
-    
-    text-align: center;
-
-    display: block;        /* IMPORTANTÍSIMO para centrarlo */
-    margin: 0 auto;        /* CENTRA EL BOTÓN */
-    
-    transition: background-color 0.3s ease, opacity 0.3s ease;
+    cursor: pointer; /* Cursor tipo puntero */
+    transition: background 0.3s; /* Transición suave en el cambio de color */
+    box-shadow: 1px 2px 2px 2px rgba(138, 89, 121, 0.616);
+    display: flex;
+    justify-self: right;
+    align-content:center;
+    text-align: center;      /* CENTRA EL BOTÓN */
 }
 
-/* Efecto al pasar el mouse sobre los botones */
-.Btn:hover{
+.Btn:hover, .BtnForm:hover{
     background-color: #400C24; /* Color más oscuro al hacer hover */
     scale: 1.05;
     box-shadow: 2px 2px 2px 2px rgba(131, 43, 100, 0.616);
     color: #e4e4e4;
+}
+
+.Btn:focus{
+    background-color: #621338e8; /* Color más oscuro al hacer hover */
+    scale: 1.05;
+    box-shadow: 2px 2px 2px 2px rgba(131, 43, 100, 0.616);
+    color: #e4e4e4;
+}
+
+
+/* ===== Botones de acciones ===== */
+
+.BtnAcciones button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin: 0 0.3rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 0.3em;
+}
+
+.BtnAcciones button:hover {
+    transform: scale(1.2);
+}
+
+/* Botón editar */
+.BtnAcciones button:first-child {
+    background-color: #b44a82;
+}
+
+.BtnAcciones button:first-child:hover {
+    background-color: #dc057b;
+    transform: scale(1.1);
+}
+
+/* Botón eliminar */
+.BtnAcciones button:last-child {
+    background-color: #992f53;
+}
+
+.BtnAcciones button:last-child:hover {
+    background-color: #e94a6a;
+    transform: scale(1.1);
+}
+
+
+/* ======== AVATAR ======== */
+.avatar img {
+    width: 7em; /* Ancho de la imagen */
+    height: 7em; /* Altura de la imagen */
+    border-radius: 50%; /* Hace la imagen circular */
+    border: 3px solid #D9115A; /* Borde con color */
+    box-shadow: 0px 4px 3px rgba(100, 5, 54, 0.456);
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+
+/* ======== MENSAJE ======== */
+.message {
+    font-size: 1rem;
+    color: #df015e;
+    margin: 15px 0;
+    background-color: rgba(100, 100, 100, 0.4); /* fondo oscuro semitransparente */
+    padding: 10px 15px;                  /* espacio interno */
+    border-radius: 6px;                  /* bordes suaves */
+    text-align: center;                  /* centra el texto */
+}
+
+/* ======== FILTROS ======== */
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0);
+    padding: 15px;
+}
+
+/* Input de búsqueda */
+.filterInput {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 17px;
+}
+
+.filterInput:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+}
+
+/* Selects */
+.filterSelect {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0, 0, 0, 0.719);
+    color: #fff;
+
+    font-family: "Murecho", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 17px;
+}
+
+.filterSelect:focus {
+    border-color: #d92579;
+    box-shadow: 0 0 6px rgba(217, 37, 121, 0.3);
+    }
+
+/* ======== Input de descripción ======== */
+.inputContainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.inputContainer label {
+    display: block;
+    font-size: 14px;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.inputContainer input,
+.inputContainer select,
+.inputContainer textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus,
+.inputContainer textarea:focus {
+    border: 2px solid #262523;
+}
+
+.inputContainer select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #444;
+    border: 1px solid #262523;
+}
+
+.inputContainer select:hover {
+    background-color: #555;
+}
+
+.closeButton{
+    max-width: 2rem;
+    max-height: 2rem;
+    background-color: #fff8ee;
+    padding: 3px;
+    margin: 3px;
 }

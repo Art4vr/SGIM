@@ -88,13 +88,16 @@ const AlertasInventario = () => { // Ya no recibe props
         const low = listaInventario.filter(item =>
             item.cantidadActual != null &&
             item.cantidadMinima != null &&
-            Number(item.cantidadActual) <= Number(item.cantidadMinima)
+            Number(item.cantidadActual) <= Number(item.cantidadMinima) &&
+            item.estado !== 'finalizado' &&
+            item.estado !== 'caducado'
         );
 
         const hoy = new Date();
         const expiringThresholdDays = 2;
         const exp = listaInventario.filter(item => {
             if (!item.fechaCaducidad) return false;
+            if (item.estado === 'finalizado' || item.estado === 'caducado') return false;
             const fechaCad = new Date(item.fechaCaducidad);
             const diffDays = Math.ceil((fechaCad - hoy) / (1000 * 60 * 60 * 24));
             return diffDays <= expiringThresholdDays;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from "../../api/axiosConfig";
 import { getProductos, getUnidades } from '../../api/productoApi';
 import styles from '../../styles/platillos/nuevaReceta.module.css';
+import stylesCommon from '../../styles/common/common2.module.css';
 //import stylesCommon from '../../styles/common/common.module.css';
 
 const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
@@ -251,10 +252,10 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
             <div className={styles.modalCard}>
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>{platillo?.nombre ?? 'Ingredientes'}</h2>
-                    <button className={styles.closeButton} onClick={onClose}>❌</button>
+                    <button className={stylesCommon.closeButton} onClick={onClose}>❌</button>
                 </div>
 
-                <div className={styles.filterContainer}>
+                <div className={stylesCommon.filterContainer}>
                     <h3>Ingredientes</h3>
                 </div>
 
@@ -297,7 +298,7 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                     {/* Add new ingredient controls */}
                     <div className={styles.agregarContainer}>
                         <h4 className={styles.subtitulos}>Agregar ingrediente</h4>
-                        <div  className={styles.filterContainer}>
+                        <div  className={stylesCommon.filterContainer}>
                             <div>
                                 <input
                                     className={styles.filterInput}
@@ -350,10 +351,10 @@ const IngredientesPlatillo = ({ platillo, onClose, onRefresh }) => {
                     </div>
 
                     <div style={{ marginTop: 12 }}>
-                        <button className={styles.botonGral} type="submit" style={{ padding: '8px 14px' }}>Guardar Receta</button>
+                        <button className={stylesCommon.BtnForm} type="submit">Guardar Receta</button>
                         </div>
 
-                    {mensaje && <div className={styles.mensaje} style={{ marginTop: 10 }}>{mensaje}</div>}
+                    {mensaje && <div className={stylesCommon.message} style={{ marginTop: 10 }}>{mensaje}</div>}
                 </form>
             </div>
         </div>

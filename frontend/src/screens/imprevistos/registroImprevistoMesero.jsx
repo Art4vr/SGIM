@@ -237,7 +237,7 @@ const RegistroImprevistoMesero = () => {
             productosPlatillo.forEach( async (productoPlatillo, index) => {
                 
                 try {
-                    const cantidadNecesaria = productoPlatillo.cantidad * Number(cantidadPlatillo);
+                    const cantidadNecesaria = Number(productoPlatillo.cantidad) * Number(cantidadPlatillo);
                     //console.log("cantidad enviada a imprevistos: ", cantidadNecesaria);
                     //console.log("cantidad enviada a inventario: ", inventario[index].cantidadActual, " - ", cantidadNecesaria);
                     //
