@@ -19,7 +19,7 @@ import Encabezado from "../../components/Encabezado";
 import AlertasInventario from "../../components/AlertasInventario";
 
 const MostrarImprevistos = () => {
-    const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
+    const [refreshInterval, setRefreshInterval] = useState(180000); 
 
     const { logout, user } = useAuth();
     const [cargando, setCargando] = useState(false);
@@ -96,6 +96,7 @@ const MostrarImprevistos = () => {
     };
 
     const cerrarModal = () => {
+        cargarImprevistos();
         setModalVisible(false);
         setImprevistoEditando(null);
         setModalAccion(null);

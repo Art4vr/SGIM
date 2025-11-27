@@ -1,1 +1,0 @@
-//pantalla para crear una orden (pedido dentro del restaurante)

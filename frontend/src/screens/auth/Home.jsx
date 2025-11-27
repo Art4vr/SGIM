@@ -1,10 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/auth/Home.module.css';
-import { MdOutlineLogin } from "react-icons/md";
-import { BiLogOut } from "react-icons/bi";
-import api from '../../api/axiosConfig';
-import { RiUserAddFill } from "react-icons/ri";
+import stilesCommon2 from '../../styles/common/common2.module.css';
 
 /**
  * Componente de pagina de inicio de la aplicación
@@ -16,16 +12,7 @@ import { RiUserAddFill } from "react-icons/ri";
  * @returns {JSX.Element} Pagina de inicio de la aplicación
  */
 const Home = () => {
-    const { logout } = useAuth();
     const navigate = useNavigate();
-    const handleLogout = async () => {
-        try {
-            await logout(); // Esto hace POST /logout, limpia user y localStorage
-            navigate('/'); // Redirige al login
-        } catch (error) {
-            console.error("Error al cerrar sesión:", error);
-        }
-    };
 
     return (
         <div
@@ -39,7 +26,7 @@ const Home = () => {
                 <h1 className={styles.title}>SGIM</h1>
                 <h2 className={styles.subtitle}>Sistema de Gestión de Inventarios y Menú para Restaurantes</h2>
                 <h3 className={styles.welcome}>Bienvenido</h3>
-                <button className={styles.loginBtn} onClick={() => navigate('/Login')}>INICIAR</button>
+                <button className={stilesCommon2.Btn} onClick={() => navigate('/Login')}>INICIAR</button>
             </div>
         </div>
     );

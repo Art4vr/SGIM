@@ -14,29 +14,22 @@
 /* Contenedor principal de la página de inicio */
 .homeContainer {
     background: rgba(218, 216, 217, 0.7); /* Color de fondo con transparencia */
-    padding: 30px; /* Espaciado interno */
+    padding: 2em; /* Espaciado interno */
     border-radius: 20px; /* Bordes redondeados */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra alrededor del contenedor */
     width: 100%;
-    max-width: 450px; /* Ancho máximo del contenedor */
+    max-width: 28em; /* Ancho máximo del contenedor */
     text-align: center; /* Alineación del texto */
     color: #000; /* Color del texto */
     transition: all 0.3s ease; /* Transición suave en los cambios de estilo */
+    margin: 10px;
 }
 
-/* Efecto al pasar el mouse sobre el contenedor */
-/**
-.homeContainer:hover {
-    transform: scale(1.25); /* Aumenta el tamaño en un 25% 
-    background: rgba(218, 216, 217, 0.9); /* Aumenta la opacidad del fondo 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada 
-}
-*/
 
 /* Estilos para la imagen del avatar */
 .avatar img {
-    width: 100px; /* Ancho de la imagen */
-    height: 100px; /* Altura de la imagen */
+    width: 7em; /* Ancho de la imagen */
+    height: 7em; /* Altura de la imagen */
     border-radius: 50%; /* Hace la imagen circular */
     border: 3px solid #D9115A; /* Borde con color */
     margin-bottom: 15px; /* Espaciado inferior */
@@ -47,7 +40,7 @@
     font-family: "Kalam", cursive;
     font-weight: 700;
     font-style: normal;
-    font-size: 85px;                            /* Tamaño grande para el título */
+    font-size: 5.3rem;                            /* Tamaño grande para el título */
     margin: 0;
 }
 
@@ -56,7 +49,7 @@
     font-family: "Courgette", cursive;
     font-weight: 400;
     font-style: normal;
-    font-size: 36px; /* Tamaño del subtítulo */
+    font-size: 2.25rem; /* Tamaño del subtítulo */
     color: #520221; /* Color del texto */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
 }
@@ -66,62 +59,7 @@
     font-family: "Playball", cursive;
     font-weight: 400;
     font-style: normal;
-    font-size: 35px; /* Tamaño del subtítulo */
+    font-size: 2.2rem; /* Tamaño del subtítulo */
     margin: 5px 0 20px; /* Márgenes superior e inferior */
     color: #D92579; /* Color del texto */
-}
-
-/* Estilos para los botones de login y registro */
-.homeContainer .loginBtn,
-.homeContainer .registerBtn {
-    background-color: #D92579; /* Color de fondo del botón */
-    color: white; /* Color del texto */
-    border: none; /* Sin bordes */
-    border-radius: 9px; /* Bordes redondeados */
-    padding: 10px 20px; /* Espaciado interno */
-    font-size: 18px; /* Tamaño del texto */
-    cursor: pointer; /* Cursor tipo puntero */
-    margin: 10px; /* Márgenes entre botones */
-    transition: background 0.3s; /* Transición suave en el cambio de color */
-    box-shadow: 2px 2px 2px 2px rgba(138, 89, 121, 0.616);
-    display: flex;
-    justify-self: center;
-    align-content:center;
-}
-
-/* Efecto al pasar el mouse sobre los botones */
-.homeContainer .loginBtn:hover,
-.homeContainer .registerBtn:hover{
-    background-color: #400C24; /* Color más oscuro al hacer hover */
-    scale: 1.05;
-    box-shadow: 2px 2px 2px 2px rgba(131, 43, 100, 0.616);
-    color: #e4e4e4;
-}
-
-.homeContainer .logoutBtn:hover{
-    background-color: #5f5d5e; /* Color más oscuro al hacer hover */
-    scale: 1.05;
-    box-shadow: 2px 2px 2px 2px rgba(120, 99, 112, 0.616);
-    color: #e4e4e4;
-}
-
-.loginBtn{
-    width: 30%;            /* Cámbialo al ancho que quieras */
-    padding: 15px 20px;
-    border: none;
-    border-radius: 16px;
-    cursor: pointer;
-    font-weight: 900;
-    font-family: "Murecho", sans-serif;
-    font-size: 20px;
-    text-align: center;
-
-    display: block;        /* IMPORTANTÍSIMO para centrarlo */
-    margin: 0 auto;        /* CENTRA EL BOTÓN */
-    
-    transition: background-color 0.3s ease, opacity 0.3s ease;
-}
-
-.loginBtn:hover {
-    background-color: #400C24;
 }

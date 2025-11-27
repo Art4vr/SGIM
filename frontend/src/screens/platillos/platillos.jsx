@@ -296,6 +296,15 @@ const handleEliminarPlatillo = async () => {
                             VOLVER AL INICIO
                         </button>
                         )}
+                        {user?.rol=== 3 &&(
+                        <button
+                            className={`${stylesCommon.registerBtn} ${stylesCommon.backBtn}`}
+                            type="button"
+                            onClick={() => navigate('/PanelChef')}
+                            >
+                            VOLVER AL INICIO
+                        </button>
+                        )}
 
                         {modalEliminarVisible && (
                             <ModalEliminarPlatillo 

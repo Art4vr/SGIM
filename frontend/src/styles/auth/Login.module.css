@@ -1,7 +1,6 @@
 /* Estilos generales del contenedor principal de la página */
 .bodyContainer {
     font-family: 'Arial'; /* Fuente utilizada en la página */
-    /*background-image: url('../../imagenes/FondoMK.PNG'); /* Imagen de fondo */
     background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
     background-position: center; /* Centra la imagen de fondo */
     display: flex; /* Usa flexbox para centrar elementos */
@@ -33,6 +32,7 @@
 
 /* Estilos del avatar dentro del formulario */
 .avatar img {
+    box-shadow: 0px 4px 3px rgba(100, 5, 54, 0.456);
     width: 100px;
     height: 100px;
     border-radius: 50%; /* Forma circular */
@@ -92,13 +92,6 @@
     border: 2px solid #262523; /* Borde resaltado */
 }
 
-/* Contenedor para la opción de mostrar contraseña */
-.showPasswordContainer {
-    display: flex;
-    align-items: center;
-    gap: 4px; /* Espaciado entre elementos */
-}
-
 /* Botón de inicio de sesión */
 .loginBtn {
     width: 50%;                                /* Ocupa todo el ancho */
@@ -109,7 +102,7 @@
     border-radius: 18px;                         /* Bordes redondeados */
     cursor: pointer;                            /* Cursor de puntero */
     transition: background-color 0.3s ease;     /* Efecto de transición */
-    margin-bottom: 10px;                        /* Espaciado inferior */
+    margin: 20px 0;
 
     font-family: "Murecho", sans-serif;
     font-optical-sizing: auto;

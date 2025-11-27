@@ -12,25 +12,25 @@ export default function Menu() {
   // Nuevo estado para el mensaje de error
   const [errorBusqueda, setErrorBusqueda] = useState("");
 
-  useEffect(() => {
-    const verificarDisponibilidad = async () => {
-            try {
-                // Hacemos una solicitud POST para verificar la disponibilidad
-                const response = await axios.post('/api/platillos/disponibilidad');
-                
-                // Si la respuesta es exitosa
-                console.log(response.data.msg);  // Muestra el mensaje del backend
-            } catch (error) {
-                // Si ocurre un error
-                console.error('Error al verificar la disponibilidad de los platillos:', error);
-            }
-    };
-    verificarDisponibilidad();
+  const verificarDisponibilidad = async () => {
+      try {
+          // Hacemos una solicitud POST para verificar la disponibilidad
+          const response = await axios.post('/api/platillos/disponibilidad');
+          
+          // Si la respuesta es exitosa
+          console.log(response.data.msg);  // Muestra el mensaje del backend
+      } catch (error) {
+          // Si ocurre un error
+          console.error('Error al verificar la disponibilidad de los platillos:', error);
+      }
+  };
 
-    axios
-      .get(`${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.5"}:3000/api/platillosMenu`) 
-      .then((res) => {
-        const agrupados = res.data.reduce((acc, platillo) => {
+  const cargarPlatillos = async () => {
+      try {
+        const res = await axios.get(
+          `${window.location.hostname === "localhost" ? "http://127.0.0.1" : "http://192.168.0.5"}:3000/api/platillosMenu`);
+        
+          const agrupados = res.data.reduce((acc, platillo) => {
           if (!acc[platillo.categoria]) acc[platillo.categoria] = [];
           acc[platillo.categoria].push(platillo);
           return acc;
@@ -39,13 +39,19 @@ export default function Menu() {
         setPlatillos(agrupados);
         setCategorias(["Todas", ...Object.keys(agrupados)]);
         setLoading(false);
-      })
-      .catch((err) => console.error("Error cargando platillos:", err));
+      }catch (err){
+        console.error("Error cargando platillos:", err);
+      }
+  };
 
+  useEffect(() => {
+    verificarDisponibilidad();
+    cargarPlatillos();
+    
       // Configurar el intervalo para actualizar los platillos cada 30 segundos (30000ms)
         const intervalo = setInterval(() => {
             verificarDisponibilidad();
-        }, 10000); // Puedes ajustar este valor (en milisegundos)
+        }, 60000); // Puedes ajustar este valor (en milisegundos)
 
         // Limpiar el intervalo cuando el componente se desmonte
         return () => {

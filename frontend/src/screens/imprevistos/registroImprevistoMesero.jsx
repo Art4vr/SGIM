@@ -255,7 +255,7 @@ const RegistroImprevistoMesero = () => {
                     await api.put(`/api/inventario/${inventario[index].idInventarioProducto}`, {
                         cantidadActual: (inventario[index].cantidadActual ?? 0) - Number(cantidadNecesaria)
                     });
-                    setTimeout(() => navigate('/PanelGerente'), 750);
+                    setTimeout(() => navigate('/PanelMesero'), 750);
                 } catch (err) {
                     console.error('Error al registrar imprevisto para producto:', productoPlatillo.Producto_idProducto, err);
                 }

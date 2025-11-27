@@ -35,7 +35,7 @@ const PanelEncargado = () => {
                     <h3 className={styles.nombreMenu}>Productos</h3>
                 </button>
 
-                <button className={styles.tarjetas} onClick={() => navigate('/imprevistos')}>
+                <button className={styles.tarjetas} onClick={() => navigate('/RegistroImprevisto')}>
                     <img className={styles.imagenMenu} src="/imagenes/imprevistos.png" alt="Imprevistos" />
                     <h3 className={styles.nombreMenu}>Imprevistos</h3>
                 </button>

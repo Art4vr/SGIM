@@ -89,7 +89,6 @@ const VistaInventario = () => {
     const [categorias, setCategorias] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
 
-    const [refreshInterval, setRefreshInterval] = useState(5000); // 5 seconds in milliseconds
     //Alertas
     const [lowStockAlerts, setLowStockAlerts] = useState([]);
     const [expiringAlerts, setExpiringAlerts] = useState([]);

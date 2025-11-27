@@ -51,6 +51,11 @@ const RegistroImprevisto = () => {
         cargarDatos();
     }, []);
 
+    const productosConStock = productos.filter(p => {
+        const inventarioProducto = inventarios.find(i => i.Producto_idProducto === p.idProducto);
+        return inventarioProducto && inventarioProducto.cantidadActual > 0;
+    })
+
     const handleProductoChange = (e) => {
         // Recibe el id del producto seleccionado
         const idProductoSeleccionado = Number(e.target.value);
@@ -141,7 +146,7 @@ const RegistroImprevisto = () => {
                     cantidadActual: (inventario.cantidadActual ?? 0) - Number(cantidad)
                 });
 
-                setTimeout(() => navigate('/PanelChef'), 750);
+                setTimeout(() => user.rol === 3 ? navigate('/PanelChef') : navigate('/PanelEncargado'), 750);
             } catch (err) {
                 setMessage(err.response?.data?.mensaje || err.message || 'Error al registrar imprevisto-front');
             } finally {
@@ -178,7 +183,7 @@ const RegistroImprevisto = () => {
                                 className={errors.producto ? styles.errorInput : ''}
                             >
                                 <option value="">Selecciona un producto</option>
-                                {productos.map((p) => (
+                                {productosConStock.map((p) => (
                                     <option key={p.idProducto} value={p.idProducto}>
                                         {p.nombre} {inventarios.find(i => i.Producto_idProducto === p.idProducto)?.cantidadActual 
                                             ? `(Disponible: ${inventarios.find(i => i.Producto_idProducto === p.idProducto).cantidadActual})` 
@@ -205,8 +210,8 @@ const RegistroImprevisto = () => {
                                 value={cantidad}
                                 onChange={handleCantidadChange}
                                 required
-                                min="0.01"
-                                step="0.01"
+                                min="1.0"
+                                step="1.0"
                                 className={errors.cantidad ? styles.errorInput : ''}
                             />
                             {errors.cantidad && <span className={styles.errorText}>{errors.cantidad}</span>}
@@ -220,13 +225,17 @@ const RegistroImprevisto = () => {
                             {cargando ? <ClipLoader size={20} color="#fff" /> : 'REGISTRAR IMPREVISTO'}
                         </button>
 
-                        <button
-                            className={styles.loginBtn}
-                            type="button"
-                            onClick={() => navigate('/PanelChef')}
-                        >
-                            VOLVER AL INICIO
-                        </button>
+                        {/*Botón de volver al panel*/}
+                        {user.rol === 3 && (
+                            <button className={styles.registerBtn} onClick={() => navigate('/panelChef')}>
+                                VOLVER AL INICIO
+                            </button>
+                        )}
+                        {user.rol === 2 && (
+                            <button className={styles.registerBtn} onClick={() => navigate('/PanelEncargado')}>
+                                VOLVER AL INICIO
+                            </button>
+                        )}
 
                         {message && <p className={stylesCommon.message}>{message}</p>}
                     </form>
